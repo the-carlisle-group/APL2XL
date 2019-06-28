@@ -1,0 +1,14 @@
+ sheet←{
+     D←4                                 ⍝ how many dimensions to track
+     n←⊃⍵                                ⍝ name, we only need the sheet name once
+     as ds ss ts←(⍳4)⌷[⎕IO+1]¨⊂(1∘↓⍤1)⍵  ⍝ addresses data styles types
+     is←cell2Index¨as                    ⍝ indices
+     ra←is{(⊂⍺){index2Cell ⍺+⍵}¨⍵}¨⍳∘⍴¨ds
+     rs rt←{(⍴¨ds)⍴∘⊆¨⍵}¨ss ts     ⍝ reshaped styles and types
+     max←⊃⌈/is+⍴¨ds                      ⍝ maximum possible index from provided data
+     cx←{⊂cellXML¨↑¨⊂⍉↓⍉↑⍵}⍤1
+     table←cx⍉↑ds rs ra rt
+     sheetdata←'sheetdata'tag∊rowXML¨table
+     dimension←'dimension'(⊂'ref'('A1:',index2Cell max))tag''
+     dimension sheetdata
+ }

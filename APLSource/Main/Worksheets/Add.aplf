@@ -1,0 +1,10 @@
+ Add←{
+     ⍝ ⍵[0] ←→ sheetname
+     ⍝ ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
+     ⍝ ⍵[2] ←→ cell values
+     ⍝ ⍵[3] ←→ style (should be a reference to a workbook style)
+     vars∘←'names' 'addrs' 'data' 'styles' 'types'
+     n a d s←4↑⍵
+     ts vs←2↑_convert d
+     vars {6::⍎⍺,'←⊂⍵'⋄⍎⍺,',←⊂⍵'}¨n a vs s ts
+ }

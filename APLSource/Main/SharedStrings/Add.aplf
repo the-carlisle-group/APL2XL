@@ -1,0 +1,10 @@
+ Add←{
+  ⍝ ⍵ ←→ new string: simple character vector
+  ⍝ defines: SharedStrings.Table ←→ 2 row table
+  c←1+ s←⎕IO         ⍝ Row s+1 ←→ tally ⋄ Row s ←→ strings
+  n←⍵ 0              ⍝ new string and count
+  _←{6::Table∘←⍪⍵ ⋄ Table{⍺,⍵/⍨~(⊣⌿⍵)∊ s⌷⍺}←⍪⍵} n ⍝ define or (append new or none) SharedStrings.Table
+  i←(s ⌷ Table) ⍳ ⊂⍵ ⍝ index
+  (i ⌷ c ⌷Table)+←1  ⍝ increment count at index
+  i                  ⍝ return index
+ }

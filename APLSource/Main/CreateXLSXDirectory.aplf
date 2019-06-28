@@ -1,0 +1,11 @@
+ CreateXLSXDirectory←{
+    ⍝ ⍵ ←→ dir name(optional): simple character vector 
+    ⍝ Set up empty XLSX folder structure
+    nest←{(⊂⍺,'/'),¨⍵}
+    temp←(0=≢⍵)⌷⍵ 'tempXLSX'
+    root←temp nest '_rels' 'docProps' 'xl'
+    xl  ←temp nest 'xl' nest'_rels' 'theme' 'worksheets'
+
+    _←3 ⎕NDELETE temp
+    _←⎕MKDIR¨,/(⊂temp)root xl
+ }

@@ -1,0 +1,9 @@
+Clear←{
+    sheetNames←{''≡⍵:∪names⋄⊂⍵}⍵
+    remove←{
+        filter←⍵∘≢¨names
+        vars {⍎⍺,'←⍵/⍎⍺'}¨⊂filter
+    }
+    _←remove¨sheetNames
+    Select ''
+}

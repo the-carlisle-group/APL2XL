@@ -1,0 +1,20 @@
+ _convert←{
+     ⍝ ⍵ ←→ must be a simple vector or table (unless a list of nested char vecs)
+     ⍝ TODO(nathan): need to do a lot of type checking still
+     gett←{drs∊⍨r←⎕DR ⍵:r ⋄ ⎕DR⊃⍵} ⍝ get the data type of a simple homogenous array
+     mapt←'b' 's' 'n' 'default'
+     drs←11 80 83
+
+     ⍝ data conversion functions
+     ⍝ names relate to mapt types
+     b←{⍵:'True' ⋄ 'False'}
+     n←{⍵}
+     s←#.SharedStrings.Add
+     default←n
+
+     ⍝ convert then assign
+     i←drs⍳gett ⍵ ⍝ get the xlsx type
+     t←mapt⌷⍨i    ⍝ the xlsx type string
+     v←(⍎t)¨⍵     ⍝ convert to xlbased on type
+     t v
+ }

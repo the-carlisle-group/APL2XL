@@ -1,0 +1,27 @@
+ xml←XML;ns;ts;sheet;⎕IO
+ ⎕IO←0
+ tables←1↓¨Select¨∪names
+ cellXML←{
+     a d s t←⍵
+     attrs←'rst'{↓⍉↑(⊂⍺),⊂⍵}a s t
+     'c'attrs tag'v'tag d
+ }⍤1
+ rowXML←{
+     (⊂⍵){'row'(⊂'r'⍵)tag ⍵⌷⍺}¨⍳≢⍵
+ }
+ sheet←{
+     a d s t←(⍳4)⌷[⎕IO+1]¨⊂(1∘↓⍤1)⍵  ⍝ addresses data styles types
+     i←cell2Index¨a                    ⍝ indices
+     sd←⍴¨d
+     max←⊃⌈/i+⍴¨d                      ⍝ maximum possible index from provided data
+     ra←i{(⊂⍺)(index2Cell+)¨⍳⍵}¨sd
+     rs rt←{sd⍴∘⊆¨⍵}¨s t     ⍝ reshaped styles and types
+     merge←{({↑¨⊂⍉↓⍉↑⍵}⍤1)⍉↑⍵}
+
+     cellsByRow←cellXML¨merge ra d rs rt ⍝ a d s t
+     sheetdata←'sheetdata'tag∊rowXML¨cellsByRow
+     dimension←'dimension'(⊂'ref'('A1:',index2Cell max))tag''
+     dimension sheetdata
+ }
+
+ xml←sheet¨tables

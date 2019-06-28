@@ -1,0 +1,3 @@
+ table←Select sheetName;filter
+ filter←{0=≢⍵:(≢names)⍴1 ⋄ ⍵∘≡¨names}sheetName
+ table←{2=⎕NC'styles':↑(⊂⍵),↓filter⌿⍉↑(⍎¨vars) ⋄ ⍵}'Sheet Name' 'Address' 'Data' 'Style' 'Types'

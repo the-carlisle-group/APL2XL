@@ -1,0 +1,9 @@
+ xml←XML;strings;counts;props
+   ⍝ ⍵ ←→ SharedStrings.Table: 2 row table
+   ⍝ Row 1 is a list of unique strings
+   ⍝ Row 2 is a counter of occurences of string in Row 1
+ (strings counts)←(⍳2)⌷¨⊂Table
+ props←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+ props,←⊂'count'(⍕+/counts)
+ props,←⊂'uniqueCount'(⍕≢strings)
+ xml←'sst'props tag∊{'si'tag't'tag ⍵}¨strings
