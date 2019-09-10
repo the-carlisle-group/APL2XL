@@ -1,9 +1,11 @@
- index2Cell←{⎕IO←0
-    ⍝ ⍵ ←→ row column in a matrix
-    ⍝ usage: index2Cell 0 21226
-    ⍝ returns: excel cell string (adjusted for ⎕IO←0)
-    ⍝ 'ABCD1'
-     (row col)←2↑⍵
-     str←{⍵<0:'' ⋄ (∇⌊¯1+⍵÷26), ⎕A⌷⍨26|⍵}
-     (str col),⍕row+1
+ index2Cell←{
+    ⍝⍝⍝: ⍵ ←→ row column in a matrix
+    ⍝⍝⍝: This function converts cellular notation to integer index pairs
+    ⍝⍝⍝: usage: index2Cell 0 21226
+    ⍝⍝⍝: returns: excel cell string (adjusted for ⎕IO←0)
+    ⍝⍝⍝: 'ABCD1'
+    ⎕IO←0
+    (row col)←2↑⍵
+    str←{⍵<0:'' ⋄ (∇⌊¯1+⍵÷26), ⎕A⌷⍨26|⍵}
+    (str col),⍕row+1
  }

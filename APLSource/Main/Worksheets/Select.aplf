@@ -1,3 +1,10 @@
- table←Select sheetName;filter
- filter←{0=≢⍵:(≢names)⍴1 ⋄ ⍵∘≡¨names}sheetName
- table←{2=⎕NC'styles':↑(⊂⍵),↓filter⌿⍉↑(⍎¨vars) ⋄ ⍵}'Sheet Name' 'Address' 'Data' 'Style' 'Types'
+ t←{column}Select v;⎕IO
+ ⎕IO←0
+ :If (0<⎕NC)'Table'
+     lc←(819⌶)
+     c←{⍵:1 ⋄ 80=⎕DR column:_colselect column ⋄ column}(0≥⎕NC)'column'
+     bmp←c{0=≢⍵:(≢Table)⍴1 ⋄ 80=⎕DR ⍵:(⊂lc ⍵)≡¨lc¨⍺⌷[⎕IO+1]Table ⋄ (⊂⍵)≡¨⍺⌷[⎕IO+1]Table}v
+     t←ColumnNames⍪bmp⌿Table
+ :Else
+     t←ColumnNames
+ :EndIf

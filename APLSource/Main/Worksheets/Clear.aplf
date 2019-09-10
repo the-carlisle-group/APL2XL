@@ -1,9 +1,14 @@
-Clear←{
-    sheetNames←{''≡⍵:∪names⋄⊂⍵}⍵
-    remove←{
-        filter←⍵∘≢¨names
-        vars {⍎⍺,'←⍵/⍎⍺'}¨⊂filter
-    }
-    _←remove¨sheetNames
-    Select ''
-}
+ t←{column}Clear v;⎕IO
+ ⎕IO←0
+ :If (0<⎕NC)'Table'
+     lc←(819⌶)
+     c←{⍵:1 ⋄ 80=⎕DR column:_colselect column ⋄ column}(0≥⎕NC)'column'
+     bmp←~c{0=≢⍵:(≢Table)⍴1 ⋄ 80=⎕DR ⍵:(⊂lc ⍵)≡¨lc¨⍺⌷[⎕IO+1]Table ⋄ (⊂⍵)≡¨⍺⌷[⎕IO+1]Table}v
+     Table∘←bmp⌿Table
+     t←Select''
+ :Else
+     t←ColumnNames
+ :EndIf
+
+ ⍝ TODO: Fix bug where id's arguments are a different type
+ ⍝ This is completely confusing

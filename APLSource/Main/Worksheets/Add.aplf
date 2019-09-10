@@ -1,10 +1,12 @@
- Add←{
-     ⍝ ⍵[0] ←→ sheetname
-     ⍝ ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
-     ⍝ ⍵[2] ←→ cell values
-     ⍝ ⍵[3] ←→ style (should be a reference to a workbook style)
-     vars∘←'names' 'addrs' 'data' 'styles' 'types'
-     n a d s←4↑⍵
-     ts vs←2↑_convert d
-     vars {6::⍎⍺,'←⊂⍵'⋄⍎⍺,',←⊂⍵'}¨n a vs s ts
+ Add←{⎕IO←0
+     ⍝⍝⍝: ⍵[0] ←→ sheetname
+     ⍝⍝⍝: ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
+     ⍝⍝⍝: ⍵[2] ←→ style (should be a reference to a workbook style)
+     ⍝⍝⍝: ⍵[3] ←→ cell values
+     ⍝⍝⍝: This function defines the Worksheets.Table name and appends records to this table
+
+     v←_convert 3⊃⍵     ⍝ convert the value to correct excel value based on its type
+     w←v,⍨(⊂⍵)⊃¨⍨3~⍨⍳≢⍵ ⍝ TODO: What is this? Please fix this comment when you figure it out
+     id←{1+¯1↑(_colselect'id')⌷[⎕IO+1]Table}
+     6::Table∘←⍉⍪0,w ⋄ Table⍪←⍉(id ⍬),w
  }

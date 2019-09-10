@@ -1,0 +1,12 @@
+Main name;⎕IO;filenames;folder;header;ns;p;x;output
+⍝⍝⍝: name ←→ name.xlsx
+⎕IO←0
+folder←(0=≢name)⌷name 'tempXLSX'
+header←'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+ns←(∊{(0<⍵.⎕NC'XML')/⍵}¨(#⍎¨#.⎕NL¯9))
+p x←{⊃,/⊆¨⍵}¨ns.PATH ns.XML
+output←⍉↑p ({header ⍵}¨x)
+output CreateXLSXDirectory folder
+Zip folder
+
+

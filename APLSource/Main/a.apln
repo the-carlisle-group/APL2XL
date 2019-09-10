@@ -1,4 +1,0 @@
-:namespace _settings_
-#.⎕IO  ←0
-#.⎕PATH←'#.Dsl'
-:endnamespace

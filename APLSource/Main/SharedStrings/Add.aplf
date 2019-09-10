@@ -1,4 +1,5 @@
  Add←{
+  ⎕IO←0
   ⍝ ⍵ ←→ new string: simple character vector
   ⍝ defines: SharedStrings.Table ←→ 2 row table
   c←1+ s←⎕IO         ⍝ Row s+1 ←→ tally ⋄ Row s ←→ strings

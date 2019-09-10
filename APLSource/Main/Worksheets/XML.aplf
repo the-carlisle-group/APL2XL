@@ -1,27 +1,76 @@
- xml←XML;ns;ts;sheet;⎕IO
+ xml←XML;sheet;⎕IO;names;tables;header;sheetView;cellXML;rowXML;sheets;xml
  ⎕IO←0
- tables←1↓¨Select¨∪names
+
+ worksheet←'worksheet'
+ wattrs ←⊂'xmlns'        'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+ wattrs,←⊂'xmlns:r'      'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+ wattrs,←⊂'xmlns:mc'     'http://schemas.openxmlformats.org/markup-compatibility/2006'
+ wattrs,←⊂'mc:Ignorable' 'x14ac xr xr2 xr3'
+ wattrs,←⊂'xmlns:x14ac'  'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac'
+ wattrs,←⊂'xmlns:xr'     'http://schemas.microsoft.com/office/spreadsheetml/2014/revision'
+ wattrs,←⊂'xmlns:xr2'    'http://schemas.microsoft.com/office/spreadsheetml/2015/revision2'
+ wattrs,←⊂'xmlns:xr3'    'http://schemas.microsoft.com/office/spreadsheetml/2016/revision3'
+ wattrs,←⊂'xr:uid'       '{3D773BA2-D171-40D4-9636-0017C1E4D48B}'
+
+ sheetView←{
+	wbv←'workbookViewId' '0'
+  attrs←(⍵≠0)⊃ (('tabSelected' '1') wbv) (⊂wbv)
+	'sheetViews' tag 'sheetView' attrs tag ''
+ }
+
  cellXML←{
-     a d s t←⍵
-     attrs←'rst'{↓⍉↑(⊂⍺),⊂⍵}a s t
-     'c'attrs tag'v'tag d
- }⍤1
- rowXML←{
-     (⊂⍵){'row'(⊂'r'⍵)tag ⍵⌷⍺}¨⍳≢⍵
+     ⍝ styles not implemented
+     index value type←⍵
+     addr ←index2Cell index
+     attrs←'rt'{(⊂⍺),⊂⍵}¨addr type
+     'c'attrs tag'v'tag value
  }
+
+ rowXML←∊{
+  rowNum cellData←⍵
+	'row'(⊂'r' (1+rowNum))tag cellXML⍤1⊢↑cellData
+ }
+
  sheet←{
-     a d s t←(⍳4)⌷[⎕IO+1]¨⊂(1∘↓⍤1)⍵  ⍝ addresses data styles types
-     i←cell2Index¨a                    ⍝ indices
-     sd←⍴¨d
-     max←⊃⌈/i+⍴¨d                      ⍝ maximum possible index from provided data
-     ra←i{(⊂⍺)(index2Cell+)¨⍳⍵}¨sd
-     rs rt←{sd⍴∘⊆¨⍵}¨s t     ⍝ reshaped styles and types
-     merge←{({↑¨⊂⍉↓⍉↑⍵}⍤1)⍉↑⍵}
+     ⍝⍝⍝: ⍵ ←→ all records in Worksheets.Table grouped by unique Table name
+     ⍝⍝⍝: See: Worksheets.Add for definition of each row of ⍵
+     ⍝⍝⍝: Each unique sheet name in Worksheets.Table corresponds to a unique 
+     ⍝⍝⍝: xlsx/.../worksheets/sheet<n>.xml 
+     ⍝⍝⍝: This function generates the XML which will be written to each file
 
-     cellsByRow←cellXML¨merge ra d rs rt ⍝ a d s t
-     sheetdata←'sheetdata'tag∊rowXML¨cellsByRow
-     dimension←'dimension'(⊂'ref'('A1:',index2Cell max))tag''
-     dimension sheetdata
+     ⍝⍝⍝: Helper functions
+     flatten←{⊃,/,¨⍵} 
+     expand ←{⍺∘+¨⍳⍵}
+     cellMap←{1≥≢⍵:⊃,/↓⍺ expand 1,⍵ ⋄ ⍺ expand ⍵}
+
+     address style value type←↓2↓⍉⍵ ⍝ drop the id and name columns
+     index ←cell2Index¨address      ⍝ the index is used to generate ranges of cells
+     shapes←{⍴1/⍵}¨value            ⍝ ensure that scalars are at least rank 1
+     max   ←⊃⌈/index+shapes
+
+     ⍝⍝⍝: Generate a range of indices for excel cells
+     inds ←flatten index cellMap¨shapes     
+     order←⍋inds                       
+    
+     ⍝⍝⍝: Sort all of the cell meta data according to its index
+     sInds ←inds[order]
+     sVals ←(flatten value)[order]
+     sTypes←(flatten shapes⍴¨type)[order]
+     cells ←⊃{⍺,⍪⍵}/sInds sVals sTypes
+     
+     ⍝⍝⍝: Group row numbers with its corresponding list of cell meta data
+     rowNumbers←⊃¨sInds
+     cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
+
+     ⍝⍝⍝: Generate XML 
+     rows←rowXML⍤1⊢ cellsByRow      ⍝ body of <sheetdata>
+     sheetdata←'sheetData' tag rows ⍝ part of <worksheet> body
+     dimension←'dimension'(⊂'ref'('A1:',index2Cell max))tag'' ⍝ part of <worksheet> body
+     ∊worksheet wattrs tag dimension (sheetView ⍺) sheetdata  
  }
 
- xml←sheet¨tables
+ names ←∪(_colselect'Sheet Name')⌷[⎕IO+1]Table
+ tables←1↓¨Select¨names        ⍝ associate all ranges by table name
+ sheets←(⍳≢tables)sheet¨tables ⍝ build sheet xml per table
+ xml←sheets
+

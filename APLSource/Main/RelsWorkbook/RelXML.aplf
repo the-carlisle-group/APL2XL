@@ -1,0 +1,8 @@
+RelXML←{
+	n rtype target ← ⍵
+	r   ←⊂'Relationship'
+	id  ←'Id'     ('rId',n)
+	type←'Type'   ('http://schemas.openxmlformats.org/officeDocument/2006/relationships/',rtype)
+	file←'Target' target
+	(r,⊂id type file) tag ''
+}

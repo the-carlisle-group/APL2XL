@@ -1,15 +1,17 @@
  tag←{
-     ⍝    ⍵ ←→ body: simple char vec (empty vec if no body)
-     ⍝ ⍺[0] ←→ tag name: simple char vec
-     ⍝ ⍺[1] ←→ attributes: (optional) nested vector, ((k v) (k v)...)
+     ⍝⍝⍝:    ⍵ ←→ body: simple char vec (empty vec if no body)
+     ⍝⍝⍝: ⍺[0] ←→ tag name: simple char vec
+     ⍝⍝⍝: ⍺[1] ←→ attributes: (optional) nested vector, ((k v) (k v)...)
+     ⍝⍝⍝: This function generates xml tags
+
      ⍝ 0 or more k v pairs where k and v are character vectors
-     ⍝ USAGE: (name attrs) tag body
+     ⍝ usage: name attrs tag body
      ⍝ returns the following formats:
      ⍝ 0=≢⍺[1]: <tag>body</tag>
      ⍝ 1<≢⍺[1]: <tag attr="val" attr2="val2"...>body</tag>
      ⍝ 0=≢body: <tag attr="val" attr2="val2".../>
      some←{⎕IO+0=≢⍵}
-     t ps←2↑⍺
+     t ps←2↑⍺ 
      attrs←{t v←⍵ ⋄ ' 't'="'(⍕¨v)'"'}¨(1<|≡ps)/ps
      tt←(some attrs)⌷t ⍺
      ∊'<'tt attrs,(some ⍵)⌷('>'(⍕⍵)'</'tt'>')'/>'

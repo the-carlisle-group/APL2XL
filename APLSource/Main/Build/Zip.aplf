@@ -1,0 +1,11 @@
+Zip name;⎕USING
+dir←⎕SH'cd'
+path zpath←{⍵ (∊⍵'.xlsx')}∊dir'\'name
+
+⍝ delete to overwrite the existing file
+3 ⎕NDELETE zpath
+⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
+System.IO.Compression.ZipFile.CreateFromDirectory path zpath
+⍝⍝⍝: uncomment the following for prod
+3 ⎕NDELETE path
+

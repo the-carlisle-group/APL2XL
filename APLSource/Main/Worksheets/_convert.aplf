@@ -1,9 +1,10 @@
  _convert←{
      ⍝ ⍵ ←→ must be a simple vector or table (unless a list of nested char vecs)
-     ⍝ TODO(nathan): need to do a lot of type checking still
+     ⍝ Convert apl datatyes to Excel recognized datatypes
+     ⍝ TODO(nathan): This function is very naive and primitive. Other type checking may be necessary
      gett←{drs∊⍨r←⎕DR ⍵:r ⋄ ⎕DR⊃⍵} ⍝ get the data type of a simple homogenous array
-     mapt←'b' 's' 'n' 'default'
-     drs←11 80 83
+     mapt←'b' 's' 'n' 's' 'default'
+     drs←11 80 83 160
 
      ⍝ data conversion functions
      ⍝ names relate to mapt types
@@ -15,6 +16,6 @@
      ⍝ convert then assign
      i←drs⍳gett ⍵ ⍝ get the xlsx type
      t←mapt⌷⍨i    ⍝ the xlsx type string
-     v←(⍎t)¨⍵     ⍝ convert to xlbased on type
-     t v
+     v←(⍎∘{1=≡⍵:⍵⋄⊃⍵}t)¨⍵     ⍝ convert to xlbased on type
+     v t
  }
