@@ -1,11 +1,26 @@
-Zip name;⎕USING
+zpath←Zip name;⎕USING
+⍝. This function is a tradfn as it causes side-effects
+⍝. This function zips a directory
+⍝⍝⍝ TODO: directory should be provided rather than assumed
 dir←⎕SH'cd'
+
+⍝⍝⍝ TODO: path needs to be validated!!!
 path zpath←{⍵ (∊⍵'.xlsx')}∊dir'\'name
 
-⍝ delete to overwrite the existing file
-3 ⎕NDELETE zpath
+⍝⍝⍝ TODO: if the file exists signal error instead of deletion
+⍝⍝⍝ TODO: optional argument, flag overwrite file
+⍝⍝⍝ TODO: 1>≡⊆name
+
+⍝. delete to overwrite the existing file
+(name delete)←''0{(≢⍺)↑⍵,(≢⍵)↓⍺},⊆args
+:If delete
+  3 ⎕NDELETE zpath
+:EndIf
+
 ⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
 System.IO.Compression.ZipFile.CreateFromDirectory path zpath
-⍝⍝⍝: uncomment the following for prod
+
+⍝. This deletes a folder known to be created by this program
+⍝. Safe to delete
 3 ⎕NDELETE path
 

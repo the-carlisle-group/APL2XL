@@ -1,5 +1,3 @@
-path←PATH;⎕IO
-⎕IO←0
-
+path←PATH
 ⍝ TODO(nathan): duplicate expression
 path←{(⊂⍵)S'xl/worksheets/sheet{}.xml'}∘⍕¨1+⍳≢∪1⌷⍤1⊢#.Worksheets.Table

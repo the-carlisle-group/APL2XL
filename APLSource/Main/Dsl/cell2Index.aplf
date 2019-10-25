@@ -3,9 +3,8 @@
     ⍝⍝⍝: This function converts cellular notation to integer index pairs
     ⍝⍝⍝: usage: cell2Index 'B12'
     ⍝⍝⍝: limitations: 10 characters, due to accuracy of large numbers
-    ⍝⍝⍝: returns: row column (⎕IO←0 normalized)
-     ⎕IO←0
-     u←1(819⌶)⍵           ⍝ uppercase input
+    ⍝⍝⍝: returns: row column
+     u←UC ⍵       ⍝ uppercase input
      i←⎕A⍳u/⍨u∊⎕A ⍝ convert alpha to base 26
      1-⍨(⍎u~⎕A),(26⊥1+i)
  }

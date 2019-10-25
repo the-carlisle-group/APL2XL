@@ -1,2 +1,0 @@
-_filter←{⎕IO←0 ⋄ 0=≢⍵:(≢Table)⍴1 ⋄ (⊂⍵)≡¨⍺⌷[⎕IO+1]Table}
-⍝ this function doesn't appear to be used anywhere?

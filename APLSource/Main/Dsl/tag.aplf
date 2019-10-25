@@ -10,7 +10,7 @@
      ⍝ 0=≢⍺[1]: <tag>body</tag>
      ⍝ 1<≢⍺[1]: <tag attr="val" attr2="val2"...>body</tag>
      ⍝ 0=≢body: <tag attr="val" attr2="val2".../>
-     some←{⎕IO+0=≢⍵}
+     some←{0=≢⍵}
      t ps←2↑⍺ 
      attrs←{t v←⍵ ⋄ ' 't'="'(⍕¨v)'"'}¨(1<|≡ps)/ps
      tt←(some attrs)⌷t ⍺

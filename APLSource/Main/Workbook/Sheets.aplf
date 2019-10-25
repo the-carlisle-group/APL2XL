@@ -1,6 +1,6 @@
-xml←Sheets;⎕IO;sheet;body
-⍝⍝⍝: This function builds the <sheets> tags for xl/workbook.xml
-⎕IO←0
+xml←Sheets;sheet;body
+⍝. Documentation:
+⍝. This function builds the <sheets> tags for xl/workbook.xml
 sheet←{
 	name sheetId relId←⍵
 	t←'sheet'
@@ -10,6 +10,6 @@ sheet←{
 	t(⊃,/n s r) tag ''
 }
 
-⍝ TODO(nathan): duplicate expression
+⍝⍝⍝ TODO(nathan): duplicate expression
 body←(sheet⍤1⊢{⍵{⍵,(1+⍳≢⍵),⍪⍺.rId}∪1⌷⍤1⊢⍵.Table}#.Worksheets)
 xml←'sheets'tag body

@@ -1,10 +1,10 @@
-REL;fmt;count;⎕IO
+REL;fmt;count
 ⍝⍝⍝: This function sets the Worksheets.rId value
 ⍝⍝⍝: This value is used in ContentTypes and in Workbook
-⎕IO←0
 fmt←RelType∘{⍺(⍺ ⍵S'{}s/sheet{}.xml')}
 
 ⍝ TODO(nathan): duplicate expression
 count←1+⍳≢∪1⌷⍉Table
+
 
 rId←#.RelsWorkbook.Add∘fmt¨count

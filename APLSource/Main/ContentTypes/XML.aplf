@@ -1,5 +1,4 @@
-xml←XML;⎕IO
-⎕IO←0
+xml←XML
 f←{
 	name←'Override' 
 	attrs←⊂'PartName' (∊'/xl/worksheets/sheet'(⍕⍵)'.xml')

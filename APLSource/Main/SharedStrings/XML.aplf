@@ -1,6 +1,5 @@
- xml←XML;strings;counts;props;⎕IO
+ xml←XML;strings;counts;props
  ⍝⍝⍝: This function generates XML for the xl/sharedStrings.xml file
- ⎕IO←0
    ⍝ ⍵ ←→ SharedStrings.Table: 2 row table
    ⍝ Row 1 is a list of unique strings
    ⍝ Row 2 is a counter of occurences of string in Row 1

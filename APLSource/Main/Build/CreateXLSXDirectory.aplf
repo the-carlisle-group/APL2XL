@@ -1,9 +1,11 @@
 files CreateXLSXDirectory name;nest;root;xl
-⍝ Set up empty XLSX folder structure
+⍝. Set up empty XLSX folder structure
+⍝. This function is a tradfn as it causes side-effects
 nest←{(⊂⍺,'/'),¨⍵}
 root←name nest '_rels' 'docProps' 'xl'
 xl  ←name nest 'xl' nest'_rels' 'theme' 'worksheets'
 
+⍝⍝⍝ TODO: validation around ⎕NDELETE, considered dangerous
 3 ⎕NDELETE name
 ⎕MKDIR∘∊¨⊃,/(⊂name)root xl
 

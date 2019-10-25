@@ -1,13 +1,15 @@
 xml←XML;rs;attrs
-⍝⍝⍝: This function generates XML for the xl/_rels/workbook.xml.rels file
+⍝. This function generates XML for the xl/_rels/workbook.xml.rels file
 rs   ←⊂'Relationships'
 attrs←⊂'xmlns' 'http://schemas.openxmlformats.org/package/2006/relationships'
 
-⍝⍝⍝: Should generate a fresh Rels Table
+⍝. Should generate a fresh Rels Table
 :If 0<⎕NC 'Table'
 	⎕EX 'Table'
 :EndIf
 
-⍝⍝⍝: Generate the RelsTable
+⍝. Generate the RelsTable
+⍝⍝⍝ TODO: these functions should return data instead of calling 
+⍝⍝⍝ RelsWorkbook.Add individually
 #.(Worksheets SharedStrings Styles Themes).REL
 xml←(rs attrs) tag (RelXML⍤1⊢Table)

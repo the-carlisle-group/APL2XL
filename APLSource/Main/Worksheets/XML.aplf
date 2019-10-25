@@ -1,6 +1,5 @@
- xml←XML;sheet;⎕IO;names;tables;header;sheetView;cellXML;rowXML;sheets;xml
- ⎕IO←0
-
+ xml←XML;sheet;names;tables;header;sheetView;cellXML;rowXML;sheets;xml
+ ⍝⍝⍝ TODO: tag←Workbook.DSL.tag ??
  worksheet←'worksheet'
  wattrs ←⊂'xmlns'        'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
  wattrs,←⊂'xmlns:r'      'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
@@ -39,38 +38,36 @@
      ⍝⍝⍝: This function generates the XML which will be written to each file
 
      ⍝⍝⍝: Helper functions
-     flatten←{⊃,/,¨⍵} 
-     expand ←{⍺∘+¨⍳⍵}
-     cellMap←{1≥≢⍵:⊃,/↓⍺ expand 1,⍵ ⋄ ⍺ expand ⍵}
+     flatten←{⊃,/,¨⍵}                             ⍝ returns a vector of cell indices
+     expand ←{⍺∘+¨⍳⍵}                             ⍝ expand the Cell address to one cell address per value
+     cellMap←{1≥≢⍵:⊃,/↓⍺ expand 1,⍵ ⋄ ⍺ expand ⍵} ⍝ ⍵ ←→ shape of a value in the sheet, expand and offset the cell value
+     address style value type←↓2↓⍉⍵               ⍝ drop the id and name columns
+     index ←cell2Index¨address                    ⍝ the index is used to generate ranges of cells
+     shapes←{⍴1/⍵}¨value                          ⍝ ensure that scalars are at least rank 1
+     max   ←⊃⌈/index+shapes                       ⍝ find the maximum cell location in the sheet
 
-     address style value type←↓2↓⍉⍵ ⍝ drop the id and name columns
-     index ←cell2Index¨address      ⍝ the index is used to generate ranges of cells
-     shapes←{⍴1/⍵}¨value            ⍝ ensure that scalars are at least rank 1
-     max   ←⊃⌈/index+shapes
-
-     ⍝⍝⍝: Generate a range of indices for excel cells
-     inds ←flatten index cellMap¨shapes     
+     ⍝⍝⍝: Generate indices for excel cells
+     inds ←flatten index cellMap¨shapes           ⍝ indices for each value in value   
      order←⍋inds                       
-    
+
      ⍝⍝⍝: Sort all of the cell meta data according to its index
-     sInds ←inds[order]
-     sVals ←(flatten value)[order]
-     sTypes←(flatten shapes⍴¨type)[order]
-     cells ←⊃{⍺,⍪⍵}/sInds sVals sTypes
+     sInds ←inds[order]                           ⍝ index of each Excel cell
+     sVals ←(flatten value)[order]                ⍝ values to place in each cell
+     sTypes←(flatten shapes⍴¨type)[order]         ⍝ data type of each cell
+     cells ←⊃{⍺,⍪⍵}/sInds sVals sTypes            ⍝ join the cell meta-data
      
      ⍝⍝⍝: Group row numbers with its corresponding list of cell meta data
      rowNumbers←⊃¨sInds
-     cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
+     cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells             
 
      ⍝⍝⍝: Generate XML 
-     rows←rowXML⍤1⊢ cellsByRow      ⍝ body of <sheetdata>
-     sheetdata←'sheetData' tag rows ⍝ part of <worksheet> body
+     rows←rowXML⍤1⊢ cellsByRow                                ⍝ body of <sheetdata>
+     sheetdata←'sheetData' tag rows                           ⍝ part of <worksheet> body
      dimension←'dimension'(⊂'ref'('A1:',index2Cell max))tag'' ⍝ part of <worksheet> body
-     ∊worksheet wattrs tag dimension (sheetView ⍺) sheetdata  
+     ∊worksheet wattrs tag dimension (sheetView ⍺) sheetdata  ⍝ the complete <sheetdata> body
  }
 
- names ←∪(_colselect'Sheet Name')⌷[⎕IO+1]Table
- tables←1↓¨Select¨names        ⍝ associate all ranges by table name
+ tables←↑¨Table[;ColumnNames⍳⊂'Sheet Name']{⊂⍵}⌸↓Table ⍝ group rows in table by sheetname
  sheets←(⍳≢tables)sheet¨tables ⍝ build sheet xml per table
- xml←sheets
+ xml   ←sheets
 

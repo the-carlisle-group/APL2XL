@@ -4,7 +4,6 @@
     ⍝⍝⍝: usage: index2Cell 0 21226
     ⍝⍝⍝: returns: excel cell string (adjusted for ⎕IO←0)
     ⍝⍝⍝: 'ABCD1'
-    ⎕IO←0
     (row col)←2↑⍵
     str←{⍵<0:'' ⋄ (∇⌊¯1+⍵÷26), ⎕A⌷⍨26|⍵}
     (str col),⍕row+1

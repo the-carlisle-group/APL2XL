@@ -1,1 +1,1 @@
- _colselect←{⎕IO←0 ⋄ ⍸(⊂⍵)≡¨ColumnNames}
+ _colselect←{⍸(⊂⍵)≡¨ColumnNames}
