@@ -1,3 +1,33 @@
  Test1←{
-     1
+     ⍝. Output 13 worksheets in a single workbook
+     ⍝. Worksheet 1 contains all 12 calendar months
+     ⍝. Worksheets 2-13 are named by the month, and contain a single months' calendar
+     mdays   ←31 28 31 30 31 30 31 31 30 31 30 31
+     nmonths ←≢mdays
+     rpm     ←9 ⍝ rows occupied by each month/day/calendar grouping + 1
+     names   ←{⊂⍵}¨'jan' 'feb' 'mar' 'apr' 'may' 'jun' 'jul' 'aug' 'sep' 'oct' 'nov' 'dec'
+     days    ←{∊⍵'day'}¨'sun' 'mon' 'tues' 'wednes' 'thurs' 'fri' 'satur'
+     alldays ←⊂1+⍳¨mdays
+     calMonth←{
+         lastM currentM nextM←⍺[12|¯1 0 1+⍵] ⍝ 3 month window relative to the current month
+         off←⍵⌷7|+\0,¯1↓mdays                ⍝ offset based on the starting weekday of the month
+         trailing←((14-2)-off)↑nextM        ⍝ 14 because we need a maximum of 2 weeks trailing 
+         leading←((-off)-2)↑lastM           ⍝ (+,-)2  because 2019's calendar starts on tuesday
+         6 7⍴leading,currentM,trailing      ⍝ append the leading months days with the current month, filling with the trailing days
+     }
+     calendar←alldays calMonth¨⍳nmonths
+     cellPos←↓(⍪rpm×⍳nmonths),0
+
+     XL←##.Main.XL
+    ⍝. Starting cell addresses for month names, day names, and the calendar
+     (mlocs dlocs clocs)←{XL.itc¨(⊂⍵)+¨cellPos}¨(0 0)(1 0)(2 0)
+     wb←##.Main.WB'calendar' 1
+     add←{wb XL.WSAdd'Calendar'⍵''⍺}
+     _←names add¨mlocs
+     _←calendar add¨clocs
+     _←days∘add¨dlocs
+     _←calendar{m←⍵ ⋄ 'A1' 'A2'{wb XL.WSAdd m ⍺''⍵}¨days ⍺}¨names
+     ##.Main.Build.Main wb
+
+     ⍝⍝⍝ TODO: read in the file and check its cell values
  }

@@ -1,11 +1,5 @@
 This file documents language and naming in the rest of the application
 
-⍝⍝⍝ TODO 
-⍝. Documentation
-⍝. ⍵ ←→ document/info omega
-⍝. ⍺ ←→ document/info alpha
-⍝. all functions should start with ⍵[n] ←→ and ⍺[n] ←→ explaining the format of arguments
-
 Domain Specific Language:
 UC  ←→ upper case
 lc  ←→ lower case
@@ -16,8 +10,16 @@ col ←→ convert data type of an xml <c></c> tag
 tag ←→ create an xml tag
 
 XML files:
+These are the conventions used when referring to data and functions pertaining to these files.
+When creating a workbook, there will be a wb.(RR RW SS WB WS). These properties are the data which is used to generate xml for these functions.
 RR ←→ Rels Root     ⍝ ./_rels 
-RW ←→ Rels Workbook ⍝ ./xl/_rels
+RW ←→ Rels Workbook ⍝ ./xl/_rels/workbook.xml.rels
 SS ←→ SharedStrings ⍝ ./xl/sharedStrings.xml
 WB ←→ Workbook      ⍝ ./xl/workbook.xml
 WS ←→ Worksheet     ⍝ ./xl/worksheet.xml
+
+⍝⍝⍝ TODO 
+⍝. Documentation notebooks. ⍝. should bue used in lieu of normal comments to signify importance
+⍝. ⍵ ←→ document/info omega
+⍝. ⍺ ←→ document/info alpha
+⍝. all functions should start with ⍵[n] ←→ and ⍺[n] ←→ explaining the format of arguments
