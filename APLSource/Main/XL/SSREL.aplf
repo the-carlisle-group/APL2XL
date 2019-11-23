@@ -1,0 +1,9 @@
+SSREL←{
+  ⍝. ⍵ ←→ workbook
+  ⍝. Create the RelID for the shared strings file
+  ⍝. This RelID helps the workbook to know where to find the shared strings file
+  wb←⍵
+  fmt←{⍵((⊂⍵) S '{}.xml')}
+  wb.SSRID←⍵ RWAdd fmt SSRelType
+  wb.SSRID
+}

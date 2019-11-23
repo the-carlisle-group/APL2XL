@@ -1,0 +1,5 @@
+ThemeREL←{
+  wb←⍵
+  wb.ThemeRID←⍵ RWAdd 'theme' 'theme/theme1.xml'
+  wb.ThemeRID
+}

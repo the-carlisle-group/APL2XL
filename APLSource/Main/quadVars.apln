@@ -1,0 +1,4 @@
+:namespace quadVars 
+#.⎕IO←0
+#.⎕PATH←'#.Dsl'   
+:endnamespace

@@ -1,0 +1,10 @@
+ itc←{
+    ⍝. ⍵ ←→ row column in a matrix
+    ⍝. This function converts cellular notation to integer index pairs
+    ⍝. Usage: index2Cell 12 1
+    ⍝. Returns: Excel cell string 
+    ⍝. ex: (index2Cell 0 0)≡ 'A1'
+    (row col)←2↑⍵
+    str←{⍵<0:'' ⋄ (∇⌊¯1+⍵÷26), ⎕A⌷⍨26|⍵}
+    (str col),⍕row+1
+ }

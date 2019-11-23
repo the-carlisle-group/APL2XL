@@ -1,18 +1,17 @@
-zpath←Zip name;⎕USING
-⍝. This function is a tradfn as it causes side-effects
+zpath←Zip args;⎕USING;delete;name
 ⍝. This function zips a directory
+⍝. This is a tradfn as it causes side-effects
 ⍝⍝⍝ TODO: directory should be provided rather than assumed
 dir←⎕SH'cd'
+defaultValues←{(≢⍺)↑⍵,(≢⍵)↓⍺}
+(name delete)←'' 0 defaultValues ,⊆args
 
 ⍝⍝⍝ TODO: path needs to be validated!!!
 path zpath←{⍵ (∊⍵'.xlsx')}∊dir'\'name
-
 ⍝⍝⍝ TODO: if the file exists signal error instead of deletion
 ⍝⍝⍝ TODO: optional argument, flag overwrite file
 ⍝⍝⍝ TODO: 1>≡⊆name
-
 ⍝. delete to overwrite the existing file
-(name delete)←''0{(≢⍺)↑⍵,(≢⍵)↓⍺},⊆args
 :If delete
   3 ⎕NDELETE zpath
 :EndIf

@@ -1,0 +1,5 @@
+S←{∊((⊆¨⍕¨⍺)@('{'∘=))⍵/⍨{⍵=⍵>¯1↓0,⍵}+⌿+\0 ¯1⌽1 ¯1(×⍤0 1)'{}'∘.=⍵}
+⍝. ⍵ ←→ 'string {} with {} curly braces'
+⍝. ⍺ ←→ list of arguments matching the order of {} cells in ⍵ 
+⍝. Format a string
+

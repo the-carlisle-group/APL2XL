@@ -1,7 +1,0 @@
-Add←{
-  ⍝ ⍵[0] ←→ the <type> in the 'http://schemas.../relationships/<type>'
-  ⍝ ⍵[1] ←→ the file target. ie. 'worksheets/sheet1.xml'
-  ⍝ relid←Add
-	_←{6::Table∘←⍉⍪1,⍵ ⋄ Table{Table⍪(1+⊃⊖Table),⍵}←⍵} 2↑⍵
-  ⊃⊖Table 
-}

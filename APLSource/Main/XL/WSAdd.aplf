@@ -1,0 +1,16 @@
+WSAdd←{
+    ⍝. ⍵[0] ←→ sheetname
+    ⍝. ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
+    ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
+    ⍝. ⍵[3] ←→ cell values
+    ⍝. ⍺ ←→ workbook namespace
+    ⍝. This function defines the Worksheets.Table name and appends records to this table
+
+    ⍝⍝⍝ TODO: Should take a workspace as left argument
+    ⍝⍝⍝ elsewhere: 
+    ⍝⍝⍝ for all namespace: ns.XML ns.Table
+    ⍝⍝⍝ enumerating parts is desirable so the XML and table naming should be rethought
+    type←⍺ WS_convert 3⊃⍵ ⍝ convert the value to correct excel value based on its type
+    new←⍵[(⍳≢⍵)~3],type   ⍝ type is a 2 element vector of values and types
+    ⍺.WS⍪←(1+⊃⍴⍺.WS),new  ⍝ raw string data is not stored in the ⍺.WS, so that the 
+}

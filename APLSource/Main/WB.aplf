@@ -1,0 +1,8 @@
+WB←{
+  wb←⎕NS''
+  wb.Name←⍵
+  wb.WS←0 6⍴⍬ ⍝ 5 column table
+  wb.SS←2 0⍴⍬ ⍝ 2 row table, row 1 is strings, row 2 is occurances
+  wb.RW←0 3⍴⍬
+  wb
+}

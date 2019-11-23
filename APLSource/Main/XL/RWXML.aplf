@@ -1,0 +1,23 @@
+RWXML←{
+  ⍝. ⍵ ←→ workbook
+  ⍝. This function generates XML for the xl/_rels/workbook.xml.rels file
+  wb   ←⍵
+  rs   ←⊂'Relationships'
+  attrs←⊂'xmlns' 'http://schemas.openxmlformats.org/package/2006/relationships'
+
+  ⍝⍝⍝ TODO: reset the wb.RW every time this function is called
+  ⍝. Should generate a fresh Rels Table
+  ⍝:If 0<⎕NC 'Table'
+  ⍝	⎕EX 'Table'
+  ⍝:EndIf
+
+  ⍝. Generate the RelsTable
+  ⍝⍝⍝ TODO: these functions should return data instead of calling 
+  ⍝⍝⍝ RelsWorkbook.Add individually
+  ⍝#.(Worksheets SharedStrings Styles Themes).REL
+  wsr←WSREL wb
+  ssr←SSREL wb
+  styler←StyleREL wb
+  themer←ThemeREL wb
+  (rs attrs) tag (RWRelXML⍤1⊢wb.RW)
+}

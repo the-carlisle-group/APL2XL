@@ -1,0 +1,4 @@
+WSPATH←{
+  ⍝ ⍵ ←→ workbook namespace
+  {(⊂⍵)S'xl/worksheets/sheet{}.xml'}∘⍕¨1+⍳≢WSNames ⍵
+}

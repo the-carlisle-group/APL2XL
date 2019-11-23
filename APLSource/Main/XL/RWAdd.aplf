@@ -1,0 +1,10 @@
+RWAdd←{
+  ⍝. ⍵[0] ←→ the <type> in the 'http://schemas.../relationships/{type}'
+  ⍝. ⍵[1] ←→ the file target. ie. 'worksheets/{filename}.xml'
+  ⍝. Add the new <type> xml tag to xl/_rels/workbook.xml.rels
+
+	⍝_←{6::Table∘←⍉⍪1,⍵ ⋄ Table{Table⍪(1+⊃⊖Table),⍵}←⍵} 2↑⍵
+  table←⍺.RW
+	⍺.RW{table⍪(1+⊃⊖table),⍵}←2↑⍵
+  ⊃⊖⍺.RW
+}

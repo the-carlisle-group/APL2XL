@@ -1,6 +1,0 @@
-:namespace _settings_          
-⎕←'Importing APL2XL settings...'
-#.⎕IO←0
-#.⎕PATH←'#.Dsl'   
-⎕←'Done'
-:endnamespace

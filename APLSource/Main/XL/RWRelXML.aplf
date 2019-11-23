@@ -1,0 +1,10 @@
+RWRelXML←{
+	⍝. ⍵ ←→
+	⍝. Generate for a single Relationship tag in xl/_rels/workbook.xml.rels
+	n rtype target ← ⍵
+	r   ←⊂'Relationship'
+	id  ←'Id'     ('rId',n)
+	type←'Type'   ('http://schemas.openxmlformats.org/officeDocument/2006/relationships/',rtype)
+	file←'Target' target
+	(r,⊂id type file) tag ''
+}

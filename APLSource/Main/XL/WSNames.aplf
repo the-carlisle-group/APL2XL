@@ -1,0 +1,5 @@
+WSNames←{
+  ⍝. ⍵ ←→ workbook namespace
+  ⍝. Returns: unique worksheet names
+  ∪1⌷⍤1⊢⍵.WS
+}

@@ -1,0 +1,5 @@
+StyleREL←{
+  ⍝. ⍵ ←→ workbook namespace
+  StyleRID←⍵ RWAdd 'styles' 'styles.xml'
+  StyleRID
+}

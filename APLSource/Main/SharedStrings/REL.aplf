@@ -1,3 +1,0 @@
-REL;fmt
-fmt←{⍵((⊂⍵) S '{}.xml')}
-rId←#.RelsWorkbook.Add fmt RelType

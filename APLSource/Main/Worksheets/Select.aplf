@@ -1,8 +1,0 @@
- t←{column}Select v
- :If (0<⎕NC)'Table'
-     c←{⍵:1 ⋄ 80=⎕DR column:_colselect column ⋄ column}(0≥⎕NC)'column'
-     bmp←c{0=≢⍵:(≢Table)⍴1 ⋄ 80=⎕DR ⍵:(⊂lc ⍵)≡¨lc¨⍺⌷[1]Table ⋄ (⊂⍵)≡¨⍺⌷[1]Table}v
-     t←ColumnNames⍪bmp⌿Table
- :Else
-     t←ColumnNames
- :EndIf
