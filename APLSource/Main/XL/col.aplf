@@ -1,6 +1,7 @@
 col←{
-    ⍝. ⍵ ←→
-    ⍝: Return XML generated for Excel Cell data
+    ⍝. ⍵ ←→ TODO: specify the argument
+    ⍝: Return XML generated for Excel Column Cell Data
+    ⍝. Cells are only found in Worksheet <row> tags
     ⍝: <c r="Address" t="DataType" s="Style ID">
     ⍝:   <v>Integer</v>
     ⍝: </c> 

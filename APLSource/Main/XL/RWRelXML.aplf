@@ -1,7 +1,11 @@
 RWRelXML←{
-	⍝. ⍵ ←→
+	⍝. ⍵ ←→ id type target
+	⍝. The id is the relationship number relevant to workbook.xml
+	⍝. Type is xml filetype, such as style, worksheet, theme, sharedstring etc. 
+	⍝. file is the name of the file the id relates to
+	⍝. Relate an id and type to a filename so that the workbook can know what type of file it is referring to
 	⍝. Generate for a single Relationship tag in xl/_rels/workbook.xml.rels
-	n rtype target ← ⍵
+	(n rtype target) ← ⍵
 	r   ←⊂'Relationship'
 	id  ←'Id'     ('rId',n)
 	type←'Type'   ('http://schemas.openxmlformats.org/officeDocument/2006/relationships/',rtype)

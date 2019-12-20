@@ -2,84 +2,85 @@
   ⍝. ⍵ ←→ workbook namespace
   ⍝⍝⍝ TODO: tag←Workbook.DSL.tag ??
   ⍝⍝⍝ TODO: this function should be a dfn which takes a namespace as argument
-  wb←⍵
-  worksheet←'worksheet'
-  wattrs ←⊂'xmlns'        'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
-  wattrs,←⊂'xmlns:r'      'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
-  wattrs,←⊂'xmlns:mc'     'http://schemas.openxmlformats.org/markup-compatibility/2006'
-  wattrs,←⊂'mc:Ignorable' 'x14ac xr xr2 xr3'
-  wattrs,←⊂'xmlns:x14ac'  'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac'
-  wattrs,←⊂'xmlns:xr'     'http://schemas.microsoft.com/office/spreadsheetml/2014/revision'
-  wattrs,←⊂'xmlns:xr2'    'http://schemas.microsoft.com/office/spreadsheetml/2015/revision2'
-  wattrs,←⊂'xmlns:xr3'    'http://schemas.microsoft.com/office/spreadsheetml/2016/revision3'
-  wattrs,←⊂'xr:uid'       '{3D773BA2-D171-40D4-9636-0017C1E4D48B}'
- 
-  sheetView←{
+     wb←⍵
+     worksheet←'worksheet'
+     wattrs←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+     wattrs,←⊂'xmlns:r' 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+     wattrs,←⊂'xmlns:mc' 'http://schemas.openxmlformats.org/markup-compatibility/2006'
+     wattrs,←⊂'mc:Ignorable' 'x14ac xr xr2 xr3'
+     wattrs,←⊂'xmlns:x14ac' 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac'
+     wattrs,←⊂'xmlns:xr' 'http://schemas.microsoft.com/office/spreadsheetml/2014/revision'
+     wattrs,←⊂'xmlns:xr2' 'http://schemas.microsoft.com/office/spreadsheetml/2015/revision2'
+     wattrs,←⊂'xmlns:xr3' 'http://schemas.microsoft.com/office/spreadsheetml/2016/revision3'
+     wattrs,←⊂'xr:uid' '{3D773BA2-D171-40D4-9636-0017C1E4D48B}'
+
+     sheetView←{
     ⍝. ⍵ ←→
-  	wbv←'workbookViewId' '0'
-    attrs←(⍵≠0)⊃ (('tabSelected' '1') wbv) (⊂wbv)
-  	'sheetViews' tag 'sheetView' attrs tag ''
-  }
- 
-  cellXML←{
+         wbv←'workbookViewId' '0'
+         attrs←(⍵≠0)⊃(('tabSelected' '1')wbv)(⊂wbv)
+         'sheetViews'tag'sheetView'attrs tag''
+     }
+
+     cellXML←{
     ⍝. ⍵[0] ←→ numerical cell index
     ⍝. ⍵[1] ←→ cell value
     ⍝. ⍵[2] ←→ data type of value
     ⍝. Returns: '<c r="Address" t="DataType"><v>{value}</v><c>'
     ⍝⍝⍝ TODO: styles not implemented
-    index value type←⍵
-    addr ←itc index
-    attrs←'rt'{(⊂⍺),⊂⍵}¨addr type
-    'c'attrs tag'v'tag value
-  }
- 
-  rowXML←∊{
+         (index value type style)←⍵
+         addr←itc index
+         attrs←'rts'{(⊂⍺),⊂⍵}¨addr type style
+         'c'attrs tag'v'tag value
+     }
+
+     rowXML←∊{
     ⍝. ⍵[0] ←→ integer row number 0 indexed. OOXML row is 1 indexed
     ⍝. ⍵[1] ←→ ???
     ⍝⍝⍝ TODO: Document ⍵[1]
     ⍝. Returns: '<row r="Row Number"><c...></row>'
-    rowNum cellData←⍵
-  	'row'(⊂'r' (1+rowNum))tag cellXML⍤1⊢↑cellData
-  }
- 
-  sheet←{
+         rowNum cellData←⍵
+         'row'(⊂'r'(1+rowNum))tag cellXML⍤1⊢↑cellData
+     }
+
+     sheet←{
     ⍝. ⍵ ←→ all records in Worksheets.Table grouped by unique Table name
     ⍝. See: Worksheets.Add for definition of each row of ⍵
     ⍝. Each unique sheet name in Worksheets.Table corresponds to a unique file of the following format:
-    ⍝. xl/worksheets/sheet{n}.xml 
+    ⍝. xl/worksheets/sheet{n}.xml
     ⍝. Returns: Generated XML to be written to a single sheet{n}.xml file
 
     ⍝. Helper functions
-    flatten←{⊃,/,¨⍵}                             ⍝ returns a vector of cell indices
-    expand ←{⍺∘+¨⍳⍵}                             ⍝ expand the Cell address to one cell address per value
-    cellMap←{1≥≢⍵:⊃,/↓⍺ expand 1,⍵ ⋄ ⍺ expand ⍵} ⍝ ⍵ ←→ shape of a value in the sheet, expand and offset the cell value
-    address style value type←↓2↓⍉⍵               ⍝ drop the id and name columns
-    index ←cti¨address                           ⍝ the index is used to generate ranges of cells
-    shapes←{⍴1/⍵}¨value                          ⍝ ensure that scalars are at least rank 1
-    max   ←⊃⌈/index+shapes                       ⍝ find the maximum cell location in the sheet
+         flatten←{⊃,/,¨⍵}                             ⍝ returns a vector of cell indices
+         expand←{⍺∘+¨⍳⍵}                             ⍝ expand the Cell address to one cell address per value
+         cellMap←{1≥≢⍵:⊃,/↓⍺ expand 1,⍵ ⋄ ⍺ expand ⍵} ⍝ ⍵ ←→ shape of a value in the sheet, expand and offset the cell value
+         (address style value type)←↓2↓⍉⍵               ⍝ drop the id and name columns
+         index←cti¨address                           ⍝ the index is used to generate ranges of cells
+         shapes←{⍴1/⍵}¨value                          ⍝ ensure that scalars are at least rank 1
+         max←⊃⌈/index+shapes                       ⍝ find the maximum cell location in the sheet
 
     ⍝. Generate indices for excel cells
-    inds ←flatten index cellMap¨shapes           ⍝ indices for each value in value   
-    order←⍋inds                       
- 
-    ⍝. Sort all of the cell meta data according to its index
-    sInds ←inds[order]                           ⍝ index of each Excel cell
-    sVals ←(flatten value)[order]                ⍝ values to place in each cell
-    sTypes←(flatten shapes⍴¨type)[order]         ⍝ data type of each cell
-    cells ←⊃{⍺,⍪⍵}/sInds sVals sTypes            ⍝ join the cell meta-data
-    
-    ⍝. Group row numbers with its corresponding list of cell meta data
-    rowNumbers←⊃¨sInds
-    cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells             
- 
-    ⍝. Generate XML 
-    rows←rowXML⍤1⊢ cellsByRow                                ⍝ body of <sheetdata>
-    sheetdata←'sheetData' tag rows                           ⍝ part of <worksheet> body
-    dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
-    ∊worksheet wattrs tag dimension (sheetView ⍺) sheetdata  ⍝ the complete <sheetdata> body
-  }
+         inds←flatten index cellMap¨shapes           ⍝ indices for each value in value
+         order←⍋inds
 
-  sheets←wb.WS
-  tables←↑¨sheets[;WSColumnNames⍳⊂'Sheet Name']{⊂⍵}⌸↓sheets ⍝ group rows in table by sheetname
-  (⍳≢tables)sheet¨tables ⍝ build sheet xml per table
+    ⍝. Sort all of the cell meta data according to its index
+         sInds←inds[order]                           ⍝ index of each Excel cell
+         sVals←(flatten value)[order]                ⍝ values to place in each cell
+         sTypes←(flatten shapes⍴¨type)[order]         ⍝ data type of each cell
+         styles←(flatten shapes⍴¨style)[order]        ⍝ data type of each cell
+         cells←⊃{⍺,⍪⍵}/sInds sVals sTypes styles     ⍝ join the cell meta-data
+
+    ⍝. Group row numbers with its corresponding list of cell meta data
+         rowNumbers←⊃¨sInds
+         cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
+
+    ⍝. Generate XML
+         rows←rowXML⍤1⊢cellsByRow                                ⍝ body of <sheetdata>
+         sheetdata←'sheetData'tag rows                           ⍝ part of <worksheet> body
+         dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
+         ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata  ⍝ the complete <sheetdata> body
+     }
+
+     sheets←wb.WS
+     tables←↑¨sheets[;WSColumnNames⍳⊂'Sheet Name']{⊂⍵}⌸↓sheets ⍝ group rows in table by sheetname
+     (⍳≢tables)sheet¨tables ⍝ build sheet xml per table
  }

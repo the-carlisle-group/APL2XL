@@ -1,8 +1,6 @@
  WBSheets←{
      wb←⍵
-
-⍝. Documentation:
-⍝. This function builds the <sheets> tags for xl/workbook.xml
+    ⍝. This function builds the <sheets> tags for xl/workbook.xml
      sheet←{
          name sheetId relId←⍵
          t←'sheet'
@@ -12,8 +10,6 @@
          t(⊃,/n s r)tag''
      }
 
-⍝⍝⍝ TODO(nathan): duplicate expression
-⍝body←(sheet⍤1⊢{⍵{⍵,(1+⍳≢⍵),⍪⍺.rId}∪1⌷⍤1⊢⍵.Table}#.Worksheets)
      body←sheet⍤1⊢{⍵,(1+⍳≢⍵),⍪wb.WSRID}WSNames wb
 
      'sheets'tag body

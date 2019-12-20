@@ -1,25 +1,20 @@
-zpath←Zip args;⎕USING;delete;name
+ zpath←Zip args;⎕USING;delete;name;path
 ⍝. This function zips a directory
-⍝. This is a tradfn as it causes side-effects
-⍝⍝⍝ TODO: directory should be provided rather than assumed
-dir←⎕SH'cd'
-defaultValues←{(≢⍺)↑⍵,(≢⍵)↓⍺}
-(name delete)←'' 0 defaultValues ,⊆args
+⍝. Style Disclaimer: This is a tradfn as it causes side-effects
+ defaultValues←{(≢⍺)↑⍵,(≢⍵)↓⍺}
+ (name delete)←'' 0 defaultValues,⊆args
 
-⍝⍝⍝ TODO: path needs to be validated!!!
-path zpath←{⍵ (∊⍵'.xlsx')}∊dir'\'name
-⍝⍝⍝ TODO: if the file exists signal error instead of deletion
-⍝⍝⍝ TODO: optional argument, flag overwrite file
-⍝⍝⍝ TODO: 1>≡⊆name
+ (path zpath)←{(∊⍵)(∊⍵'.xlsx')}name⍝1↓1 ⎕NPARTS ⊃name
+
 ⍝. delete to overwrite the existing file
-:If delete
-  3 ⎕NDELETE zpath
-:EndIf
+ :If delete
+     3 ⎕NDELETE zpath
+ :EndIf
 
-⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
-System.IO.Compression.ZipFile.CreateFromDirectory path zpath
+⍝. Dependency
+ ⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
+ System.IO.Compression.ZipFile.CreateFromDirectory path zpath
 
 ⍝. This deletes a folder known to be created by this program
 ⍝. Safe to delete
-3 ⎕NDELETE path
-
+ 3 ⎕NDELETE path

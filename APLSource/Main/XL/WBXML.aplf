@@ -1,5 +1,4 @@
 WBXML←{
-
 ⍝. This function constructs the xl/workbook.xml file
 wb   ←'workbook'
 atwb ←⊂'xmlns'   'http://schemas.openxmlformats.org/spreadsheetml/2006/main' 
