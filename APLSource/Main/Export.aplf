@@ -1,0 +1,27 @@
+ Export←{
+     ⍝. ⍵          ←→ namespace containing:
+     ⍝. ⍵.FileName ←→ the name to be written to, either relative or fully qualified
+     ⍝. ⍵.Sheets   ←→ array of "worksheet" namespaces
+     ⍝. ⍵.Sheets[n]           ←→ namespace containing:
+     ⍝. ⍵.Sheets[n].Name      ←→ name of a worksheet found in a workbook
+     ⍝. ⍵.Sheets[n].Ranges    ←→ array of value ranges and formatting information
+     ⍝. ⍵.Sheets[n].Ranges[n]              ←→ namespace containing:
+     ⍝. ⍵.Sheets[n].Ranges[n].NumberFormat ←→ apply numberformat to range
+     ⍝. ⍵.Sheets[n].Ranges[n].Value        ←→ values in the range
+     ⍝. ⍵.Sheets[n].Ranges[n].Address      ←→ address can be either indices i.e. ←→ 0 0 (at cell A1) or cell string i.e. ←→ 'A1' (at index 0 0)
+
+     ⍝. Create a new workbook
+     wb←##.Main.XL.WB ⍵.FileName 1
+     sheets←{ ⍝. Add each of the ranges in this sheet to the wb worksheet table
+         wb←⍺
+         sheet←⍵
+         {wb ranges(sheet.Name)⍵}¨⍵.Ranges
+     }
+     ranges←{ ⍝. Add this range to the worksheet table in wb
+         (sname range)←⍵
+         range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address⍝ convert indices to cell values
+         ⍺ ##.Main.XL.WSAdd sname range.Address(range.NumberFormat'' '' '')range.Value
+     }
+     _←wb sheets¨⍵.Sheets
+     ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory
+ }

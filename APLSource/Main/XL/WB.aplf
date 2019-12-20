@@ -1,0 +1,25 @@
+WB←{
+  ⍝. ⍵[0] ←→ name of file
+  ⍝. ⍵[1] ←→ should delete existing file if any
+  ⍝. Returns: workbook namespace
+  ⍝. Generate all the collections used for building XML for each Excel "part"
+  wb←⎕NS''
+  wb.(Name ShouldDelete)←⍵
+  wb.WS    ←0 6⍴⍬ ⍝ 5 column table
+  wb.SS    ←2 0⍴⍬ ⍝ 2 row table, row 1 is strings, row 2 is occurances
+  wb.RW    ←0 3⍴⍬
+
+  ⍝. Include default values for styles
+  wb.Styles←⎕NS''
+  ⍝ numFmt  ←→ 'formatcode'
+  wb.Styles.numFmts←1⍴⊂'General'
+  ⍝ font    ←→ size color name family scheme
+  wb.Styles.fonts  ←1 4⍴11 1 'Calibri' 2       ⍝ defaults
+  ⍝ fill    ←→ pattern foreground background
+  wb.Styles.fills  ←2 3⍴ 'none' '' '' 'gray125' '' '' ⍝ defaults
+  ⍝ border  ←→ left right top bottom diagonal
+  wb.Styles.borders←1 5⍴''
+  ⍝ cellXfs ←→ numFmtId fontId fillId borderId -- ids taken from the other lists
+  wb.Styles.cellXfs←1 4⍴0
+  wb
+}
