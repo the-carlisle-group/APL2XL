@@ -20,7 +20,8 @@
      ranges←{ ⍝. Add this range to the worksheet table in wb
          (sname range)←⍵
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address⍝ convert indices to cell values
-         ⍺ ##.Main.XL.WSAdd sname range.Address(range.NumberFormat'' '' '')range.Value
+         styles←range∘{0<⍺.⎕NC ⍵:⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border'
+         ⍺ ##.Main.XL.WSAdd sname range.Address styles range.Value
      }
      _←wb sheets¨⍵.Sheets
      ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory

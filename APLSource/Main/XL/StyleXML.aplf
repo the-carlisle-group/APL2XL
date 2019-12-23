@@ -2,7 +2,7 @@
      ⍝. ⍵ ←→ workbook, instance of #.WB
      wb←⍵
      s←wb.Styles
-     
+
      ⍝. collection generates the tag for each collection within the style document
      ⍝. Complete descriptions of the collections can be found in the comments below
      collection←{⍺(⊂'count'(≢⍵))tag(⍺⍺⍤1⊢⍵)}
@@ -23,8 +23,8 @@
          color←'color'(⊂'theme'c)tag''
          name←'name'(⊂'val'n)tag''
          family←'family'(⊂'val'f)tag''
-         scheme←'scheme'(⊂'val' 'minor')tag''
-         'font'tag sz color name family scheme
+         ⍝scheme←'scheme'(⊂'val' 'minor')tag''
+         'font'tag sz color name family ⍝scheme
      }
 
      fill←{
@@ -32,12 +32,11 @@
          ⍝. ⍵[1] ←→ foreground fill info (TODO: not implemented)
          ⍝. ⍵[2] ←→ background fill info (TODO: not implemented)
          ⍝. a single fill tag
-         
          full←{⍝ TODO: Implement, there are more properties necessary
-            ⍝ (p f b)←⍵
-            ⍝ foreground←'fgColor' (⊂'theme' )tag''
-            ⍝ background←'bgColor' tag''
-            ⍝ pattern←'patternFill' (⊂'patternType' p) tag foreground background
+             (p f b)←⍵
+             foreground←'fgColor'(⊂'rgb'f)tag''
+             background←'bgColor'(⊂'rgb'b)tag''
+             'patternFill'(⊂'patternType'p)tag foreground background
          }
          partial←{pattern←'patternFill'(⊂'patternType'⍵)tag''}
          (⊂'')∊⍵:'fill'tag partial⊃⍵ ⍝ partial has no body
@@ -50,8 +49,9 @@
          default←{'left' 'right' 'top' 'bottom' 'diagonal'tag¨5⍴''} ⍝ default borders have no values
          body←{ ⍝. ⍵ ←→ 5⍴(⊂style<charvec> color<int>)
              t←{ ⍝ helper function for building direction tags
+                 ''≡⍵:⍺ tag'' ⍝ empty tag for this border position
                  (s c)←⍵
-                 ⍺(⊂'style's)tag('color'(⊂'auto'c)tag'')
+                 ⍺(⊂'style's)tag('color'(⊂'rgb'c)tag'')
              }
              'left' 'right' 'top' 'bottom' 'diagonal't¨⍵
          }
@@ -86,23 +86,23 @@
   ⍝. The formatting for a cell can be specified with a list or collection of indices into these four collections.
   ⍝. And in fact, that is what the <cellXfs> is.
   ⍝. It contains a collection of groups of indices, one group for every combination of cell formatting characteristics found in the workbook.
-     numFmts     ←'numFmts'            (numFmt    collection){(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts ⍝ TODO: 160×0=r assumes that excel understands the numberformat supplied by the user to be a custom number format, if excel doesn't accept built-in numberformats as custom, this will need to be fixed
-     fonts       ←'fonts'              (font      collection)s.fonts
-     fills       ←'fills'              (fill      collection)s.fills ⍝ TODO: fill only returns pattern fill, not with bg and fg
-     borders     ←'borders'            (border    collection)s.borders
-     cellXfs     ←'cellXfs'            (xf        collection){⍵,⍳≢⍵}s.cellXfs
-     cellStyleXfs←'cellStyleXfs'       (styleXF   collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
-     cellStyles  ←'cellStyles'         (cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
-     tableStyles ←table''⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
-     dxfs        ←'<dxfs count="0"/>'⍝TODO: implement
+     numFmts←'numFmts'(numFmt collection){(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts ⍝ TODO: 160×0=r assumes that excel understands the numberformat supplied by the user to be a custom number format, if excel doesn't accept built-in numberformats as custom, this will need to be fixed
+     fonts←'fonts'(font collection)s.fonts
+     fills←'fills'(fill collection)s.fills ⍝ TODO: fill only returns pattern fill, not with bg and fg
+     borders←'borders'(border collection)s.borders
+     cellXfs←'cellXfs'(xf collection){⍵,⍳≢⍵}s.cellXfs
+     cellStyleXfs←'cellStyleXfs'(styleXF collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
+     cellStyles←'cellStyles'(cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
+     tableStyles←table''⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
+     dxfs←'<dxfs count="0"/>'⍝TODO: implement
 
      ⍝ TODO: implement
-     extLst      ←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'
+     extLst←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'
 
      ⍝. Header is (currently) static, only the body is generated
      xmlHeader←'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac x16r2 xr" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" xmlns:x16r2="http://schemas.microsoft.com/office/spreadsheetml/2015/02/main" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision">'
-     body     ←numFmts fonts fills borders cellStyleXfs cellXfs cellStyles dxfs tableStyles extLst
-     xmlClose ←'</styleSheet>'
+     body←numFmts fonts fills borders cellStyleXfs cellXfs cellStyles dxfs tableStyles extLst
+     xmlClose←'</styleSheet>'
 
      ∊xmlHeader body xmlClose
  }
