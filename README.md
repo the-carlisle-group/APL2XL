@@ -36,11 +36,11 @@ s1.Name  ←'Sample1'
 s1.Ranges←r1 r2
 ```
 
-Add the sheets to a workbook with a fully qualified path. **Note: path cannot be of the form `c:\{filename}` due to writing privileges.** Select a path of the form `c:\myfolder\myfile.xlsx`
+Add the sheet to a workbook with a fully qualified path. Multiple worksheets can be included as a list, `wb.Sheets←s1 s2 s3...` **Note: path cannot be of the form `c:\{filename}` due to writing privileges.** Select a path of the form `c:\myfolder\myfile.xlsx`
 
 ```APL
 wb←⎕NS''
-wb.Sheets  ←s1 s2
+wb.Sheets  ←s1 
 wb.FileName←'c:\{path}\myfile.xlsx'
 
 Main.Export wb
