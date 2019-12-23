@@ -5,6 +5,7 @@ APL2XL assumes `⎕IO ⎕ML←0 1` and is not tested for any other settings for 
 
 ## Example Usage
 Workbooks consist of Worksheets, and Worksheets consist of Ranges. Ranges, Worksheets and Workbooks are simple to define as Namespaces, and include the following properties
+
 |Type|Required Variables|Optional Variables|
 |---|---|---|
 |Ranges|Value, Address|NumberFormat, Font, Fill, Border, Address|
