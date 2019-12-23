@@ -62,11 +62,11 @@ This table is an exhaustive list of currently implemented styling features, and 
 Number Formatting is the simplest feature in this list. If the number format formula works in Excel, it will work here. 
 
 ### Font
-Font names and font sizes are self-explanitory. What are not well understood are font colors, and font family numbers. 
+Font names and sizes are self-explanitory. What are not well understood are color behavior, and font-family<integer>.
 
-Respecting font colors it is unknown which whether fill background colors interfere with font colors, or if there is a hierarchy within excel to determine which color is used in the sheet. Some experimentation will be needed to further clarify this point. 
+Respecting Font Colors it is unknown which whether fill background colors interfere with font colors, or if there is a hierarchy within excel to determine which color is used in the sheet. Some experimentation will be needed to further clarify this point. 
 
-Respecting Font family, the number is absolutely required to match the font name in some way. It is unclear yet how to determine this. An urgent feature should be added to match common names with their appropriate font families. In the interim, simply follow these steps:
+Respecting Font Family, this number is absolutely required to match the font name in some way. It is unclear yet how to determine this. An urgent feature should be added to match common names with their appropriate font families. In the interim, simply follow these steps:
 
 1. In Excel, create a single spreadsheet with a single cell value at cell 'A1'
 2. Change to the font you wish to use
