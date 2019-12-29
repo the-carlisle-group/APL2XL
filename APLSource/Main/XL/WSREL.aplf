@@ -1,11 +1,11 @@
-WSREL←{
+ WSREL←{
   ⍝. ⍵ ←→ workbook namespace
   ⍝. This function sets the Worksheets.rId value
   ⍝. This value is used in ContentTypes and in Workbook
-  wb←⍵
-  fmt←WSRelType∘{⍺(⍺ ⍵S'{}s/sheet{}.xml')}
+     wb←⍵
+     fmt←'workspace'∘{⍺(⍺ ⍵ S'{}s/sheet{}.xml')} ⍝ // 'workspace' should be WSRelType
   ⍝ TODO(nathan): duplicate expression
-  count←1+⍳≢∪1⌷⍉wb.WS
-  wb.WSRID←{wb RWAdd ⍵}∘fmt¨count
-  wb.WSRID
-}
+     count←1+⍳≢∪1⌷⍉wb.WS
+     wb.WSRID←{wb RWAdd ⍵}∘fmt¨count
+     wb.WSRID
+ }
