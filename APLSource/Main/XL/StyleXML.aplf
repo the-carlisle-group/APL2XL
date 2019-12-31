@@ -5,7 +5,7 @@
 
      ⍝. collection generates the tag for each collection within the style document
      ⍝. Complete descriptions of the collections can be found in the comments below
-     collection←{⍺(⊂'count'(≢⍵))tag(⍺⍺⍤1⊢⍵)}
+     collection←{⍺(⊂'count'(≢⍵))tag(⍺⍺¨↓⍵)}
 
      ⍝. Define functions for a single element in each of the collections.
      ⍝. Collections such as numFmts fills fonts and borders all have unique tags
@@ -24,7 +24,7 @@
          name←'name'(⊂'val'n)tag''
          family←'family'(⊂'val'f)tag''
          ⍝scheme←'scheme'(⊂'val' 'minor')tag''
-         'font'tag sz color name family ⍝scheme
+         'font'tag∊sz color name family ⍝scheme
      }
 
      fill←{
@@ -36,7 +36,7 @@
              (p f b)←⍵
              foreground←'fgColor'(⊂'rgb'f)tag''
              background←'bgColor'(⊂'rgb'b)tag''
-             'patternFill'(⊂'patternType'p)tag foreground background
+             'patternFill'(⊂'patternType'p)tag∊foreground background
          }
          partial←{pattern←'patternFill'(⊂'patternType'⍵)tag''}
          (⊂'')∊⍵:'fill'tag partial⊃⍵ ⍝ partial has no body
@@ -55,7 +55,7 @@
              }
              'left' 'right' 'top' 'bottom' 'diagonal't¨⍵
          }
-         (5⍴'')≡⍵:'border'tag default''
+         (5⍴'')≡⍵:'border'tag∊default''
          'border'tag body ⍵
      }
      xf←{ ⍝. for cellXfs

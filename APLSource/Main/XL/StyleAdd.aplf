@@ -1,30 +1,35 @@
  StyleAdd←{
      s←⍺.Styles
-     (numFmt font fill border)←4↑⍵
      ⍝ ⍵        ←→ numFmt font fill border
      ⍝ numFmt   ←→ 'formatcode'                   -- char vec
      ⍝ font     ←→ size color name family         -- int charvec charvec charvec
      ⍝ fill     ←→ pattern foreground background  -- TODO: Fill this in
      ⍝ border   ←→ left right top bottom diagonal -- nested vec
-     add←{
-         0≠≢⍵:∪⍺⍪⊆⍵
-         ⍺
+     getId←{
+         (numFmt font fill border)←4↑⍵
+         add←{
+             0≠≢⍴⍵:∪⍺⍪⊆⍵
+             ⍺
+         }
+         s.numFmts{⍺ add ⍵}←numFmt
+         s.fonts{⍺ add ⍵}←font
+         s.fills{⍺ add ⍵}←fill
+         s.borders{⍺ add ⍵}←border
+
+         normal←{⍵×⍵<≢⍺} ⍝ 0 is the default value
+         id←{⍺ normal ⍺⍳(⊃⌽⍴⍺)⍴⍵} ⍝ reshape first
+
+        ⍝ TODO: include a list of defalut number formats and only include ones not in the default collection
+        ⍝ offset by 160 for custom formats only
+         numid←r+163×0<r←s.numFmts normal s.numFmts⍳⊂numFmt
+         fontid←s.fonts id font
+         fillid←s.fills id fill
+         bordid←s.borders id border
+
+        ⍝ gridobject dyalog gui
+         s.cellXfs(∪⍪)←cellId←(numid fontid fillid bordid) ⍝ only unique ids
+         s.cellXfs⍳cellId ⍝ return the index of the new cellid
+
      }
-     s.numFmts{⍺ add ⍵}←numFmt
-     s.fonts{⍺ add ⍵}←font
-     s.fills{⍺ add ⍵}←fill
-     s.borders{⍺ add ⍵}←border
-
-     normal←{⍵×⍵<≢⍺} ⍝ 0 is the default value
-     id←{⍺ normal ⍺⍳(⊃⌽⍴⍺)⍴⍵} ⍝ reshape first
-
-     ⍝ TODO: include a list of defalut number formats and only include ones not in the default collection
-     ⍝ offset by 160 for custom formats only
-     numid←r+163×0<r←s.numFmts normal s.numFmts⍳⊂numFmt
-     fontid←s.fonts id font
-     fillid←s.fills id fill
-     bordid←s.borders id border
-
-     s.cellXfs(∪⍪)←cellId←(numid fontid fillid bordid) ⍝ only unique ids
-     s.cellXfs⍳cellId ⍝ return the index of the new cellid
+     getId¨⍉↓⍉↑⍵
  }
