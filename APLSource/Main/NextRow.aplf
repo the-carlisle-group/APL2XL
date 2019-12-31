@@ -1,0 +1,6 @@
+ NextRow←{
+     row←{(1↑⍺+⍵),(1↓⍺)}
+
+  (0<⎕NC'⍺')(row ##.Main.XL.NextPosition)⍵ 
+
+ }

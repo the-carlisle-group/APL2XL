@@ -1,0 +1,8 @@
+ NextPosition←{
+     return←{⍺:⍵ ⋄ itc ⍵}
+     range←⍵
+     index←cti range.Address
+     shape←⍴range.Value
+     cell←index ⍺⍺ shape
+     ⍺ return cell
+ }

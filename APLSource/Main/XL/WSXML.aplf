@@ -1,4 +1,4 @@
- WSXML←{
+WSXML←{
   ⍝. ⍵ ←→ workbook namespace
   ⍝⍝⍝ TODO: tag←Workbook.DSL.tag ??
   ⍝⍝⍝ TODO: this function should be a dfn which takes a namespace as argument
@@ -84,10 +84,10 @@
              ⎕XML row⍪⊃{⍺⍪⍵}/cell
          }⍤1⊢cellsByRow
     ⍝. Generate XML
-         ⍝ rows←rowXML⍤1⊢cellsByRow                                ⍝ body of <sheetdata>
-         sheetdata←'sheetData'tag rows                           ⍝ part of <worksheet> body
-         dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
-         ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata  ⍝ the complete <sheetdata> body
+         ⍝ rows←rowXML⍤1⊢cellsByRow                            ⍝ body of <sheetdata>
+         sheetdata←'sheetData'tag rows                         ⍝ part of <worksheet> body
+         dimension←'dimension'(⊂'ref'('A1:',itc max))tag''     ⍝ part of <worksheet> body
+         ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata ⍝ the complete <sheetdata> body
      }
 
      sheets←wb.WS
