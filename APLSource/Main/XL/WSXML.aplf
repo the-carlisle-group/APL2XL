@@ -74,9 +74,21 @@
     ⍝. Group row numbers with its corresponding list of cell meta data
          rowNumbers←⊃¨sInds
          cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
-
+         rows←{ 
+            ⍝ used to be 
+            ⍝ rows←rowXML⍤1⊢cellsByRow 
+            ⍝ reshape the wb.WS data to ⎕XML arguments
+             (r c)←⍵
+             row←0 'row' ''(1 2⍴'r'(⍕1+r))
+             cell←{
+                 (r v t s)←⍵
+                 a←1 'c' ''(3 2⍴'r'(itc r)'t'(⍕t)'s'(⍕s))
+                 b←2 'v'v(0 2⍴⍬)
+                 (1 4⍴a)⍪b
+             }¨c
+             ⎕XML row⍪⊃{⍺⍪⍵}/cell
+         }⍤1⊢cellsByRow
     ⍝. Generate XML
-         rows←rowXML⍤1⊢cellsByRow                                ⍝ body of <sheetdata>
          sheetdata←'sheetData'tag rows                           ⍝ part of <worksheet> body
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
          ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata  ⍝ the complete <sheetdata> body

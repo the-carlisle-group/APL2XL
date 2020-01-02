@@ -9,13 +9,16 @@
      ⍝. Usage2: name tag body      ⍝ body, no attrs    <tag>{body}</tag>
      ⍝. Usage3: name attrs tag ''  ⍝ no body           <tag attrs/>
      ⍝. Usage4: name tag ''        ⍝ no body, no attrs <tag/>
-     ⍝. returns the following formats:           
+     ⍝. returns the following formats:
      ⍝. 0=≢⍺[1]: <tag>body</tag>
      ⍝. 1<≢⍺[1]: <tag attr="val" attr2="val2"...>body</tag>
      ⍝. 0=≢body: <tag attr="val" attr2="val2".../>
+     t ps←2↑⍺
+
      some←{0=≢⍵}
-     t ps←2↑⍺ 
      attrs←{t v←⍵ ⋄ ' 't'="'(⍕¨v)'"'}¨(1<|≡ps)/ps
      tt←(some attrs)⌷t ⍺
+⍝     ⎕XML 0(∊tt)(⍕¨⍵)(↑(~some attrs)/ps)
+
      ∊'<'tt attrs,(some ⍵)⌷('>'(⍕⍵)'</'tt'>')'/>'
  }

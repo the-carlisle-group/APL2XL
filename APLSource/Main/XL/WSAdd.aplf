@@ -11,8 +11,9 @@
     ⍝⍝⍝ elsewhere:
     ⍝⍝⍝ for all namespace: ns.XML ns.Table
     ⍝⍝⍝ enumerating parts is desirable so the XML and table naming should be rethought
-     type←⍺ WS_convert 3⊃⍵ ⍝ convert the value to correct excel value based on its type
-     new←⍵[0 1],(⍺ StyleAdd(2⊃⍵)),type   ⍝ type is a 2 element vector of values and types
+     type←⍺ WS_convert 3⊃⍵    ⍝ convert the value to correct excel value based on its type
+     styles←⊂⍺ StyleAdd(2⊃⍵)
+     new←⍵[0 1],styles,type   ⍝ type is a 2 element vector of values and types
      ⍺.WS⍪←(1+⊃⍴⍺.WS),new  ⍝ raw string data is not stored in the ⍺.WS, so that the
      ⍺
  }

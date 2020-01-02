@@ -21,7 +21,11 @@
      XL←##.Main.XL
     ⍝. Starting cell addresses for month names, day names, and the calendar
      (mlocs dlocs clocs)←{XL.itc¨(⊂⍵)+¨cellPos}¨(0 0)(1 0)(2 0)
+<<<<<<< HEAD
      file←(739⌶0),'/calendar' ⍝ create test in temp directory
+=======
+     file←∊1 ⎕NPARTS'calendar'
+>>>>>>> quadxml
      wb←XL.WB file 1
      add←{wb XL.WSAdd'Calendar'⍵''⍺}
      _←names add¨mlocs
