@@ -7,20 +7,19 @@
      s←⍺.Styles
      0=≢⍵:0
      (numFmt font fill border)←4↑⍵
-     add←{
-         0≠≢⍵:∪⍺⍪⊆⍵
-         ⍺
-     }
-     s.numFmts{⍺ add ⍵}←numFmt
-     s.fonts{⍺ add ⍵}←font
-     s.fills{⍺ add ⍵}←fill
-     s.borders{⍺ add ⍵}←border
+
      getId←{
-         (numFmt font fill border)←4↑⍵
          add←{
              0≠≢⍴⍵:∪⍺⍪⊆⍵
              ⍺
          }
+         (numFmt font fill border)←4↑⍵
+         s.numFmts{⍺ add ⍵}←numFmt
+         s.fonts{⍺ add ⍵}←font
+         s.fills{⍺ add ⍵}←fill
+         s.borders{⍺ add ⍵}←border
+
+
          s.numFmts{⍺ add ⍵}←numFmt
          s.fonts{⍺ add ⍵}←font
          s.fills{⍺ add ⍵}←fill
@@ -28,7 +27,6 @@
 
          normal←{⍵×⍵<≢⍺} ⍝ 0 is the default value
          id←{⍺ normal ⍺⍳(⊃⌽⍴⍺)⍴⍵} ⍝ reshape first
->>>>>>> quadxml
 
         ⍝ TODO: include a list of defalut number formats and only include ones not in the default collection
         ⍝ offset by 160 for custom formats only
