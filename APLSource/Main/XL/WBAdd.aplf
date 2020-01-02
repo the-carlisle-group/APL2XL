@@ -1,3 +1,0 @@
-WBAdd←{
-  6 :: Table∘←⍪⊆⍵ ⋄ Table⍪←⍵
-}

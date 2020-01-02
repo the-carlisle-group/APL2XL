@@ -1,11 +1,12 @@
  StyleAdd←{
-     s←⍺.Styles
-     (numFmt font fill border)←4↑⍵
      ⍝ ⍵        ←→ numFmt font fill border
      ⍝ numFmt   ←→ 'formatcode'                   -- char vec
      ⍝ font     ←→ size color name family         -- int charvec charvec charvec
      ⍝ fill     ←→ pattern foreground background  -- TODO: Fill this in
      ⍝ border   ←→ left right top bottom diagonal -- nested vec
+     s←⍺.Styles
+     0=≢⍵:0
+     (numFmt font fill border)←4↑⍵
      add←{
          0≠≢⍵:∪⍺⍪⊆⍵
          ⍺
