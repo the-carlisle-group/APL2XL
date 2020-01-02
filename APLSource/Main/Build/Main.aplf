@@ -1,4 +1,4 @@
- Main wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output
+ name←Main wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output
 ⍝⍝⍝ TODO: this function should return the fully qualified path of the file created
 
 ⍝. ⍵ ←→ name.xlsx

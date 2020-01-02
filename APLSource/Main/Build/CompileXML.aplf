@@ -1,4 +1,4 @@
- CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex
+ name←CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex
 ⍝. wb (right argument) is an instance of ##.XL.WB namespace containing all the collections required to populate a workbook
 ⍝. Style Disclaimer: This is a tradfn because it causes side-effects
 
