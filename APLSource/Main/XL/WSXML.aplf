@@ -1,4 +1,4 @@
-WSXML←{
+ WSXML←{
   ⍝. ⍵ ←→ workbook namespace
   ⍝⍝⍝ TODO: tag←Workbook.DSL.tag ??
   ⍝⍝⍝ TODO: this function should be a dfn which takes a namespace as argument
@@ -21,26 +21,26 @@ WSXML←{
          'sheetViews'tag'sheetView'attrs tag''
      }
 
- ⍝    cellXML←{
+     cellXML←{
     ⍝. ⍵[0] ←→ numerical cell index
     ⍝. ⍵[1] ←→ cell value
     ⍝. ⍵[2] ←→ data type of value
     ⍝. Returns: '<c r="Address" t="DataType"><v>{value}</v><c>'
     ⍝⍝⍝ TODO: styles not implemented
- ⍝        (index value type style)←⍵
- ⍝        addr←itc index
- ⍝        attrs←'rts'{(⊂⍺),⊂⍵}¨addr type style
- ⍝        'c'attrs tag'v'tag value
+         (index value type style)←⍵
+         addr←itc index
+         attrs←'rts'{(⊂⍺),⊂⍵}¨addr type style
+         'c'attrs tag'v'tag value
      }
 
- ⍝    rowXML←∊{
+     rowXML←∊{
     ⍝. ⍵[0] ←→ integer row number 0 indexed. OOXML row is 1 indexed
     ⍝. ⍵[1] ←→ ???
     ⍝⍝⍝ TODO: Document ⍵[1]
     ⍝. Returns: '<row r="Row Number"><c...></row>'
- ⍝        rowNum cellData←⍵
- ⍝        'row'(⊂'r'(1+rowNum))tag cellXML⍤1⊢↑cellData
- ⍝    }
+         rowNum cellData←⍵
+         'row'(⊂'r'(1+rowNum))tag cellXML⍤1⊢↑cellData
+     }
 
      sheet←{
     ⍝. ⍵ ←→ all records in Worksheets.Table grouped by unique Table name
@@ -72,22 +72,24 @@ WSXML←{
     ⍝. Group row numbers with its corresponding list of cell meta data
          rowNumbers←⊃¨sInds
          cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
-         rows←{
+         rows←{ 
+            ⍝ used to be 
+            ⍝ rows←rowXML⍤1⊢cellsByRow 
+            ⍝ reshape the wb.WS data to ⎕XML arguments
              (r c)←⍵
-             row←0 'row' ''(1 2⍴'r'(⍕r))
+             row←0 'row' ''(1 2⍴'r'(⍕1+r))
              cell←{
                  (r v t s)←⍵
-                 cellXml←1 'c' ''(3 2⍴'r'(⍕r)'t'(⍕t)'s'(⍕s))
-                 valXml ←2 'v' v (0 2⍴⍬)
-                 (1 4⍴cellXml)⍪valXml
+                 a←1 'c' ''(3 2⍴'r'(itc r)'t'(⍕t)'s'(⍕s))
+                 b←2 'v'v(0 2⍴⍬)
+                 (1 4⍴a)⍪b
              }¨c
              ⎕XML row⍪⊃{⍺⍪⍵}/cell
          }⍤1⊢cellsByRow
     ⍝. Generate XML
-         ⍝ rows←rowXML⍤1⊢cellsByRow                            ⍝ body of <sheetdata>
-         sheetdata←'sheetData'tag rows                         ⍝ part of <worksheet> body
-         dimension←'dimension'(⊂'ref'('A1:',itc max))tag''     ⍝ part of <worksheet> body
-         ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata ⍝ the complete <sheetdata> body
+         sheetdata←'sheetData'tag rows                           ⍝ part of <worksheet> body
+         dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
+         ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata  ⍝ the complete <sheetdata> body
      }
 
      sheets←wb.WS

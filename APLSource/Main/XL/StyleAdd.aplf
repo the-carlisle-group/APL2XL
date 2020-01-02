@@ -21,7 +21,7 @@
 
         ⍝ TODO: include a list of defalut number formats and only include ones not in the default collection
         ⍝ offset by 160 for custom formats only
-         numid←r+163×0<r←s.numFmts normal s.numFmts⍳⊂numFmt
+         numid←r+163×0<r←s.numFmts normal s.numFmts⍳⊆numFmt
          fontid←s.fonts id font
          fillid←s.fills id fill
          bordid←s.borders id border
