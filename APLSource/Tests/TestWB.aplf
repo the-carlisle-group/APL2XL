@@ -1,0 +1,19 @@
+ TestWB←{
+  ⍝. The WB function creates a workbook namespace populated with default values for each OOXML 'part'
+  ⍝. This test verifies that the workbook is created correctly with all the correct default values
+  ⍝. First, by verifying the names exist withing the namespace, then by checking that the values are correct
+     xl←##.Main.XL
+     fileName←(739⌶0),'/XL2APLSimpleSheet.xlsx'
+     overwrite←1
+     wb←xl.WB fileame overwrite
+
+     wbNamesExist←⊃∧/{0<wb.⎕NC ⍵}¨'WS' 'SS' 'RW' 'Styles'
+     ~wbNamesExist:0 ⍝ If one doesn't exist, the following code will error
+     wbShapesCorrect←(0 6)(2 0)(0 3)≡⍴¨wb.(WS SS RW)
+
+     styleNamesExist←⊃∧/{0<wb.Styles.⎕NC ⍵}¨'numFmts' 'fonts' 'borders' 'cellXfs'
+     ~styleNamesExist:0 ⍝ If one doesn't exist, the following code will error
+     styleDefaultsCorrect←(1⍴⊂'General')(1 4⍴11 1 'Calibri' 2)(2 3⍴'none' '' '' 'gray125' '' '')(1 5⍴'')(1 4⍴0)≡wb.Styles.(numFmts fonts fills borders cellXfs)
+
+     wbShapesCorrect∧styleDefaultsCorrect
+ }
