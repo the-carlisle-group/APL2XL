@@ -1,0 +1,9 @@
+ TestSimpleSheetMK←{
+
+     fn←(739⌶0),'/XL2APLSimpleSheet.xlsx'
+     (range1←⎕NS'').(Address Value)←'B2'(4 3⍴⍳12)
+     (range2←⎕NS'').(Address Value)←'F2'(⍪↓4 3⍴⎕A)
+     (sheet←⎕NS'').(Name Ranges)←'Data'(range1 range2)
+     (wb←⎕NS'').(FileName Sheets)←fn sheet
+     ##.Main.Export wb
+ }
