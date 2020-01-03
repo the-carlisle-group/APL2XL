@@ -4,7 +4,7 @@ APL2XL is a Dyalog APL library which exports APL arrays to Excel in the form of 
 APL2XL assumes `⎕IO ⎕ML←0 1` and is not tested for any other settings for `⎕IO` or `⎕ML`.
 
 ## Example Usage
-Other examples can be found in the `./Demos/` directory of this project. 
+Other examples can be found in the `./APLSource/Demos/` directory of this project. 
 
 Workbooks consist of Worksheets, and Worksheets consist of Ranges. Ranges, Worksheets and Workbooks are simple to define as Namespaces, and include the following properties
 
