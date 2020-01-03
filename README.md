@@ -17,15 +17,15 @@ Define range comprised of values starting at an address, and optional formatting
 ⎕IO ⎕ML←0 1
 r1             ←⎕NS''
 r1.Value       ←⍪10000+⍳5
-r1.NumberFormat←'#,##0'           ⍝ 10,000
+r1.NumberFormat←⊂'#,##0'           ⍝ 10,000
 r1.Address     ←2 3               ⍝ or 'B3'
 
 r2             ←⎕NS''
 r2.Value       ←⍪⍳10
-r2.NumberFormat←'m/d/yyyy'
-r2.Font        ←11 1 'Broadway' 5         ⍝ size color name family
-r2.Fill        ←'solid' 'ff6699' '33cc33' ⍝ style foregroundColor backgoundColor
-r2.Border      ←5⍴(⊂'thin' '0000cc')      ⍝ 5 elemtent vector of tuples containing ('thickness' 'hexcolor')       
+r2.NumberFormat←⊂'m/d/yyyy'
+r2.Font        ←⊂11 1 'Broadway' 5         ⍝ enclosed size color name family
+r2.Fill        ←⊂'solid' 'ff6699' '33cc33' ⍝ enclosed style foregroundColor backgoundColor
+r2.Border      ←⊂5⍴(⊂'thin' '0000cc')      ⍝ enclosed 5 element vector of tuples containing ('thickness' 'hexcolor')       
 r2.Address     ←'C1'
 ```
 
