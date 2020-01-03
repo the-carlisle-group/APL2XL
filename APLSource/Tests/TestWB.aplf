@@ -7,7 +7,6 @@
      overwrite←1
      wb←xl.WB fileame overwrite
 
-     
      WBShapesCorrect←{
         wb←⍵
         wbNamesExist←⊃∧/{0<wb.⎕NC ⍵}¨'WS' 'SS' 'RW' 'Styles'
