@@ -17,13 +17,13 @@
          border←'lrtbd'
 
          ⍝. Map each index of the board to a bitmask related to border indices to toggle the border for that cell
-         top   ←(⊂'tl'),(6⍴'t'),⊂'tr'
-         body  ←(⊂'l'),(6⍴''),(⊂'r')
+         top←(⊂'tl'),(6⍴'t'),⊂'tr'
+         body←(⊂'l'),(6⍴''),(⊂'r')
          bottom←(⊂'bl'),(6⍴'b'),(⊂'br')
-         range.Border←↑1 6 1\{('none' 0) ('thick' 1)[border∊⍵]}¨¨top body bottom
+         range.Border←↑1 6 1\{('none' 0)('thick' 1)[border∊⍵]}¨¨top body bottom
 
          (sheet←⎕NS'').(Name Ranges)←'board'range
-         (wb←⎕NS'').(FileName Sheets)←'c:\r\chess'sheet
+         (wb←⎕NS'').(FileName Sheets)←((739⌶0),'/chess')sheet
          ##.Main.Export wb
      }
      Export Setup''
