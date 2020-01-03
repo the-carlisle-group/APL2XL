@@ -103,5 +103,5 @@
          (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡3⊃⊃↓wb.WS
      }
 
-     ⊃∧/(BasicStyle'')(OnlyNumFmt'')(OnlyFont'')(OnlyFill'')(OnlyBorder'')(ColumnStyles'')(RowStyles'')
+     ⊃∧/(BasicStyle'')(OnlyNumFmt'')(OnlyFont'')(OnlyFill'')(OnlyBorder'')(ColumnStyles'')⍝(RowStyles'')
  }

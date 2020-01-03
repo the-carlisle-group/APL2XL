@@ -10,7 +10,7 @@
 
      getId←{
          add←{
-             0≠≢⍴⍵:∪⍺⍪⊆⍵
+             (0≠≢⍴⍵):∪⍺⍪⊆⍵
              ⍺
          }
          (numFmt font fill border)←4↑⍵
