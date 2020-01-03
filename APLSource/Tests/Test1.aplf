@@ -21,18 +21,20 @@
      XL←##.Main.XL
     ⍝. Starting cell addresses for month names, day names, and the calendar
      (mlocs dlocs clocs)←{XL.itc¨(⊂⍵)+¨cellPos}¨(0 0)(1 0)(2 0)
-<<<<<<< HEAD
      file←(739⌶0),'/calendar' ⍝ create test in temp directory
-=======
-     file←∊1 ⎕NPARTS'calendar'
->>>>>>> quadxml
-     wb←XL.WB file 1
-     add←{wb XL.WSAdd'Calendar'⍵''⍺}
-     _←names add¨mlocs
-     _←calendar add¨clocs
-     _←days∘add¨dlocs
-     _←calendar{m←⍵ ⋄ 'A1' 'A2'{wb XL.WSAdd m ⍺''⍵}¨days ⍺}¨names
-     ##.Main.Build.Main wb
 
-     ⍝⍝⍝ TODO: read in the file and check its cell values
+     range←{ (r←⎕NS'').(Address Value)←⍵ ⍺ }
+     sheet←{ (s←⎕NS'').(Name Ranges)←⍺ ⍵}
+
+     ⍝. Create a sheet containing month, column days, and a 6x7 calendar for each month along the first column
+     ranges←∊names calendar((≢dlocs)⍴⊂days)assignRange¨¨mlocs clocs dlocs
+     yearSheet←'Calendar'sheet ranges
+
+     ⍝. In this case, we generate a sheet per month
+     ⍝. pair each name with each calendar, and generate a sheetname per name, and 2 ranges per sheetname
+     ⍝. Each sheet contains a weekday name range and a calendar range
+     monthSheets←calendar{⍵ sheet(∊days ⍺ range¨'A1' 'A2')}¨names
+     (wb←⎕NS'').(FileName Sheets)←'c:\r\cal' (∊yearSheet monthSheets)
+     _←##.Main.Export wb
+     1
  }
