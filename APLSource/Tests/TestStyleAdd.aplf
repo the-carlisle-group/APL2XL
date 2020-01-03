@@ -91,7 +91,7 @@
      RowStyles←{
          ⍝. Test that it is possible to arrange styles per row
          ⍝. Row styles must be manually arranged unlike columns
-         numFmt←'#,##0' '@' 'm/d/yyyy'
+         numFmt←'#,##0' '0.00%' 'm/d/yyyy'
          fonts←(20 1 'Calibri' 2)(40 1 'Calibri' 2)(10 1 'Calibri' 2)
          fills←('solid' 'F12345' 'ABCDEF')('solid' 'AA1122' '0000cc')('solid' '0cc133' 'FF6699')
          borders←(5⍴⊂'thick' 1)(5⍴⊂'thin' '00FF00')(5⍴⊂'thin' 'FF00FF')
@@ -103,5 +103,5 @@
          (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡3⊃⊃↓wb.WS
      }
 
-     ⊃∧/(BasicStyle'')(OnlyNumFmt'')(OnlyFont'')(OnlyFill'')(OnlyBorder'')(ColumnStyles'')⍝(RowStyles'')
+     ⊃∧/(BasicStyle'')(OnlyNumFmt'')(OnlyFont'')(OnlyFill'')(OnlyBorder'')(ColumnStyles'')(RowStyles'')
  }
