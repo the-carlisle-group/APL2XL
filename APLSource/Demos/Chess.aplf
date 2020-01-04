@@ -11,7 +11,7 @@
          range←⎕NS''
          range.Value←⍵
          range.Address←'B2'
-         range.Fill←1↓⍤1⊢8 9⍴('solid' 'd4b790' 1)('solid' '87673b' 1)
+         range.Fill←¯1↓⍤1⊢8 9⍴('solid' 'd4b790' 1)('solid' '87673b' 1)
 
          ⍝. Border ←→ left right top bottom diagonal
          border←'lrtbd'

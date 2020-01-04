@@ -8,13 +8,15 @@
      0=⍴⍵:0
      s←⍺.Styles
      addUnique←{⍵≡'':⍺ ⋄ ⍺⍪∪↑,⍵}
-     s.numFmts←s.numFmts,∪,0⊃⍵
-     s.(fonts fills borders)←s.(fonts fills borders)addUnique¨1↓⍵
+     max←⊃⌈/⍴¨⍵ ⍝ get the largest shape (if there is 0 styles, no shape, if there is a style: ⍴range.Value)
 
-     max←⊃⌈/⍴¨⍵                            ⍝ get the largest shape (if there is 0 styles, no shape, if there is a style: ⍴range.Value)
-     id←max∘⍴{⍵≡'':0 ⋄ ⍺⍳↑,⍵}            ⍝ find the index of each value, or reshape 0 to match the shape of existing styles
+     ⍝. Number formats are handled separately since s.numFmts is a vector, and custom numFmts index starts at 164
+     s.numFmts←s.numFmts,∪,0⊃⍵
      numid←max⍴(163×0≠nid)+nid←s.numFmts⍳,0⊃⍵
-     (fontid fillid bordid)←s.(fonts fills borders)id¨1↓⍵
+
+     id←max∘⍴{⍵≡'':0 ⋄ ⍺⍳↑,⍵}  ⍝ find the index of each value, or reshape 0 to match the shape of existing styles
+     s.(fonts fills borders)←s.(fonts fills borders)addUnique¨1↓⍵
+     (fontid fillid bordid) ←s.(fonts fills borders)id¨1↓⍵
 
      styles←⍉↓⍉↑numid fontid fillid bordid ⍝ Join styles by cell and orient cells correctly
      s.cellXfs←s.cellXfs⍪∪↑,styles         ⍝ Add the unique styles to the xfs id table
