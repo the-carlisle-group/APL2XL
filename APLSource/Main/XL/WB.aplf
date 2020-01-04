@@ -12,7 +12,7 @@ WB←{
   ⍝. Include default values for styles
   wb.Styles←⎕NS''
   ⍝ numFmt  ←→ 'formatcode'
-  wb.Styles.numFmts←⊂'General'
+  wb.Styles.numFmts←1⍴⊂'General'
   ⍝ font    ←→ size color name family scheme
   wb.Styles.fonts  ←1 4⍴11 1 'Calibri' 2       ⍝ defaults
   ⍝ fill    ←→ pattern foreground background

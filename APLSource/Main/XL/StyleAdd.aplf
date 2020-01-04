@@ -1,44 +1,22 @@
  StyleAdd←{
      ⍝ ⍵        ←→ numFmt font fill border
+     ⍝ ⍺        ←→ WB namespace
      ⍝ numFmt   ←→ 'formatcode'                   -- char vec
      ⍝ font     ←→ size color name family         -- int charvec charvec charvec
-     ⍝ fill     ←→ pattern foreground background  -- TODO: Fill this in
+     ⍝ fill     ←→ pattern foreground background  -- 5⍴(style hexcolor) -- ('charvec' 'charvec')
      ⍝ border   ←→ left right top bottom diagonal -- nested vec
+     0=⍴⍵:0
      s←⍺.Styles
-     0=≢⍵:0
-     (numFmt font fill border)←4↑⍵
+     addUnique←{⍵≡'':⍺ ⋄ ⍺⍪∪↑,⍵}
+     s.numFmts←s.numFmts,∪,0⊃⍵
+     s.(fonts fills borders)←s.(fonts fills borders)addUnique¨1↓⍵
 
-     getId←{
-         add←{
-             (0≠≢⍴⍵):∪⍺⍪⊆⍵
-             ⍺
-         }
-         (numFmt font fill border)←4↑⍵
-         s.numFmts{⍺ add ⍵}←numFmt
-         s.fonts{⍺ add ⍵}←font
-         s.fills{⍺ add ⍵}←fill
-         s.borders{⍺ add ⍵}←border
+     max←⊃⌈/⍴¨⍵                            ⍝ get the largest shape (if there is 0 styles, no shape, if there is a style: ⍴range.Value)
+     id←max∘⍴{⍵≡'':0 ⋄ ⍺⍳↑,⍵}            ⍝ find the index of each value, or reshape 0 to match the shape of existing styles
+     numid←max⍴(163×0≠nid)+nid←s.numFmts⍳,0⊃⍵
+     (fontid fillid bordid)←s.(fonts fills borders)id¨1↓⍵
 
-
-         s.numFmts{⍺ add ⍵}←numFmt
-         s.fonts{⍺ add ⍵}←font
-         s.fills{⍺ add ⍵}←fill
-         s.borders{⍺ add ⍵}←border
-
-         normal←{⍵×⍵<≢⍺} ⍝ 0 is the default value
-         id←{⍺ normal ⍺⍳(⊃⌽⍴⍺)⍴⍵} ⍝ reshape first
-
-        ⍝ TODO: include a list of defalut number formats and only include ones not in the default collection
-        ⍝ offset by 160 for custom formats only
-         numid←{0=≢⍴⍵:0 ⋄ r+163×0<r←s.numFmts normal s.numFmts⍳⊆⍵}numFmt
-         fontid←s.fonts id font
-         fillid←s.fills id fill
-         bordid←s.borders id border
-
-        ⍝ gridobject dyalog gui
-         s.cellXfs(∪⍪)←cellId←(numid fontid fillid bordid) ⍝ only unique ids
-         s.cellXfs⍳cellId ⍝ return the index of the new cellid
-
-     }
-     getId¨⍉↓⍉↑⍵
+     styles←⍉↓⍉↑numid fontid fillid bordid ⍝ Join styles by cell and orient cells correctly
+     s.cellXfs←s.cellXfs⍪∪↑,styles         ⍝ Add the unique styles to the xfs id table
+     s.cellXfs id styles                   ⍝ Return all of the cell ids
  }
