@@ -53,10 +53,10 @@ This table is an exhaustive list of currently implemented styling features, and 
 
 |Style|Supported|Value|Usage|Note|
 |---|---|---|---|---|
-|Number Format|x|ExcelNumberFormat:'Character Vector'|range.NumberFormat←'m/d/yyyy'||
-|Font|x|Size:Integer Color:Integer Name:'Character Vector' Font-Family:Integer|range.Font←11 1 'Broadway' 5||
-|Fill|x|Pattern:'Character Vector' ForegroundColor:'HEXColor' BackgroundColor:'HEXColor'|range.Fill←'solid' 'ff6699' '33cc33'||
-|Border|x|5⍴(⊂Thickness:'Character Vector' Color:'HEXColor')|range.Border←5⍴('thin' 1)('thick' '0000cc')||
+|Number Format|x|ExcelNumberFormat:'Character Vector'|range.NumberFormat←⊂'m/d/yyyy'||
+|Font|x|Size:Integer Color:Integer Name:'Character Vector' Font-Family:Integer|range.Font←⊂11 1 'Broadway' 5||
+|Fill|x|Pattern:'Character Vector' ForegroundColor:'HEXColor' BackgroundColor:'HEXColor'|range.Fill←⊂'solid' 'ff6699' '33cc33'||
+|Border|x|5⍴(⊂Thickness:'Character Vector' Color:'HEXColor')|range.Border←⊂5⍴('thin' 1)('thick' '0000cc')||
 |String Formatting| | | | Not Implemented|
 |Table| | | | Not Implemented|
 
@@ -79,6 +79,8 @@ Respecting Font Family, this number is absolutely required to match the font nam
 7. Use that value in your font definition: `range.Font←12 1 'Font Name' n` 
 
 ### Border
+See `./APLSource/Demos/Chess.aplf` for an example of how to specify borders. 
+
 Borders 5 element list relates to Left, Right, Top, Bottom, and Diagonal. Each border position is a tuple containing the type of border, and the color. There are many possible border types, although, not all have been documented. 
 
 Currently documented values for border types
