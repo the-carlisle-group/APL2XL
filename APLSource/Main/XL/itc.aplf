@@ -1,10 +1,11 @@
  itc←{
     ⍝. ⍵ ←→ row column in a matrix
-    ⍝. This function converts cellular notation to integer index pairs
-    ⍝. Usage: index2Cell 12 1
-    ⍝. Returns: Excel cell string 
-    ⍝. ex: (index2Cell 0 0)≡ 'A1'
-    (row col)←2↑⍵
-    str←{⍵<0:'' ⋄ (∇⌊¯1+⍵÷26), ⎕A⌷⍨26|⍵}
-    (str col),⍕row+1
+    ⍝. This function converts integer index pairs to Excel cell co-ordinates
+    ⍝. Usage: itc 2 2⍴0 0 1 1
+    ⍝. Returns: Excel cell string
+    ⍝. ex: 'A1' ≡ itc 0 0
+    ⍝. ex: 'A1' 'B2' ≡ itc 2 2⍴0 0, 1 1
+     rc←(¯2↑1,⍴⍵)⍴⍵ ⍝ Make 2-col matrix
+     r←({(-1+25<⍵)↑¨↓(' ',⎕A)[0 1+⍤1⍉26 26⊤⍵]}rc[;1]),¨⍕¨1+rc[;0]
+     1=⍴⍴⍵:⊃r ⋄ r
  }

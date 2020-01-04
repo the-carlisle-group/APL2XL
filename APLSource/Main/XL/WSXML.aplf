@@ -71,9 +71,25 @@
          styles←(flatten shapes⍴¨style)[order]        ⍝ data type of each cell
          cells←⊃{⍺,⍪⍵}/sInds sVals sTypes styles     ⍝ join the cell meta-data
 
-    ⍝. Group row numbers with its corresponding list of cell meta data
          rowNumbers←⊃¨sInds
-         cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
+         rowNumbers←rowNumbers[g←⍋rowNumbers]
+         cells←cells[g;]
+         rowcellcount←{≢⍵}⌸rowNumbers ⍝ # of cells in each row
+
+         (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
+         rts←,¨'rts' ⍝ to share values
+
+         rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
+         numrows←≢rowxml
+         cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
+         vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
+         cellsxml←((2×≢cxml),4)⍴cxml,vxml
+         xmlinput←(rowxml⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
+         rows←⎕XML xmlinput
+
+    ⍝. Group row numbers with its corresponding list of cell meta data
+⍝         rowNumbers←⊃¨sInds
+⍝         cellsByRow←rowNumbers{⍺ ⍵}⌸↓cells
 ⍝         rows←{
             ⍝ used to be
             ⍝ rows←rowXML⍤1⊢cellsByRow
@@ -88,7 +104,7 @@
 ⍝             }¨c
 ⍝             ⎕XML row⍪⊃{⍺⍪⍵}/cell
 ⍝         }⍤1⊢cellsByRow
-         rows←rowXML⍤1⊢cellsByRow
+⍝         rows←rowXML⍤1⊢cellsByRow
     ⍝. Generate XML
          sheetdata←'sheetData'tag rows                           ⍝ part of <worksheet> body
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
