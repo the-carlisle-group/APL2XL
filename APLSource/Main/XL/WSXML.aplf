@@ -42,7 +42,7 @@
          max←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
 
     ⍝. Generate indices for excel cells
-         inds←flatten rangeIndices rangeMap¨shapes ⍝ indices for each value in value
+         inds←flatten rangeIndices rangeMap¨shapes  ⍝ indices for each value in value
          order←⍋inds
 
     ⍝. Sort all of the cell meta data according to its index
