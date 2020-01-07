@@ -14,7 +14,7 @@
   ⍝. All function results are of the following form
   ⍝. Check that the worksheet was has the correct style in the correct position
   ⍝. Also check that the cellXfs indices are set correctly
-     ConfirmValues←{((1 4⍴⍺)≡¯1↑⍵.Styles.cellXfs)∧(((⍴4⊃sheet)⍴1)≡3⊃sheet←⊃↓⍵.WS)}
+     ConfirmValues←{((1 4⍴⍺)≡¯1↑⍵.Styles.cellXfs)∧(((⍴3⊃sheet)⍴1)≡2⊃sheet←⊃↓⍵.WS)}
 
   ⍝. Before Each
      NewWB←{ ⍝ Return an empty workbook
@@ -85,7 +85,7 @@
          style←numFmt fonts fills borders
          _←wb xl.WSAdd'TestSheetName' 'A1'style value
          cellXfs←4 4⍴0 0 0 0 164 1 2 1 165 2 3 2 166 3 4 3
-         (cellXfs≡wb.Styles.cellXfs)∧((⍴value)⍴1 2 3)≡3⊃⊃↓wb.WS
+         (cellXfs≡wb.Styles.cellXfs)∧((⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
 
      RowStyles←{
@@ -100,7 +100,7 @@
          style←{⍉5 3⍴⍵}¨numFmt fonts fills borders ⍝ rearrange styles to be row oriented
          _←wb xl.WSAdd'TestSheetName' 'A1'style value
          cellXfs←4 4⍴0 0 0 0 164 1 2 1 165 2 3 2 166 3 4 3
-         (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡3⊃⊃↓wb.WS
+         (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
 
      ⊃∧/(BasicStyle'')(OnlyNumFmt'')(OnlyFont'')(OnlyFill'')(OnlyBorder'')(ColumnStyles'')(RowStyles'')

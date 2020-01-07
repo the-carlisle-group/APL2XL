@@ -4,16 +4,25 @@
     ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
     ⍝. ⍵[3] ←→ cell values
     ⍝. ⍺ ←→ workbook namespace
-    ⍝. This function defines the Worksheets.Table name and appends records to this table
-    ⍝. Returns: ⍺
-
-    ⍝⍝⍝ TODO: Should take a workspace as left argument
-    ⍝⍝⍝ elsewhere:
-    ⍝⍝⍝ for all namespace: ns.XML ns.Table
-    ⍝⍝⍝ enumerating parts is desirable so the XML and table naming should be rethought
-     type←⍺ WS_convert 3⊃⍵    ⍝ convert the value to correct excel value based on its type
-     styles←⊂⍺ StyleAdd(⍴3⊃⍵)∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵
-     new←⍵[0 1],styles,type   ⍝ type is a 2 element vector of values and types
-     ⍺.WS⍪←(1+⊃⍴⍺.WS),new  ⍝ raw string data is not stored in the ⍺.WS, so that the
-     ⍺
+    ⍝. Returns: wb
+     wb←⍺
+     convert←{
+         mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
+         drs←11 80 160 320 83 163 323 '645'            ⍝ APL types
+         conv←{
+             'b'≡⍺:{⍵:'True' ⋄ 'False'}⍵
+             'n'≡⍺:⍵
+             's'≡⍺:wb SSAdd ⍵
+             ⍵
+         }
+         t←mapt[drs⍳⎕DR¨⍵]
+         v←t conv¨⍵
+         v t
+     }
+     (name address)←⍵[0 1]
+     (values types)←wb convert 3⊃⍵
+     styles←wb StyleAdd(⍴3⊃⍵)∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵
+     new←name address styles values types
+     wb.WS⍪←new  ⍝ raw string data is not stored in the ⍺.WS, so that the
+     wb
  }
