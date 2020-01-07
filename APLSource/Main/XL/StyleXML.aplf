@@ -1,5 +1,13 @@
  StyleXML←{
-     ⍝. ⍵ ←→ workbook, instance of #.WB
+    ⍝. ⍵ ←→ workbook, instance of #.WB
+    ⍝. Styles within spreadsheetML are implemented to minimize repetition, and this is done with collections.
+    ⍝. Within the styles part there are the collections shown below.
+    ⍝. Most of the collections (except for <dxfs> and <tableStyles>) relate to cells.
+    ⍝. The first four--numFmts, fonts, fills, and borders--contain all of the possible charateristics for every cell in the workbook
+    ⍝. Each may have many elements, each one defining the characteristics for a set of cells that have the same such characteristics.
+    ⍝. The formatting for a cell can be specified with a list or collection of indices into these four collections.
+    ⍝. And in fact, that is what the <cellXfs> is.
+    ⍝. It contains a collection of groups of indices, one group for every combination of cell formatting characteristics found in the workbook.
      wb←⍵
      s←wb.Styles
 
@@ -7,26 +15,10 @@
      ⍝. Complete descriptions of the collections can be found in the comments below
      collection←{⍺(⊂'count'(≢⍵))tag(⍺⍺¨↓⍵)}
 
+     ⍝. TODO: use ⎕XML
      ⍝. Define functions for a single element in each of the collections.
      ⍝. Collections such as numFmts fills fonts and borders all have unique tags
      ⍝. The following functions define each single tag of the collections
-     numFmt←{⍝ a single numFmt tag
-         (id code)←⍵
-         attrs←⊂'numFmtId'id
-         attrs,←⊂'formatCode'code
-         'numFmt'attrs tag''
-     }
-
-     font←{⍝ a single font tag
-         (s c n f)←⍵
-         sz←'sz'(⊂'val's)tag''
-         color←'color'(⊂'theme'c)tag''
-         name←'name'(⊂'val'n)tag''
-         family←'family'(⊂'val'f)tag''
-         ⍝scheme←'scheme'(⊂'val' 'minor')tag''
-         'font'tag∊sz color name family ⍝scheme
-     }
-
      fill←{
          ⍝. ⍵[0] ←→ patternFill type
          ⍝. ⍵[1] ←→ foreground fill info (TODO: not implemented)
@@ -58,15 +50,7 @@
          (5⍴'')≡⍵:'border'tag∊default''
          'border'tag body ⍵
      }
-     xf←{ ⍝. for cellXfs
-         (numid fontid fillid borderid xfid)←⍵
-         attrs←⊂'numFmtId'numid
-         attrs,←⊂'fontId'fontid
-         attrs,←⊂'fillId'fillid
-         attrs,←⊂'borderId'borderid
-         attrs,←⊂'xfId'xfid
-         'xf'attrs tag''
-     }
+
      styleXF←{⍝ TODO: Implement
          '<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>'
      }
@@ -77,24 +61,31 @@
          '<tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleLight16"/>'
      }
 
+     general←{
+         (parent child)←2↑⍺
+         tags←2↓⍺
+         p←(0 parent ''),(⊂1 2⍴'count'(≢⍵))
+         c←(1 child ''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
+         ⎕XML p⍪c
+     }
+     font←{
+        fattr←'val' 'theme' 'val' 'val'
+        fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢⍵
+        fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
+        fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
+        ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪fontCollection
+     }
+     numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode' general {(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
+     cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid' general {⍵,⍳≢⍵}s.cellXfs
+     fonts←font s.fonts
 
-  ⍝. Styles within spreadsheetML are implemented to minimize repetition, and this is done with collections.
-  ⍝. Within the styles part there are the collections shown below.
-  ⍝. Most of the collections (except for <dxfs> and <tableStyles>) relate to cells.
-  ⍝. The first four--numFmts, fonts, fills, and borders--contain all of the possible charateristics for every cell in the workbook
-  ⍝. Each may have many elements, each one defining the characteristics for a set of cells that have the same such characteristics.
-  ⍝. The formatting for a cell can be specified with a list or collection of indices into these four collections.
-  ⍝. And in fact, that is what the <cellXfs> is.
-  ⍝. It contains a collection of groups of indices, one group for every combination of cell formatting characteristics found in the workbook.
-     numFmts←'numFmts'(numFmt collection){(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts ⍝ TODO: 160×0=r assumes that excel understands the numberformat supplied by the user to be a custom number format, if excel doesn't accept built-in numberformats as custom, this will need to be fixed
-     fonts←'fonts'(font collection)s.fonts
-     fills←'fills'(fill collection)s.fills ⍝ TODO: fill only returns pattern fill, not with bg and fg
+     ⍝. TODO: refactor the following to use ⎕XML
+     fills←'fills'(fill collection)s.fills 
      borders←'borders'(border collection)s.borders
-     cellXfs←'cellXfs'(xf collection){⍵,⍳≢⍵}s.cellXfs
      cellStyleXfs←'cellStyleXfs'(styleXF collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
-     cellStyles←'cellStyles'(cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
-     tableStyles←table''⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
-     dxfs←'<dxfs count="0"/>'⍝TODO: implement
+     cellStyles←'cellStyles'(cellStyle collection)' '   ⍝ TODO: add s.cellStyles in Main.XL.WB
+     tableStyles←table''                                ⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
+     dxfs←'<dxfs count="0"/>'                           ⍝TODO: implement
 
      ⍝ TODO: implement
      extLst←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'

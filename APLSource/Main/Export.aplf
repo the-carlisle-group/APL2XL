@@ -9,6 +9,7 @@
      ⍝. ⍵.Sheets[n].Ranges[n].NumberFormat ←→ apply numberformat to range
      ⍝. ⍵.Sheets[n].Ranges[n].Value        ←→ values in the range
      ⍝. ⍵.Sheets[n].Ranges[n].Address      ←→ address can be either indices i.e. ←→ 0 0 (at cell A1) or cell string i.e. ←→ 'A1' (at index 0 0)
+     ∨/2<≢∘⍴¨(,(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'
 
      ⍝. Create a new workbook
      wb←##.Main.XL.WB ⍵.FileName 1

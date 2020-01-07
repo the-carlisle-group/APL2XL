@@ -17,7 +17,6 @@
      WSColumnNames←'Sheet Name' 'Address' 'Style' 'Value' 'Type' ⍝ // Should be unnecessary
 
      sheetView←{
-    ⍝. ⍵ ←→
          wbv←'workbookViewId' '0'
          attrs←(⍵≠0)⊃(('tabSelected' '1')wbv)(⊂wbv)
          'sheetViews'tag'sheetView'attrs tag''
