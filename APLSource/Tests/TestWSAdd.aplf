@@ -12,7 +12,7 @@
          wb←NewWB''
          nums←3 3⍴⍳9
          _←wb xl.WSAdd'TestSheetName' 'A1' ''nums
-         (1 5⍴'TestSheetName' 'A1' 0 nums((⍴nums)⍴'n'))≡1↑wb.WS
+         (1 5⍴'TestSheetName' 'A1'((⍴nums)⍴0)nums((⍴nums)⍴'n'))≡1↑wb.WS
      }
 
      ⍝ Test adding a second value to the same cell
@@ -25,7 +25,7 @@
 
          nums2←4 4⍴10×⍳16
          _←wb xl.WSAdd'TestSheetName' 'A1' ''nums2
-         (1 5⍴'TestSheetName' 'A1' 0 nums2((⍴nums2)⍴'n'))≡¯1↑wb.WS
+         (1 5⍴'TestSheetName' 'A1'((⍴nums2)⍴0)nums2((⍴nums2)⍴'n'))≡¯1↑wb.WS
      }
 
      ⍝ Test incrementing ids
@@ -40,7 +40,7 @@
 
          strings←3 3⍴'zero' 'one' 'two'
          _←wb xl.WSAdd'TestSheetName2' 'A1' ''strings
-         (1 5⍴'TestSheetName2' 'A1' 0(3 3⍴⍳3)(3 3⍴'s'))≡¯1↑wb.WS
+         (1 5⍴'TestSheetName2' 'A1'(3 3⍴0)(3 3⍴⍳3)(3 3⍴'s'))≡¯1↑wb.WS
      }
 
      StrTest2←{
@@ -49,11 +49,11 @@
          wb←NewWB''
          strings←3 3⍴'zero' 'one' 'two'
          _←wb xl.WSAdd'TestSheetName' 'A1' ''strings
-         firstValueIsCorrect←(1 5⍴'TestSheetName' 'A1' 0(3 3⍴⍳3)(3 3⍴'s'))≡¯1↑wb.WS
+         firstValueIsCorrect←(1 5⍴'TestSheetName' 'A1'(3 3⍴0)(3 3⍴⍳3)(3 3⍴'s'))≡¯1↑wb.WS
 
          strings2←3 3⍴'three' 'four' 'one'
          _←wb xl.WSAdd'TestSheetName' 'D1' ''strings2
-         firstValueIsCorrect∧(1 5⍴'TestSheetName' 'D1' 0(3 3⍴3 4 1)(3 3⍴'s'))≡¯1↑wb.WS
+         firstValueIsCorrect∧(1 5⍴'TestSheetName' 'D1'(3 3⍴0)(3 3⍴3 4 1)(3 3⍴'s'))≡¯1↑wb.WS
      }
 
      ValueWithStyle←{

@@ -24,52 +24,50 @@
      }
 
      sheet←{
-    ⍝. ⍵ ←→ all records in Worksheets.Table grouped by unique Table name
-    ⍝. See: Worksheets.Add for definition of each row of ⍵
-    ⍝. Each unique sheet name in Worksheets.Table corresponds to a unique file of the following format:
-    ⍝. xl/worksheets/sheet{n}.xml
-    ⍝. Returns: Generated XML to be written to a single sheet{n}.xml file
+         ⍝. ⍵ ←→ all records in Worksheets.Table grouped by unique Table name
+         ⍝. See: Worksheets.Add for definition of each row of ⍵
+         ⍝. Each unique sheet name in Worksheets.Table corresponds to a unique file of the following format:
+         ⍝. xl/worksheets/sheet{n}.xml
+         ⍝. Returns: Generated XML to be written to a single sheet{n}.xml file
 
     ⍝. Helper functions
-         flatten←{⊃,/,¨⍵}                           ⍝ returns a vector of cell indices
-         expand←{⍺∘+¨⍳⍵}                            ⍝ expand the Cell address to one cell address per value
-         cellMap←{1≥≢⍵:⊃,/↓⍺ expand 1,⍵ ⋄ ⍺ expand ⍵} ⍝ ⍵ ←→ shape of a value in the sheet, expand and offset the cell value
+         flatten←{⊃,/,¨⍵}                              ⍝ a vector of cell indices
+         offset←{⍺∘+¨⍳⍵}                               ⍝ offset ⍳⍵ from cell address ⍺
+         rangeMap←{1≥≢⍵:⊃,/↓⍺ offset 1,⍵ ⋄ ⍺ offset ⍵} ⍝ generate the range of addresses starting at ⍺
 
-         (address style value type)←↓1↓⍉⍵           ⍝ drop the id and name columns
-         index←cti¨address                          ⍝ the index is used to generate ranges of cells
-         shapes←{⍴1/⍵}¨value                        ⍝ ensure that scalars are at least rank 1
-         max←⊃⌈/index+shapes                        ⍝ find the maximum cell location in the sheet
+    ⍝. Start by finding the shape of each range, and the largest shape in the sheet
+         (sheetName address style value type)←↓⍉⍵   
+         rangeIndices←cti¨address    ⍝ used to generate address ranges
+         shapes←{⍴1/⍵}¨value         ⍝ ensure that scalars are at least rank 1
+         max←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
 
     ⍝. Generate indices for excel cells
-         inds←flatten index cellMap¨shapes          ⍝ indices for each value in value
+         inds←flatten rangeIndices rangeMap¨shapes ⍝ indices for each value in value
          order←⍋inds
 
     ⍝. Sort all of the cell meta data according to its index
-         sInds←inds[order]                          ⍝ index of each Excel cell
-         sVals←(flatten value)[order]               ⍝ values to place in each cell
-         sTypes←(flatten type)[order]       ⍝ data type of each cell
-         styles←(flatten shapes⍴¨style)[order]      ⍝ data type of each cell
-         cells←⊃{⍺,⍪⍵}/sInds sVals sTypes styles    ⍝ join the cell meta-data
+         sInds←inds[order]                                          ⍝ index of each Excel cell
+         cells←⊃{⍺,⍪⍵}/(⊂sInds),{(flatten ⍵)[order]}¨value type style ⍝ join the cell meta-data
 
          rowNumbers←⊃¨sInds
          rowNumbers←rowNumbers[g←⍋rowNumbers]
          cells←cells[g;]
          rowcellcount←{≢⍵}⌸rowNumbers ⍝ # of cells in each row
 
+     ⍝. Transform the cell meta data into an argument appropriate for ⎕XML
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
          rts←,¨'rts' ⍝ to share values
-
          rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
          numrows←≢rowxml
          cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
          xmlinput←(rowxml⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
-         rows←⎕XML xmlinput
 
     ⍝. Generate XML
-         sheetdata←'sheetData'tag rows                           ⍝ part of <worksheet> body
-         dimension←'dimension'(⊂'ref'('A1:',itc max))tag'' ⍝ part of <worksheet> body
+         rows←⎕XML xmlinput
+         sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
+         dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
          ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata  ⍝ the complete <sheetdata> body
      }
 

@@ -3,26 +3,25 @@
     ⍝. ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
     ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
     ⍝. ⍵[3] ←→ cell values
-    ⍝. ⍺ ←→ workbook namespace
-    ⍝. Returns: wb
      wb←⍺
      convert←{
          mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
-         drs←11 80 160 320 83 163 323 '645'            ⍝ APL types
+         drs←11 80 160 320 83 163 323 '645'             ⍝ APL types
          conv←{
-             'b'≡⍺:{⍵:'True' ⋄ 'False'}⍵
-             'n'≡⍺:⍵
-             's'≡⍺:wb SSAdd ⍵
-             ⍵
+             'b'≡⍺:{⍵:'True' ⋄ 'False'}⍵ ⍝ convert boolean
+             'n'≡⍺:⍵                     ⍝ convert numbers
+             's'≡⍺:wb SSAdd ⍵            ⍝ convert strings
+             ⍵                           ⍝ unknown data type
          }
-         t←mapt[drs⍳⎕DR¨⍵]
-         v←t conv¨⍵
+         t←mapt[drs⍳⎕DR¨⍵] ⍝ get the apl data types
+         v←t conv¨⍵        ⍝ convert the types
          v t
      }
+     ⍝. Normalize the range data for ouput as xml
+     shape←⍴value←3⊃⍵
      (name address)←⍵[0 1]
-     (values types)←wb convert 3⊃⍵
-     styles←wb StyleAdd(⍴3⊃⍵)∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵
-     new←name address styles values types
-     wb.WS⍪←new  ⍝ raw string data is not stored in the ⍺.WS, so that the
+     (values types)←wb convert value
+     styles←shape ⍴ wb StyleAdd (shape∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵)
+     wb.WS⍪←name address styles values types
      wb
  }
