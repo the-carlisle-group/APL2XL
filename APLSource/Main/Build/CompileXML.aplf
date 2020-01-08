@@ -6,7 +6,7 @@
 ⍝. Then creates the directory structure required for a .xlsx file
 ⍝. Then zips the folder to create an Excel workbook
  name←wb.Name
- folder←∊¯1↓1 ⎕NPARTS⊃(0=≢name)⌷name'tempXLSX'
+ folder←∊¯1↓1 ⎕NPARTS wb.Name
  header←'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
 
  ⍝. The following code compiles the XML from each collection and generates the filename into which the XML is written

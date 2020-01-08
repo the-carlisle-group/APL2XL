@@ -5,11 +5,11 @@
  root←name nest'_rels' 'docProps' 'xl'
  xl←name nest'xl'nest'_rels' 'theme' 'worksheets'
 
- 3 ⎕NDELETE name
- ⎕MKDIR∘∊¨⊃,/(⊂name)root xl
+ _←3 ⎕NDELETE name
+ _←⎕MKDIR∘∊¨⊃,/(⊂name)root xl
 
  write←{
      file data←⍵
-     (⊂∊data)⎕NPUT∊name'/'file
+     _←(⊂∊data)⎕NPUT∊name'/'file
  }
  write⍤1⊢files

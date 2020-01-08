@@ -4,11 +4,11 @@
  defaultValues←{(≢⍺)↑⍵,(≢⍵)↓⍺}
  (name delete)←'' 0 defaultValues,⊆args
 
- (path zpath)←{(∊⍵)(∊⍵'.xlsx')}name⍝1↓1 ⎕NPARTS ⊃name
+ (path zpath)←{(∊⍵)(∊⍵'.xlsx')}name
 
 ⍝. delete to overwrite the existing file
  :If delete
-     3 ⎕NDELETE zpath
+     _←3 ⎕NDELETE zpath
  :EndIf
 
 ⍝. Dependency
@@ -17,4 +17,4 @@
 
 ⍝. This deletes a folder known to be created by this program
 ⍝. Safe to delete
- 3 ⎕NDELETE path
+ _←3 ⎕NDELETE path
