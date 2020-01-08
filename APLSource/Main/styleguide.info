@@ -1,6 +1,6 @@
 This file documents language and naming in the rest of the application
 
-Domain Specific Language:
+Domain Language:
 UC  ←→ upper case
 lc  ←→ lower case
 cti ←→ cell to index conversion 'A1' ←→ 0 0

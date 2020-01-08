@@ -4,6 +4,6 @@
   ⍝. This RelID helps the workbook to know where to find the shared strings file
      wb←⍵
      fmt←{⍵((⊂⍵) S '{}.xml')}
-     wb.SSRID←⍵ RWAdd fmt'sharedStrings' ⍝ // sharedStrings should be SSRelType
+     wb.SSRID←⍵ RWAdd fmt'sharedStrings' 
      wb.SSRID
  }

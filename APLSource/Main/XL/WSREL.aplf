@@ -3,7 +3,7 @@
   ⍝. This function sets the Worksheets.rId value
   ⍝. This value is used in ContentTypes and in Workbook
      wb←⍵
-     fmt←'worksheet'∘{⍺(⍺ ⍵ S'{}s/sheet{}.xml')} ⍝ // 'worksheet' should be WSRelType
+     fmt←'worksheet'∘{⍺(⍺ ⍵ S'{}s/sheet{}.xml')} 
      count←1+⍳≢∪0⌷⍉wb.WS
      wb.WSRID←{wb RWAdd ⍵}∘fmt¨count
      wb.WSRID
