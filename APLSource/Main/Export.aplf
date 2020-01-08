@@ -18,6 +18,7 @@
          sheet←⍵
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
+
      ranges←{ ⍝. Add this range to the worksheet table in wb
          (sname range)←⍵
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address⍝ convert indices to cell values

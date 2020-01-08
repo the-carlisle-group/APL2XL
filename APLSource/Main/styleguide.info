@@ -17,9 +17,3 @@ RW ←→ Rels Workbook ⍝ ./xl/_rels/workbook.xml.rels
 SS ←→ SharedStrings ⍝ ./xl/sharedStrings.xml
 WB ←→ Workbook      ⍝ ./xl/workbook.xml
 WS ←→ Worksheet     ⍝ ./xl/worksheet.xml
-
-⍝⍝⍝ TODO 
-⍝. Documentation notebooks. ⍝. should bue used in lieu of normal comments to signify importance
-⍝. ⍵ ←→ document/info omega
-⍝. ⍺ ←→ document/info alpha
-⍝. all functions should start with ⍵[n] ←→ and ⍺[n] ←→ explaining the format of arguments
