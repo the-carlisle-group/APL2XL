@@ -5,7 +5,7 @@
   ⍝. Consume the ⍵.SS table to generate XML
   ⍝. Returns: Generated XML for the xl/sharedStrings.xml file
 
-  (strings counts)←(⍳2)⌷¨⊂⍵.SS
+  (strings counts)←(⍳2)⌷¨⊂⍉{⍺,≢⍵}⌸⍵.SS
   props←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
   props,←⊂'count'(⍕+/counts)
   props,←⊂'uniqueCount'(⍕≢strings)

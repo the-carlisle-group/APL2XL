@@ -70,6 +70,7 @@
          c←(1 child ''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
          ⎕XML p⍪c
      }
+
      font←{
         fattr←'val' 'theme' 'val' 'val'
         fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢⍵
@@ -77,6 +78,7 @@
         fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪fontCollection
      }
+
      numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode' general {(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
      cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid' general {⍵,⍳≢⍵}s.cellXfs
      fonts←font s.fonts

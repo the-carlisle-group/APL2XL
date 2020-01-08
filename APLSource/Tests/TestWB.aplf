@@ -11,7 +11,7 @@
          wb←⍵
          wbNamesExist←⊃∧/{0<wb.⎕NC ⍵}¨'WS' 'SS' 'RW' 'Styles'
          ~wbNamesExist:0 ⍝ If one doesn't exist, the following code will error
-         (0 5)(2 0)(0 3)≡⍴¨wb.(WS SS RW)
+         (0 5⍴⍬)(0⍴⍬)(0 3⍴⍬)≡wb.(WS SS RW)
      }
 
      StyleDefaultsCorrect←{

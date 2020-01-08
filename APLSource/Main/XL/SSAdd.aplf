@@ -3,10 +3,6 @@
   ⍝. ⍺ ←→ workbook
   ⍝. xl/sharedStrings.xml file tracks a list of unique strings found in workbook
   ⍝. append ⍺.SS with new strings, or find the index of the string if it exists, and increment the count
-  c←1+s←0 ⍝ Row[s+1] = count of instances of Row[s] ⋄ Row[s] = strings
-  _←⍺.SS{⍺,⍵/⍨~(⊣⌿⍵)∊ s⌷⍺}←⍪⍵ 0 ⍝ append new values to SS
-  i←(s ⌷ ⍺.SS) ⍳ ⊂⍵  ⍝ index
-  (i ⌷ c ⌷ ⍺.SS)+←1  ⍝ increment count at index
-  i                  ⍝ return index
+     ⍺.SS←∪⍺.SS,⊆⍵
+     ⍺.SS⍳⊆⍵
  }
- 

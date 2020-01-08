@@ -6,7 +6,7 @@ WB←{
   wb←⎕NS''
   wb.(Name ShouldDelete)←⍵
   wb.WS    ←0 5⍴⍬ ⍝ 5 column table
-  wb.SS    ←2 0⍴⍬ ⍝ 2 row table, row 1 is strings, row 2 is occurances
+  wb.SS    ←0⍴⍬   ⍝ 2 row table, row 1 is strings, row 2 is occurances
   wb.RW    ←0 3⍴⍬
 
   ⍝. Include default values for styles
