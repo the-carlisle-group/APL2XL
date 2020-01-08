@@ -1,6 +1,5 @@
 CTXML←{
 	⍝. ⍵ ←→ workbook 
-	⍝⍝⍝ TODO: rename this function
 	generateSheetFileNames←{
 		name←'Override' 
 		attrs←⊂'PartName' (∊'/xl/worksheets/sheet'(⍕⍵)'.xml')

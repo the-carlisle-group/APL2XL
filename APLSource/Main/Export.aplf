@@ -13,13 +13,15 @@
 
      ⍝. Create a new workbook
      wb←##.Main.XL.WB ⍵.FileName 1
-     sheets←{ ⍝. Add each of the ranges in this sheet to the wb worksheet table
+     ⍝. Add each of the ranges in this sheet to the wb worksheet table
+     sheets←{ 
          wb←⍺
          sheet←⍵
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
 
-     ranges←{ ⍝. Add this range to the worksheet table in wb
+     ⍝. Add a range to the worksheet table in wb
+     ranges←{ 
          (sname range)←⍵
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address⍝ convert indices to cell values
          styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border'

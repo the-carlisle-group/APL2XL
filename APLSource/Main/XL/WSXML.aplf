@@ -1,7 +1,5 @@
  WSXML←{
   ⍝. ⍵ ←→ workbook namespace
-  ⍝⍝⍝ TODO: tag←Workbook.DSL.tag ??
-  ⍝⍝⍝ TODO: this function should be a dfn which takes a namespace as argument
      wb←⍵
      worksheet←'worksheet'
      wattrs←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
@@ -24,28 +22,28 @@
 
      sheet←{
          ⍝. ⍵ ←→ all records in Worksheets.Table grouped by unique Table name
-         ⍝. See: Worksheets.Add for definition of each row of ⍵
-         ⍝. Each unique sheet name in Worksheets.Table corresponds to a unique file of the following format:
+         ⍝. See: WSAdd for definition of each row of ⍵
+         ⍝. Each unique sheet name in wb.WS corresponds to a unique file of the following format:
          ⍝. xl/worksheets/sheet{n}.xml
          ⍝. Returns: Generated XML to be written to a single sheet{n}.xml file
 
-    ⍝. Helper functions
+     ⍝. Helper functions
          flatten←{⊃,/,¨⍵}                              ⍝ a vector of cell indices
          offset←{⍺∘+¨⍳⍵}                               ⍝ offset ⍳⍵ from cell address ⍺
          rangeMap←{1≥≢⍵:⊃,/↓⍺ offset 1,⍵ ⋄ ⍺ offset ⍵} ⍝ generate the range of addresses starting at ⍺
 
-    ⍝. Start by finding the shape of each range, and the largest shape in the sheet
+     ⍝. Start by finding the shape of each range, and the largest shape in the sheet
          (sheetName address style value type)←↓⍉⍵   
          rangeIndices←cti¨address    ⍝ used to generate address ranges
          shapes←{⍴1/⍵}¨value         ⍝ ensure that scalars are at least rank 1
          max←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
 
-    ⍝. Generate indices for excel cells
+     ⍝. Generate indices for excel cells
          inds←flatten rangeIndices rangeMap¨shapes  ⍝ indices for each value in value
          order←⍋inds
 
-    ⍝. Sort all of the cell meta data according to its index
-         sInds←inds[order]                                          ⍝ index of each Excel cell
+     ⍝. Sort all of the cell meta data according to its index
+         sInds←inds[order]                                            ⍝ index of each Excel cell
          cells←⊃{⍺,⍪⍵}/(⊂sInds),{(flatten ⍵)[order]}¨value type style ⍝ join the cell meta-data
 
          rowNumbers←⊃¨sInds
@@ -72,5 +70,5 @@
 
      sheets←wb.WS
      tables←↑¨sheets[;WSColumnNames⍳⊂'Sheet Name']{⊂⍵}⌸↓sheets ⍝ group rows in table by sheetname
-     (⍳≢tables)sheet¨tables ⍝ build sheet xml per table
+     (⍳≢tables)sheet¨tables                                    ⍝ build sheet xml per table
  }

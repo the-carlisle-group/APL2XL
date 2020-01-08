@@ -1,5 +1,8 @@
  StyleXML←{
     ⍝. ⍵ ←→ workbook, instance of #.WB
+     wb←⍵
+     s←wb.Styles
+    ⍝. Documentation ←→
     ⍝. Styles within spreadsheetML are implemented to minimize repetition, and this is done with collections.
     ⍝. Within the styles part there are the collections shown below.
     ⍝. Most of the collections (except for <dxfs> and <tableStyles>) relate to cells.
@@ -8,23 +11,22 @@
     ⍝. The formatting for a cell can be specified with a list or collection of indices into these four collections.
     ⍝. And in fact, that is what the <cellXfs> is.
     ⍝. It contains a collection of groups of indices, one group for every combination of cell formatting characteristics found in the workbook.
-     wb←⍵
-     s←wb.Styles
 
      ⍝. collection generates the tag for each collection within the style document
      ⍝. Complete descriptions of the collections can be found in the comments below
      collection←{⍺(⊂'count'(≢⍵))tag(⍺⍺¨↓⍵)}
 
-     ⍝. TODO: use ⎕XML
      ⍝. Define functions for a single element in each of the collections.
      ⍝. Collections such as numFmts fills fonts and borders all have unique tags
      ⍝. The following functions define each single tag of the collections
+
+     ⍝. TODO: use ⎕XML
      fill←{
          ⍝. ⍵[0] ←→ patternFill type
-         ⍝. ⍵[1] ←→ foreground fill info (TODO: not implemented)
-         ⍝. ⍵[2] ←→ background fill info (TODO: not implemented)
+         ⍝. ⍵[1] ←→ foreground fill info (TODO: not complete)
+         ⍝. ⍵[2] ←→ background fill info (TODO: not complete)
          ⍝. a single fill tag
-         full←{⍝ TODO: Implement, there are more properties necessary
+         full←{⍝ TODO: Complete, there are more properties necessary
              (p f b)←⍵
              foreground←'fgColor'(⊂'rgb'f)tag''
              background←'bgColor'(⊂'rgb'b)tag''

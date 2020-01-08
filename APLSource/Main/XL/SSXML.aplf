@@ -3,7 +3,7 @@
   ⍝. Row 1 is a list of unique strings
   ⍝. Row 2 is a counter of occurences of string in Row 1
   ⍝. Consume the ⍵.SS table to generate XML
-  ⍝. Returns: Generate XML for the xl/sharedStrings.xml file
+  ⍝. Returns: Generated XML for the xl/sharedStrings.xml file
 
   (strings counts)←(⍳2)⌷¨⊂⍵.SS
   props←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
