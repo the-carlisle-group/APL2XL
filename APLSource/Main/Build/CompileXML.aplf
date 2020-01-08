@@ -1,4 +1,4 @@
- name←CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex
+ name←CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex;temp_excel_directory
 ⍝. wb (right argument) is an instance of ##.XL.WB namespace containing all the collections required to populate a workbook
 ⍝. Style Disclaimer: This is a tradfn because it causes side-effects
 
@@ -43,6 +43,8 @@
 ⍝. Combine the paths with the XML, and output XML to each path
  p x←{⊃,/⊆¨⍵}¨paths xmls
  output←⍉↑p({header ⍵}¨x)
+
 ⍝. Write the output to the paths inside of the correct XLSX directory structure
- output CreateXLSXDirectory folder
- Zip folder 1
+ temp_excel_directory←(739⌶0),'/temp_excel_directory'
+ output CreateXLSXDirectory temp_excel_directory
+ temp_excel_directory Zip folder 1

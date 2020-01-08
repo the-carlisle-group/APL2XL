@@ -1,4 +1,4 @@
- zpath←Zip args;⎕USING;delete;name;path
+ zpath←temp Zip args;⎕USING;delete;name;path
 ⍝. This function zips a directory
 ⍝. Style Disclaimer: This is a tradfn as it causes side-effects
  defaultValues←{(≢⍺)↑⍵,(≢⍵)↓⍺}
@@ -13,7 +13,7 @@
 
 ⍝. Dependency
  ⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
- System.IO.Compression.ZipFile.CreateFromDirectory path zpath
+ System.IO.Compression.ZipFile.CreateFromDirectory temp zpath
 
 ⍝. This deletes a folder known to be created by this program
 ⍝. Safe to delete
