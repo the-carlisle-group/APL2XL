@@ -5,5 +5,5 @@
   ⍝. append ⍺.SS with new strings, or find the index of the string if it exists, and increment the count
   ⍝. Returns: first index of strings in ⍵
      ⍺.SS←⍺.SS,⊆⍵
-     ⍺.SS⍳⊆⍵
+     (∪⍺.SS)⍳⊆⍵
  }
