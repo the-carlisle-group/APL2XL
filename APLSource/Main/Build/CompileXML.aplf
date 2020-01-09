@@ -1,13 +1,30 @@
- name←CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex;temp_excel_directory
+ name←CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex;temp_excel_directory;step
 ⍝. wb (right argument) is an instance of ##.XL.WB namespace containing all the collections required to populate a workbook
 ⍝. Style Disclaimer: This is a tradfn because it causes side-effects
 
 ⍝. This Function calls all XML generating functions
 ⍝. Then creates the directory structure required for a .xlsx file
 ⍝. Then zips the folder to create an Excel workbook
+
  name←wb.Name
  folder←∊¯1↓1 ⎕NPARTS wb.Name
  header←'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+ temp_excel_directory←(739⌶0),'/temp_excel_directory'
+
+ :Trap 0
+
+     :If wb.ShouldDelete
+         step←'deleting existing file'
+         _←3 ⎕NDELETE folder,'.xlsx'
+     :EndIf
+
+     step←'creating target file'
+     ⎕MKDIR folder,'.xlsx'
+     3 ⎕NDELETE folder,'.xlsx'
+
+ :Else
+     ('Error ',step,': ',⎕DMX.(Message,' ',,⍕OSError))⎕SIGNAL 777
+ :EndTrap
 
  ⍝. The following code compiles the XML from each collection and generates the filename into which the XML is written
  ap←##.XL.AppPATH wb
@@ -43,8 +60,7 @@
 ⍝. Combine the paths with the XML, and output XML to each path
  p x←{⊃,/⊆¨⍵}¨paths xmls
  output←⍉↑p({header ⍵}¨x)
+ output CreateXLSXDirectory temp_excel_directory
 
 ⍝. Write the output to the paths inside of the correct XLSX directory structure
- temp_excel_directory←(739⌶0),'/temp_excel_directory'
- output CreateXLSXDirectory temp_excel_directory
  temp_excel_directory Zip folder 1

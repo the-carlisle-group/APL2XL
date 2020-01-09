@@ -9,19 +9,20 @@
      ⍝. ⍵.Sheets[n].Ranges[n].NumberFormat ←→ apply numberformat to range
      ⍝. ⍵.Sheets[n].Ranges[n].Value        ←→ values in the range
      ⍝. ⍵.Sheets[n].Ranges[n].Address      ←→ address can be either indices i.e. ←→ 0 0 (at cell A1) or cell string i.e. ←→ 'A1' (at index 0 0)
-     ∨/2<≢∘⍴¨(,(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'
+     777::GetErrorMessage ⎕SIGNAL 11
+     ∨/2<≢∘⍴¨(∊(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'⎕SIGNAL 11
 
      ⍝. Create a new workbook
      wb←##.Main.XL.WB ⍵.FileName 1
      ⍝. Add each of the ranges in this sheet to the wb worksheet table
-     sheets←{ 
+     sheets←{
          wb←⍺
          sheet←⍵
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
 
      ⍝. Add a range to the worksheet table in wb
-     ranges←{ 
+     ranges←{
          (sname range)←⍵
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address⍝ convert indices to cell values
          styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border'

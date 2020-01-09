@@ -1,0 +1,3 @@
+ r←GetErrorMessage
+⍝ Return message to be signalled
+ r←⎕DMX.EM

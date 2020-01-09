@@ -17,4 +17,4 @@
 
 ⍝. This deletes a folder known to be created by this program
 ⍝. Safe to delete
- _←3 ⎕NDELETE path
+ _←3 ⎕NDELETE temp
