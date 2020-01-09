@@ -1,10 +1,16 @@
  TestSimpleSheetMK←{
+     ⍺←1 ⍝ use styles
      fn←(739⌶0),'/XL2APLSimpleSheet.xlsx'
      (range1←⎕NS'').(Address Value)←'B2'(⍵ 3⍴⍳3×⍵)
      (range2←⎕NS'').(Address Value)←'E2'(⍪↓⍵ 3⍴⎕A)
-     range1.NumberFormat←##.Main.NumberFormats
-     range1.Fill←##.Main.Fills
-     range1.Font←(20 1 'Calibri' 2)(11 1 'Calibri' 2)
+
+     _←{~⍵:⍬ ⍝ Conditional style application
+         range1.NumberFormat←##.Main.NumberFormats
+         range1.Fill←##.Main.Fills
+         range1.Font←(20 1 'Calibri' 2)(11 1 'Calibri' 2)
+         ⍬
+     }⍺
+
      (sheet←⎕NS'').(Name Ranges)←'Data'(range1 range2)
      (wb←⎕NS'').(FileName Sheets)←fn sheet
      ##.Main.Export wb
