@@ -5,8 +5,9 @@
      (range2←⎕NS'').(Address Value)←'E2'(⍪↓⍵ 3⍴⎕A)
 
      _←{~⍵:⍬ ⍝ Conditional style application
-         range1.NumberFormat←##.Main.NumberFormats
-         range1.Fill←##.Main.Fills
+         ⍝. 100 returns all numberformats and all fills
+         range1.NumberFormat←##.Main.NumberFormats 100
+         range1.Fill←##.Main.Fills 100
          range1.Font←(20 1 'Calibri' 2)(11 1 'Calibri' 2)
          ⍬
      }⍺

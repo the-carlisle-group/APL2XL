@@ -1,4 +1,9 @@
  NextPosition←{
+     ⍝. ⍵  ←→ range namespace, with range.(Address Value)
+     ⍝. ⍺  ←→ boolean value, 1 for numerical index, 0 for alphanumerical cell index
+     ⍝. ⍺⍺ ←→ function that takes index ⍺⍺ shape, returns numerical cell index
+     ⍝. Returns: cell or numerical index of the result of index ⍺⍺ shape
+     ⍝. This function is used by Main.NextCol Main.NextRow for finding the next available empty cells
      return←{⍺:⍵ ⋄ itc ⍵}
      range←⍵
      index←cti range.Address

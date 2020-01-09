@@ -1,5 +1,6 @@
 StyleREL←{
   ⍝. ⍵ ←→ workbook namespace
+  ⍝. Returns: Relationship ID of the styles file
   StyleRID←⍵ RWAdd 'styles' 'styles.xml'
   StyleRID
 }

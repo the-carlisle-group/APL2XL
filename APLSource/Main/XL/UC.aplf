@@ -1,1 +1,1 @@
-UC←{1(819⌶)⍵} ⍝ upper case argument
+UC←{1(819⌶)⍵} ⍝ upper case ⍵

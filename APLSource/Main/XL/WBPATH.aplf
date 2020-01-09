@@ -1,3 +1,4 @@
 WBPATH←{
-'xl/workbook.xml'
+  ⍝. Path to the workbook xml file
+  'xl/workbook.xml'
 }

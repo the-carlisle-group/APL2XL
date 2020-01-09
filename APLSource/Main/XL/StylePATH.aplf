@@ -1,3 +1,4 @@
 StylePATH←{
-'xl/styles.xml'
+  ⍝. Path to styles xml file
+  'xl/styles.xml'
 }

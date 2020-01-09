@@ -1,5 +1,7 @@
  tag←{
      ⍝. ⍵ ←→ body: simple char vec (empty vec if no body)
+     ⍝⍝⍝ TODO: This function should be deprecated in lieu of ⎕XML
+
      ⍝. ⍺[0] ←→ tag name: simple char vec
      ⍝. ⍺[1] ←→ attributes: (optional) nested vector, ((k v) (k v)...)
      ⍝. This function generates xml tags

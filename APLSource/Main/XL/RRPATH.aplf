@@ -1,4 +1,6 @@
 RRPATH←{
+  ⍝. ⍵ ←→ workbook
+  ⍝. Path to the rels file
   '_rels/.rels'
 }
 

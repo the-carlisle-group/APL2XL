@@ -2,6 +2,7 @@
   ⍝. ⍵ ←→ workbook namespace
   ⍝. This function sets the Worksheets.rId value
   ⍝. This value is used in ContentTypes and in Workbook
+  ⍝. Returns: Relationship ID for a single worksheet
      wb←⍵
      fmt←'worksheet'∘{⍺(⍺ ⍵ S'{}s/sheet{}.xml')} 
      count←1+⍳≢∪0⌷⍉wb.WS

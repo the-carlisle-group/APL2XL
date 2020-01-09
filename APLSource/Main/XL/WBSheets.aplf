@@ -1,6 +1,7 @@
  WBSheets←{
      wb←⍵
-    ⍝. This function builds the <sheets> tags for xl/workbook.xml
+    ⍝. This function builds the <sheets> tags for ./outputFile/xl/workbook.xml
+    ⍝. For each name in wb.WS, generate a tag which will point to the worksheet files by ID
      sheet←{
          name sheetId relId←⍵
          t←'sheet'
@@ -11,6 +12,5 @@
      }
 
      body←sheet⍤1⊢{⍵,(1+⍳≢⍵),⍪wb.WSRID}WSNames wb
-
      'sheets'tag body
  }

@@ -1,4 +1,7 @@
 ThemeREL←{
+  ⍝⍝⍝ TODO: There can be multiple theme files, and theme files are not implemented
+  ⍝⍝⍝ TODO: This file will need to be modified once themes are implemented
+  ⍝⍝⍝ TODO: See WSRel for an example of how to accomplish this
   wb←⍵
   wb.ThemeRID←⍵ RWAdd 'theme' 'theme/theme1.xml'
   wb.ThemeRID

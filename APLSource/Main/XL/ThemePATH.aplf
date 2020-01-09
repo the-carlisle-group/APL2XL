@@ -1,4 +1,5 @@
 ThemePATH←{
+  ⍝. Path to a default theme file
 'xl/theme/theme1.xml'
 }
 

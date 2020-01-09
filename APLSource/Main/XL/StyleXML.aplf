@@ -1,8 +1,9 @@
  StyleXML←{
     ⍝. ⍵ ←→ workbook, instance of #.WB
+    ⍝⍝⍝. TODO: This function is under construction
+    ⍝⍝⍝. TODO: Refactor all styles to use ⎕XML
      wb←⍵
      s←wb.Styles
-    ⍝. Documentation ←→
     ⍝. Styles within spreadsheetML are implemented to minimize repetition, and this is done with collections.
     ⍝. Within the styles part there are the collections shown below.
     ⍝. Most of the collections (except for <dxfs> and <tableStyles>) relate to cells.
@@ -63,7 +64,7 @@
          '<tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleLight16"/>'
      }
 
-     general←{
+     general←{⍝. Used for generating xml for numFmts and cellXfs
          (parent child)←2↑⍺
          tags←2↓⍺
          p←(0 parent ''),(⊂1 2⍴'count'(≢⍵))
@@ -71,7 +72,7 @@
          ⎕XML p⍪c
      }
 
-     font←{
+     font←{⍝. Generates xml for fonts
         fattr←'val' 'theme' 'val' 'val'
         fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢⍵
         fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops

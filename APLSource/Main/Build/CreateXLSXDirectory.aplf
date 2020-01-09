@@ -1,15 +1,8 @@
- files CreateXLSXDirectory name;nest;root;xl;write
+ CreateXLSXDirectory tempFolder;nest;root;xl;write
 ⍝. Set up empty XLSX folder structure
-⍝. This function is a tradfn as it causes side-effects
  nest←{(⊂⍺,'/'),¨⍵}
- root←name nest'_rels' 'docProps' 'xl'
- xl←name nest'xl'nest'_rels' 'theme' 'worksheets'
+ root←tempFolder nest'_rels' 'docProps' 'xl'
+ xl←tempFolder nest'xl'nest'_rels' 'theme' 'worksheets'
 
- _←3 ⎕NDELETE name
- _←⎕MKDIR∘∊¨⊃,/(⊂name)root xl
-
- write←{
-     file data←⍵
-     _←(⊂∊data)⎕NPUT∊name'/'file
- }
- write⍤1⊢files
+ _←3 ⎕NDELETE tempFolder             ⍝ erase existing tempfolder
+ _←⎕MKDIR∘∊¨⊃,/(⊂tempFolder)root xl  ⍝ create each nested directory in the correct structure

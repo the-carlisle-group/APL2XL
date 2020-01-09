@@ -1,5 +1,5 @@
 WBXML←{
-⍝. This function constructs the xl/workbook.xml file
+⍝. This function constructs the ./outputFile/xl/workbook.xml file
 wb   ←'workbook'
 atwb ←⊂'xmlns'   'http://schemas.openxmlformats.org/spreadsheetml/2006/main' 
 atwb,←⊂'xmlns:r' 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'

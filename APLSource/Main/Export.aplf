@@ -9,11 +9,14 @@
      ⍝. ⍵.Sheets[n].Ranges[n].NumberFormat ←→ apply numberformat to range
      ⍝. ⍵.Sheets[n].Ranges[n].Value        ←→ values in the range
      ⍝. ⍵.Sheets[n].Ranges[n].Address      ←→ address can be either indices i.e. ←→ 0 0 (at cell A1) or cell string i.e. ←→ 'A1' (at index 0 0)
+
+     ⍝. Validation
      777::GetErrorMessage ⎕SIGNAL 11
      ∨/2<≢∘⍴¨(∊(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'⎕SIGNAL 11
 
-     ⍝. Create a new workbook
+     ⍝. Create an empty namespace with containers for the intermediate data representation used for compiling XML
      wb←##.Main.XL.WB ⍵.FileName 1
+
      ⍝. Add each of the ranges in this sheet to the wb worksheet table
      sheets←{
          wb←⍺
@@ -24,10 +27,11 @@
      ⍝. Add a range to the worksheet table in wb
      ranges←{
          (sname range)←⍵
-         range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address⍝ convert indices to cell values
-         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border'
-         ⍺ ##.Main.XL.WSAdd sname range.Address styles range.Value
+         range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address               ⍝ Convert indices to cell values: 0 0 → 'A1'
+         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border' ⍝ Collect all of the styles in the rang
+         ⍺ ##.Main.XL.WSAdd sname range.Address styles range.Value                ⍝ Add this range to an intermediate table
      }
+
      _←wb sheets¨⍵.Sheets
      ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory
  }

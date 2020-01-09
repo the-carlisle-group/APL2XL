@@ -2,6 +2,7 @@ RWAdd←{
   ⍝. ⍵[0] ←→ the <type> in the 'http://schemas.../relationships/{type}'
   ⍝. ⍵[1] ←→ the file target. ie. 'worksheets/{filename}.xml'
   ⍝. Add the new <type> xml tag to xl/_rels/workbook.xml.rels
+  ⍝. Returns the newly added value
   table←⍺.RW
 	⍺.RW{table⍪(1+⊃⊖table),⍵}←2↑⍵
   ⊃⊖⍺.RW

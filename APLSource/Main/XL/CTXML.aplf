@@ -1,5 +1,6 @@
 CTXML←{
 	⍝. ⍵ ←→ workbook 
+	⍝. Returns: xml for ./outputFile/[Content_Types].xml
 	generateSheetFileNames←{
 		name←'Override' 
 		attrs←⊂'PartName' (∊'/xl/worksheets/sheet'(⍕⍵)'.xml')

@@ -1,8 +1,8 @@
 WB←{
   ⍝. ⍵[0] ←→ name of file
   ⍝. ⍵[1] ←→ should delete existing file if any
-  ⍝. Returns: workbook namespace
   ⍝. Generate all the collections used for building XML for each Excel "part"
+  ⍝. Returns: workbook namespace
   wb←⎕NS''
   wb.(Name ShouldDelete)←⍵
   wb.WS    ←0 5⍴⍬ ⍝ 5 column table

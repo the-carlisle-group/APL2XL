@@ -1,27 +1,27 @@
- name←CompileXML wb;folder;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex;temp_excel_directory;step
-⍝. wb (right argument) is an instance of ##.XL.WB namespace containing all the collections required to populate a workbook
-⍝. Style Disclaimer: This is a tradfn because it causes side-effects
-
-⍝. This Function calls all XML generating functions
-⍝. Then creates the directory structure required for a .xlsx file
-⍝. Then zips the folder to create an Excel workbook
+ name←CompileXML wb;outputFile;header;ap;ax;cp;cx;ctp;ctx;rrp;rrx;rwp;rwx;ssp;ssx;wbp;wbx;wsp;wsx;paths;xmls;p;x;output;stylep;stylex;temp_excel_directory;step
+⍝. wb is an instance of ##.XL.WB namespace containing all the collections required to populate a workbook
+⍝. This Function calls all XML generating functions,
+⍝. creates the directory structure required for a .xlsx file,
+⍝. and zips the folder to create an Excel workbook
 
  name←wb.Name
- folder←∊¯1↓1 ⎕NPARTS wb.Name
+ outputFile←∊¯1↓1 ⎕NPARTS wb.Name  ⍝ output file without extension, if any. correct extension added in Zip
  header←'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
  temp_excel_directory←(739⌶0),'/temp_excel_directory'
 
+ ⍝. Validation: If any error occurs, exit to the top of Main.Export
  :Trap 0
+     step←'creating temp folder'
+     CreateXLSXDirectory temp_excel_directory 
 
      :If wb.ShouldDelete
          step←'deleting existing file'
-         _←3 ⎕NDELETE folder,'.xlsx'
+         _←3 ⎕NDELETE outputFile,'.xlsx'
      :EndIf
 
-     step←'creating target file'
-     ⎕MKDIR folder,'.xlsx'
-     3 ⎕NDELETE folder,'.xlsx'
-
+     step←'creating output file'
+     ⎕MKDIR outputFile,'.xlsx'
+     3 ⎕NDELETE outputFile,'.xlsx'
  :Else
      ('Error ',step,': ',⎕DMX.(Message,' ',,⍕OSError))⎕SIGNAL 777
  :EndTrap
@@ -59,8 +59,11 @@
 
 ⍝. Combine the paths with the XML, and output XML to each path
  p x←{⊃,/⊆¨⍵}¨paths xmls
- output←⍉↑p({header ⍵}¨x)
- output CreateXLSXDirectory temp_excel_directory
+ outputXML←⍉↑p({header ⍵}¨x)
 
-⍝. Write the output to the paths inside of the correct XLSX directory structure
- temp_excel_directory Zip folder 1
+⍝. Write the output to the paths inside of the correct XLSX directory structure, and Zip to outputFile 
+ temp_excel_directory WriteXML⍤1⊢outputXML
+ temp_excel_directory Zip outputFile
+
+⍝. This deletes a folder known to be created by this program. Safe to delete
+ _←3 ⎕NDELETE temp_excel_directory

@@ -1,3 +1,4 @@
 SSPATH←{
-'xl/sharedStrings.xml'
+  ⍝. Path to shared strings file
+  'xl/sharedStrings.xml'
 }

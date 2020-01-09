@@ -1,0 +1,3 @@
+temp WriteXML (file data)
+⍝. Write data to file
+(⊂∊data)⎕NPUT∊temp'/'file

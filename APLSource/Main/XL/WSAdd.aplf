@@ -1,18 +1,21 @@
  WSAdd←{
-    ⍝. ⍵[0] ←→ sheetname
-    ⍝. ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
-    ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
-    ⍝. ⍵[3] ←→ cell values
+     ⍝. ⍵[0] ←→ sheetname
+     ⍝. ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
+     ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
+     ⍝. ⍵[3] ←→ cell values
+     ⍝. Add a single sheet value 
      wb←⍺
-     shape←⍴value←3⊃⍵
      mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
      drs←11 80 160 320 83 163 323 645               ⍝ APL types
+
+     ⍝. Normalize the range data for ouput as xml
+     shape←⍴value←3⊃⍵
      t←,mapt[drs⍳{wt←⎕DR ⍵ ⋄ wt=326:⎕DR¨⍵ ⋄ (⍴⍵)⍴wt}value] ⍝ get the apl data types
      v←,value
-     i←⍸t='b' ⋄ v[i]←('False' 'True')[v[i]]     ⍝ Convert bools
-     i←⍸t='s' ⋄ v[i]←{0=≢⍵:⍬ ⋄ wb SSAdd v[⍵]}i ⍝ Covert strings to indices into string table
+     b←⍸t='b' ⋄ v[b]←('False' 'True')[v[b]]    ⍝ Convert bools
+     s←⍸t='s' ⋄ v[s]←{0=≢⍵:⍬ ⋄ wb SSAdd v[⍵]}s ⍝ Covert strings to indices into string table
+     
      (values types)←shape∘⍴¨v t
-     ⍝. Normalize the range data for ouput as xml
      (name address)←⍵[0 1]
      styles←shape⍴wb StyleAdd(shape∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵)
      wb.WS⍪←name address styles values types

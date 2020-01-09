@@ -1,6 +1,6 @@
 RWXML←{
   ⍝. ⍵ ←→ workbook
-  ⍝. This function generates XML for the xl/_rels/workbook.xml.rels file
+  ⍝. This function generates XML for the ./outputFile/xl/_rels/workbook.xml.rels file
   wb   ←⍵
   rs   ←⊂'Relationships'
   attrs←⊂'xmlns' 'http://schemas.openxmlformats.org/package/2006/relationships'

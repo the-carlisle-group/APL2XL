@@ -1,20 +1,5 @@
- zpath←temp Zip args;⎕USING;delete;name;path
-⍝. This function zips a directory
-⍝. Style Disclaimer: This is a tradfn as it causes side-effects
- defaultValues←{(≢⍺)↑⍵,(≢⍵)↓⍺}
- (name delete)←'' 0 defaultValues,⊆args
-
- (path zpath)←{(∊⍵)(∊⍵'.xlsx')}name
-
-⍝. delete to overwrite the existing file
- :If delete
-     _←3 ⎕NDELETE zpath
- :EndIf
-
-⍝. Dependency
+ zpath←temp Zip target;⎕USING;delete;name;path
+⍝. This function zips the temp directory as target,'.xlsx'
+⍝. This is the only file that contains an external dependency of the .NET zip.dll
  ⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
- System.IO.Compression.ZipFile.CreateFromDirectory temp zpath
-
-⍝. This deletes a folder known to be created by this program
-⍝. Safe to delete
- _←3 ⎕NDELETE temp
+ System.IO.Compression.ZipFile.CreateFromDirectory temp (outputFile,'.xlsx')
