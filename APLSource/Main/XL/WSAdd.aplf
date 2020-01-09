@@ -4,24 +4,17 @@
     ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
     ⍝. ⍵[3] ←→ cell values
      wb←⍺
-     convert←{
-         mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
-         drs←11 80 160 320 83 163 323 '645'             ⍝ APL types
-         conv←{
-             'b'≡⍺:{⍵:'True' ⋄ 'False'}⍵ ⍝ convert boolean
-             'n'≡⍺:⍵                     ⍝ convert numbers
-             's'≡⍺:wb SSAdd ⍵            ⍝ convert strings
-             ⍵                           ⍝ unknown data type
-         }
-         t←mapt[drs⍳⎕DR¨⍵] ⍝ get the apl data types
-         v←t conv¨⍵        ⍝ convert the types
-         v t
-     }
-     ⍝. Normalize the range data for ouput as xml
      shape←⍴value←3⊃⍵
+     mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
+     drs←11 80 160 320 83 163 323 645               ⍝ APL types
+     t←,mapt[drs⍳{wt←⎕DR ⍵ ⋄ wt=326:⎕DR¨⍵ ⋄ (⍴⍵)⍴wt}value] ⍝ get the apl data types
+     v←,value
+     i←⍸t='b' ⋄ v[i]←('False' 'True')[v[i]]     ⍝ Convert bools
+     i←⍸t='s' ⋄ v[i]←{0=≢⍵:⍬ ⋄ wb SSAdd v[⍵]}i ⍝ Covert strings to indices into string table
+     (values types)←shape∘⍴¨v t
+     ⍝. Normalize the range data for ouput as xml
      (name address)←⍵[0 1]
-     (values types)←wb convert value
-     styles←shape ⍴ wb StyleAdd (shape∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵)
+     styles←shape⍴wb StyleAdd(shape∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵)
      wb.WS⍪←name address styles values types
      wb
  }
