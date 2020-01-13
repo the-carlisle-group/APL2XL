@@ -21,6 +21,7 @@
      sheets←{
          wb←⍺
          sheet←⍵
+         _←wb ##.Main.XL.WSViews sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
 
@@ -28,8 +29,8 @@
      ranges←{
          (sname range)←⍵
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address               ⍝ Convert indices to cell values: 0 0 → 'A1'
-         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border' ⍝ Collect all of the styles in the rang
-         ⍺ ##.Main.XL.WSAdd sname range.Address styles range.Value                ⍝ Add this range to an intermediate table
+         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border' ⍝ Collect all of the styles in the range
+         ⍺ ##.Main.XL.WSAdd sname range.Address styles (range.Value)                ⍝ Add this range to an intermediate table
      }
 
      _←wb sheets¨⍵.Sheets

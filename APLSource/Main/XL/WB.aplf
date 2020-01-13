@@ -8,6 +8,7 @@ WB←{
   wb.WS    ←0 5⍴⍬ ⍝ 5 column table
   wb.SS    ←0⍴⍬   ⍝ 2 row table, row 1 is strings, row 2 is occurances
   wb.RW    ←0 3⍴⍬
+  wb.SheetViews←0 2⍴⍬ ⍝ 1 2⍴(sheet name) (sheetViews xml)
 
   ⍝. Include default values for styles
   wb.Styles←⎕NS''

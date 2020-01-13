@@ -1,0 +1,24 @@
+ WSViews←{
+     wb←⍺
+     freezePane←{
+         0≥⍵.⎕NC'FP':⍬
+         (count orientation)←⍵{0<⍺.⎕NC ⍵:⍺⍎⍵ ⋄ }'FP'
+         c←⍕count
+         o←'rows' 'columns'⍳⊂orientation
+         pane  ←⊃o⌷'bottomLeft' 'topRight'
+         split ←⊃o⌷'ySplit' 'xSplit'
+         tlcell←itc⊃o⌷(count,0)(0,count)
+         range ←⊃o⌷(('XFD',¯1↑tlcell)((⊃tlcell),'1048574'))
+
+         pattrs←4 2⍴split c'topLeftCell'tlcell'activePane'pane'state' 'frozen'
+         sattrs←3 2⍴'pane'pane'activeCell'tlcell'sqref'(tlcell,':',range)
+         (2 'pane' ''pattrs)(2 'selection' ''sattrs)
+     }⍵
+
+     wbv←'workbookViewId' '0'
+     attrs←(('tabSelected' '1')wbv)
+     svs←(⎕XML↑(0 'sheetViews' ''(0 2⍴''))(1 'sheetView' ''(↑attrs)),freezePane)
+     
+     ⍺.SheetViews⍪←⍵.Name svs
+     wb
+ }

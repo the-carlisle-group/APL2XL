@@ -33,7 +33,7 @@
          rangeMap←{1≥≢⍵:⊃,/↓⍺ offset 1,⍵ ⋄ ⍺ offset ⍵} ⍝ generate the range of addresses starting at ⍺
 
      ⍝. Start by finding the shape of each range, and the largest shape in the sheet
-         (sheetName address style value type)←↓⍉⍵   
+         (sheetName address style value type)←↓⍉⍵
          rangeIndices←cti¨address    ⍝ used to generate address ranges
          shapes←{⍴1/⍵}¨value         ⍝ ensure that scalars are at least rank 1
          max←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
@@ -65,7 +65,9 @@
          rows←⎕XML xmlinput
          sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
-         ∊worksheet wattrs tag dimension(sheetView ⍺)sheetdata  ⍝ the complete <sheetdata> body
+         sheetViews←⊃1↓wb.SheetViews
+         ⍝sheetViews←wb.SheetViews[(wb.SheetViews[;0]⍳⊂sheetName);1]
+         ∊worksheet wattrs tag dimension sheetViews sheetdata  ⍝ the complete <sheetdata> body
      }
 
      sheets←wb.WS

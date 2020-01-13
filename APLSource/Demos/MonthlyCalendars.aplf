@@ -39,7 +39,7 @@
           ⍝. pair each name with each calendar, and generate a sheetname per name, and 2 ranges per sheetname
           ⍝. Each sheet contains a weekday name range and a calendar range
          monthSheets←calendar{⍵ sheet(∊days ⍺ range¨'A1' 'A2')}¨names
-         (wb←⎕NS'').(FileName Sheets)←((739⌶0),'/calendar')(∊yearSheet monthSheets)
+         (wb←⎕NS'').(FileName Sheets)←((739⌶0),'/calendar.xlsx')(∊yearSheet monthSheets)
          ##.Main.Export wb
      }
 
