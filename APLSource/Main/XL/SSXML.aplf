@@ -4,10 +4,10 @@
   ⍝. Row 2 is a counter of occurences of string in Row 1
   ⍝. Consume the ⍵.SS table to generate XML
   ⍝. Returns: Generated XML for the ./outputFile/xl/sharedStrings.xml file
-
-  (strings counts)←(⍳2)⌷¨⊂⍉{⍺,≢⍵}⌸⍵.SS
-  props←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
-  props,←⊂'count'(⍕+/counts)
-  props,←⊂'uniqueCount'(⍕≢strings)
-  'sst'props tag∊{'si'tag't'tag ⍵}¨strings
+     ⍵.SS,←⊂'empty'
+     (strings counts)←(⍳2)⌷¨⊂⍉{⍺,≢⍵}⌸⍵.SS
+     props←⊂'xmlns' 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+     props,←⊂'count'(⍕+/counts)
+     props,←⊂'uniqueCount'(⍕≢strings)
+     'sst'props tag∊{'si'tag't'tag ⍵}¨strings
  }

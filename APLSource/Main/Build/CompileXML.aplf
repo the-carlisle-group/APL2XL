@@ -55,7 +55,7 @@
  wsx←##.XL.WSXML wb
 
  paths←ap cp ctp rrp rwp ssp stylep wbp wsp
- xmls←ax cx ctx rrx rwx ssx stylex wbx wsx
+ xmls ←ax cx ctx rrx rwx ssx stylex wbx wsx
 
 ⍝. Combine the paths with the XML, and output XML to each path
  p x←{⊃,/⊆¨⍵}¨paths xmls

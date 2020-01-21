@@ -14,6 +14,7 @@
      777::GetErrorMessage ⎕SIGNAL 11
      ∨/2<≢∘⍴¨(∊(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'⎕SIGNAL 11
      ∨/2<≡¨(∊(,⍵.Sheets).Ranges).Value:'DEPTH ERROR: Range values must be less than depth 3'⎕SIGNAL 11
+
      ⍝. Create an empty namespace with containers for the intermediate data representation used for compiling XML
      wb←##.Main.XL.WB ⍵.FileName 1
 

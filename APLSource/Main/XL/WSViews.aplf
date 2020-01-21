@@ -1,6 +1,8 @@
  WSViews←{
      wb←⍺
+     sheet←⍵
      freezePane←{
+         ⍝. Take a worksheet namespace, and return the pane properties for a freezepane
          0≥⍵.⎕NC'FP':⍬
          (count orientation)←⍵{0<⍺.⎕NC ⍵:⍺⍎⍵ ⋄ }'FP'
          c←⍕count
@@ -13,7 +15,7 @@
          pattrs←4 2⍴split c'topLeftCell'tlcell'activePane'pane'state' 'frozen'
          sattrs←3 2⍴'pane'pane'activeCell'tlcell'sqref'(tlcell,':',range)
          (2 'pane' ''pattrs)(2 'selection' ''sattrs)
-     }⍵
+     } sheet
 
      wbv←'workbookViewId' '0'
      attrs←(('tabSelected' '1')wbv)
