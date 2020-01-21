@@ -1,7 +1,21 @@
 # APL2XL 
 APL2XL is a Dyalog APL library which exports APL arrays to Excel in the form of a .xlsx file. This library is a work in progress. 
 
+
 APL2XL assumes `⎕IO ⎕ML←0 1` and is not tested for any other settings for `⎕IO` or `⎕ML`.
+
+To use the library, run the following git command from a known location:
+
+```
+git clone https://github.com/the-carlisle-group/APL2XL.git
+```
+
+From Dyalog
+```
+    ]link.create # 'c:\path\to\APL2XL\APLSource'
+```
+The rooth namespace `#` should now contain the `Main` namespace, and you can now follow the example usage below. 
+
 
 ## Example Usage
 Other examples can be found in the `./APLSource/Demos/` directory of this project. 
