@@ -98,9 +98,7 @@ Number Formatting is the simplest feature in this list. If the number format for
 |\_(\* #,##0.00\_);\_(\* (#,##0.00);\_(\* "-"??_);\_(@\_)|
 
 ### Font
-Font names and sizes are self-explanitory. What are not well understood are color behavior, and font-family<integer>.
-
-Respecting Font Colors it is unknown which whether fill background colors interfere with font colors, or if there is a hierarchy within excel to determine which color is used in the sheet. Some experimentation will be needed to further clarify this point. 
+Font names and sizes are self-explanitory. What is not well understood is font-family<integer>.
 
 Respecting Font Family, this number is absolutely required to match the font name in some way. It is unclear yet how to determine this. An urgent feature should be added to match common names with their appropriate font families. In the interim, simply follow these steps:
 
