@@ -9,7 +9,7 @@ S   ←→ string formatting function
 col ←→ convert data type of an xml <c></c> tag
 tag ←→ create an xml tag
 
-XML files:
+XML:
 These are the conventions used when referring to data and functions pertaining to these files.
 When creating a workbook, there will be a wb.(RR RW SS WB WS). These properties are the data which is used to generate xml for these functions.
 RR ←→ Rels Root     ⍝ ./_rels 

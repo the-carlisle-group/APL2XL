@@ -3,7 +3,7 @@
      sheet←⍵
      freezePane←{
          ⍝. Take a worksheet namespace, and return the pane properties for a freezepane
-         0≥⍵.⎕NC'FP':⍬
+         0≥⍵.⎕NC'FreezePane':⍬
          (count orientation)←⍵{0<⍺.⎕NC ⍵:⍺⍎⍵ ⋄ }'FP'
          c←⍕count
          o←'rows' 'columns'⍳⊂orientation

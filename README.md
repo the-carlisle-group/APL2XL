@@ -8,10 +8,10 @@ Other examples can be found in the `./APLSource/Demos/` directory of this projec
 
 Workbooks consist of Worksheets, and Worksheets consist of Ranges. Ranges, Worksheets and Workbooks are simple to define as Namespaces, and include the following properties
 
-|Type|Required Variables|Optional Variables|
+|Namespaces|Required Variables|Optional Variables|
 |---|---|---|
 |Ranges|Value, Address|NumberFormat, Font, Fill, Border, Address|
-|Worksheets|Name, Ranges||
+|Sheets|Name, Ranges|FreezePane|
 |Workbook|Sheets, FileName||
 
 Define range comprised of values starting at an address, and optional formatting. **Note: Currently, APL2XL assumes the shape of the namespace.Value as the shape of the data in Excel.**  This means that `range.Value←'simple depth 1 character vector'` will place each character into a single cell accross the row starting at `range.Adress`. If you would like to place a character vector into a single cell, enclose the character vector. Ex. `range.Value←⊂'this will occupy a single cell'`
@@ -62,6 +62,40 @@ This table is an exhaustive list of currently implemented styling features, and 
 
 ### Number Formats
 Number Formatting is the simplest feature in this list. If the number format formula works in Excel, it will work here. 
+|Example Formats|
+|----|
+|#,##0 |
+|#,##0.00 |
+|#,##0_);(#,##0) |
+|#,##0_);\[Red\](#,##0) |
+|#,##0.00_);(#,##0.00) |
+|#,##0.00_);\[Red\](#,##0.00) |
+|$#,##0_);($#,##0)|
+|$#,##0_);\[Red\]($#,##0)|
+|$#,##0.00_);($#,##0.00)|
+|$#,##0.00_);\[Red\]($#,##0.00)|
+|0%|
+|0.00%|
+|0.00E+00|
+|##0.0E+0|
+|# ?/?|
+|# ??/??|
+|m/d/yyyy|
+|d-mmm-yy|
+|d-mmm|
+|mmm-yy|
+|h:mm AM/PM|
+|h:mm:ss AM/PM|
+|h:mm|
+|h:mm:ss|
+|m/d/yyyy h:mm|
+|mm:ss|
+|mm:ss.0|
+|@|
+|\_($\* #,##0\_);\_($\* (#,##0);\_($\* "-"\_);\_(@\_)|
+|\_(\* #,##0\_);\_(\* (#,##0);\_(\* "-"\_);_(@\_)|
+|\_($\* #,##0.00\_);\_($\* (#,##0.00);\_($\* "-"??\_);\_(@\_)|
+|\_(\* #,##0.00\_);\_(\* (#,##0.00);\_(\* "-"??_);\_(@\_)|
 
 ### Font
 Font names and sizes are self-explanitory. What are not well understood are color behavior, and font-family<integer>.
@@ -84,15 +118,40 @@ See `./APLSource/Demos/Chess.aplf` for an example of how to specify borders.
 Borders 5 element list relates to Left, Right, Top, Bottom, and Diagonal. Each border position is a tuple containing the type of border, and the color. There are many possible border types, although, not all have been documented. 
 
 Currently documented values for border types
-- thick
-- thin
+|Border Types|
+|---|
+|thick|
+|thin|
+|none|
 
 
 ### Fill
 A ranges fill value is a 3 element vector: patternfill foreground background. Foreground and background are defined as the hexcode for the color you want. There are many patternfill types, although not all have been documented yet.
 
-Currently documented patternfill types
-- solid
+|Patternfill Types|
+|----|
+|none|
+|solid|
+|gray125|
+|darkGray|
+|mediumGray|
+|lightGray|
+|gray125|
+|gray0625|
+|darkHorizontal|
+|darkHorizontal|
+|darkVertical|
+|darkDown|
+|darkUp|
+|darkGrid|
+|darkTrellis|
+|lightHorizontal|
+|lightVertical|
+|lightDown|
+|lightUp|
+|lightGrid|
+|lightTrellis|
+
 
 
 
