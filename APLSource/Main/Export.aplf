@@ -13,7 +13,7 @@
      ⍝. Validation
      777::GetErrorMessage ⎕SIGNAL 11
      ∨/2<≢∘⍴¨(∊(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'⎕SIGNAL 11
-
+     ∨/2<≡¨(∊(,⍵.Sheets).Ranges).Value:'DEPTH ERROR: Range values must be less than depth 3'⎕SIGNAL 11
      ⍝. Create an empty namespace with containers for the intermediate data representation used for compiling XML
      wb←##.Main.XL.WB ⍵.FileName 1
 
@@ -30,7 +30,7 @@
          (sname range)←⍵
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address               ⍝ Convert indices to cell values: 0 0 → 'A1'
          styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border' ⍝ Collect all of the styles in the range
-         ⍺ ##.Main.XL.WSAdd sname range.Address styles (range.Value)                ⍝ Add this range to an intermediate table
+         ⍺ ##.Main.XL.WSAdd sname range.Address styles(range.Value)                ⍝ Add this range to an intermediate table
      }
 
      _←wb sheets¨⍵.Sheets
