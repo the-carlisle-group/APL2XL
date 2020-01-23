@@ -1,0 +1,10 @@
+result←(test Controller) filename;filename;XL
+⍝. This function is not a dfn because of O
+:If'Windows'≢'-64'~⍨⊃#⎕WG'APLVersion'
+  :Return ¯1
+:EndIf
+'XL'⎕WC'OLEClient' 'Excel.Application'('InstanceMode' 'New')
+XL.Workbooks.Open⊂filename
+result←test XL.ActiveWorkbook
+XL.ActiveWorkbook.Close ⍬
+XL.Quit

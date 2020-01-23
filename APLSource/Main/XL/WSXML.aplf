@@ -22,8 +22,8 @@
          ⍝. Returns: Generated XML to be written to a single sheet{n}.xml file
 
      ⍝. Helper functions
-         flatten ←{⊃,/,¨⍵}                              ⍝ a vector of cell indices
-         offset  ←{⍺∘+¨⍳⍵}                               ⍝ offset ⍳⍵ from cell address ⍺
+         flatten←{⊃,/,¨⍵}                              ⍝ a vector of cell indices
+         offset←{⍺∘+¨⍳⍵}                               ⍝ offset ⍳⍵ from cell address ⍺
          rangeMap←{1≥≢⍵:⊃,/↓⍺ offset 1,⍵ ⋄ ⍺ offset ⍵} ⍝ generate the range of addresses starting at ⍺
 
      ⍝. Start by finding the shape of each range, and the largest shape in the sheet
@@ -40,26 +40,26 @@
          sInds←inds[order]                                            ⍝ index of each Excel cell
          cells←⊃{⍺,⍪⍵}/(⊂sInds),{(flatten ⍵)[order]}¨value type style ⍝ join the cell meta-data
 
-         rowNumbers  ←⊃¨sInds
-         rowNumbers  ←rowNumbers[g                            ←⍋rowNumbers]
-         cells       ←cells[g;]
+         rowNumbers←⊃¨sInds
+         rowNumbers←rowNumbers[g←⍋rowNumbers]
+         cells←cells[g;]
          rowcellcount←{≢⍵}⌸rowNumbers ⍝ # of cells in each row
 
      ⍝. Transform the cell meta data into an argument appropriate for ⎕XML
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
-         rts     ←,¨'rts' ⍝ to share values
-         rowxml  ←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
-         numrows ←≢rowxml
-         cxml    ←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
-         vxml    ←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
+         rts←,¨'rts' ⍝ to share values
+         rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
+         numrows←≢rowxml
+         cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
+         vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
          xmlinput←(rowxml⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
 
     ⍝. Generate XML
-         rows      ←⎕XML xmlinput
-         sheetdata ←'sheetData'tag rows                          ⍝ part of <worksheet> body
-         dimension ←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
-         sheetViews←⊃wb.SheetViews[;wb.SheetViews[;1]⍳sheetName]
+         rows←⎕XML xmlinput
+         sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
+         dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
+         sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
          ∊worksheet wattrs tag dimension sheetViews sheetdata  ⍝ the complete <sheetdata> body
      }
 
