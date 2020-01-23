@@ -1,6 +1,16 @@
  RunAll←{
-     TestLargeFile←0 ⍝ set this flag to 1 to test 1 million x 4 cells output file
+     ⍝. This function runs all functions beginning with the word 'Test' in the APLSource/Tests folder
+     ⍝. Case sensitive 'Test' must be the first word of your test function in order to be executed by this function
+
+     ⍝. Set arguments to TestConfig 
+     ⎕←'Testing large output file requires WS>8G.'
+     ⎕←'Setting this flag to 1 will test 1 million x 4 cells output.'
+     TestLargeFile←0 
+
+     ⍝. Config settings for future tests should go here
+     ⍝...
      TestConfig←TestLargeFile '' '' '' ⍝ this must match arguments to functions in the order of Tests.⎕NL¯3
+
      statusCodes←1-⍳4
      status←'PASS' 'FAIL' 'DIDNTRUN' 'ERROR'
      Tests←(⊂'Test'){⍵/⍨⍺{⍺≡4↑⍵}¨⍵}⎕NL ¯3

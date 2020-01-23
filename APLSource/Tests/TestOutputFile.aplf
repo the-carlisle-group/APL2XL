@@ -9,7 +9,7 @@
              c2←(1⍴⊂'ABC')≡wb.ActiveSheet Utility.OLERange'E2'
              ∧/names sheetCount c1 c2
          }
-         (test Utility.Controller)filename
+         (test Utility.OLEController)filename
      }
 
      ValidateChess←{
@@ -24,7 +24,7 @@
              c2←(⊖,¨2 8⍴wh)≡⊃wb.ActiveSheet Utility.OLERange'B8:I9'
              ∧/names sheetCount c1 c2
          }
-         (test Utility.Controller)filename
+         (test Utility.OLEController)filename
      }
 
      ValidateMonths←{
@@ -38,7 +38,7 @@
              cells←(9 7⍴val1)≡⊃wb.ActiveSheet Utility.OLERange'A1:G9'
              ∧/names sheetCount cells
          }
-         (test Utility.Controller)filename
+         (test Utility.OLEController)filename
      }
      ValidateLarge←{
          DIDNTRUN←¯1
@@ -53,7 +53,7 @@
              row2←(1 4⍴2999997 2999998 2999999 'NOP')≡⊃⍵.ActiveSheet Utility.OLERange'B1000001:E1000001'
              ∧/row1 row2
          }
-         (test Utility.Controller)filename
+         (test Utility.OLEController)filename
      }
 
      t←Utility.TestCase
