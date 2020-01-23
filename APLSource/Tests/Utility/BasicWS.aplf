@@ -1,4 +1,8 @@
  BasicWS←{
+     ⍝. ⍵ ←→ number of rows to output
+     ⍝. Creates ⍵x4 number of cells
+     ⍝. This function creates a simple workbook
+     ⍝. This should be useful for most testing purposes
      Main←##.##.Main
      ⍺←1 ⍝ use styles
      fn←(739⌶0),'/XL2APLSimpleSheet.xlsx'
@@ -6,7 +10,7 @@
      (range2←⎕NS'').(Address Value)←'E2'(⍪↓⍵ 3⍴⎕A)
 
      _←{~⍵:⍬ ⍝ Conditional style application
-⍝. 100 returns all numberformats and all fills
+    ⍝. 100 returns all numberformats and all fills
          range1.NumberFormat←Main.NumberFormats 100
          range1.Fill←Main.Fills 100
          range1.Font←(20 1 'Calibri' 2)(11 1 'Calibri' 2)

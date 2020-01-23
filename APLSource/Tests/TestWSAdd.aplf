@@ -70,5 +70,11 @@
          (1 5⍴'TestSheetName' 'A1'(3 3⍴1)(3 3⍴0 1 2)(3 3⍴'s'))≡¯1↑wb.WS
      }
 
-     ∧/(NumTest'')(StrTest'')(StrTest2'')(TestDuplicateCells'')(ValueWithStyle'')
+     t←Utility.TestCase
+     r1←(NumTest t)''
+     r2←(StrTest t)''
+     r3←(StrTest2 t)''
+     r4←(TestDuplicateCells t)''
+     r5←(ValueWithStyle t)''
+     r1 r2 r3 r4 r5
  }

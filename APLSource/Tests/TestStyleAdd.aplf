@@ -103,5 +103,14 @@
          (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
 
-     ⊃∧/(BasicStyle'')(OnlyNumFmt'')(OnlyFont'')(OnlyFill'')(OnlyBorder'')(ColumnStyles'')(RowStyles'')
+     t←Utility.TestCase
+
+     bs←(BasicStyle t)''
+     onfmt←(OnlyNumFmt t)''
+     ofont←(OnlyFont t)''
+     ofill←(OnlyFill t)''
+     ob←(OnlyBorder t)''
+     ocs←(ColumnStyles t)''
+     ors←(RowStyles t)''
+     bs onfmt ofont ofill ob ocs ors
  }

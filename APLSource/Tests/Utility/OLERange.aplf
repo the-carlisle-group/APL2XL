@@ -1,4 +1,8 @@
 OLERange←{
+  ⍝. ⍵ ←→ charvector of the following format
+  ⍝. '{cellColumn}{rowNumber}' or '{col}{row}:{col}{row}'
+  ⍝. Ex. 'A1' ⋄ 'A1:G12' ⋄ 'G16:CC471'
+  ⍝. Return the values in those cells
   r←(,⍺).{Range[⊂⍵]}⊂⍵
   r.{0::0 0⍴0 ⋄ Value2}0
 }

@@ -1,39 +1,65 @@
  TestOutputFile←{
-     basic←Utility.BasicWS(size←100)
-     chess←##.Demos.Chess''
-     month←##.Demos.MonthlyCalendars''
      ValidateBasic←{
-         wb←⍵
-         sheetCount←1≡wb.Sheets.Count
-         names←(1⍴⊂'Data')≡Utility.OLESheets ⍵
-         c1←(,0)≡wb.ActiveSheet Utility.OLERange'B2'
-         c2←(1⍴⊂'ABC')≡wb.ActiveSheet Utility.OLERange'E2'
-         ∧/names sheetCount c1 c2
+         filename←Utility.BasicWS(size←100)
+         test←{
+             wb←⍵
+             sheetCount←1≡wb.Sheets.Count
+             names←(1⍴⊂'Data')≡Utility.OLESheets ⍵
+             c1←(,0)≡wb.ActiveSheet Utility.OLERange'B2'
+             c2←(1⍴⊂'ABC')≡wb.ActiveSheet Utility.OLERange'E2'
+             ∧/names sheetCount c1 c2
+         }
+         (test Utility.Controller)filename
      }
 
      ValidateChess←{
-         wb←⍵
-         bl←'♜♞♝♛♚♝♞♜♟♟♟♟♟♟♟♟'
-         wh←'♖♘♗♕♔♗♘♖♙♙♙♙♙♙♙♙'
-         sheetCount←1≡wb.Sheets.Count
-         names←(1⍴⊂'board')≡Utility.OLESheets ⍵
-         c1←(,¨2 8⍴bl)≡⊃wb.ActiveSheet Utility.OLERange'B2:I3'
-         c2←(⊖,¨2 8⍴wh)≡⊃wb.ActiveSheet Utility.OLERange'B8:I9'
-         ∧/names sheetCount c1 c2
+         filename←##.Demos.Chess''
+         test←{
+             wb←⍵
+             bl←'♜♞♝♛♚♝♞♜♟♟♟♟♟♟♟♟'
+             wh←'♖♘♗♕♔♗♘♖♙♙♙♙♙♙♙♙'
+             sheetCount←1≡wb.Sheets.Count
+             names←(1⍴⊂'board')≡Utility.OLESheets ⍵
+             c1←(,¨2 8⍴bl)≡⊃wb.ActiveSheet Utility.OLERange'B2:I3'
+             c2←(⊖,¨2 8⍴wh)≡⊃wb.ActiveSheet Utility.OLERange'B8:I9'
+             ∧/names sheetCount c1 c2
+         }
+         (test Utility.Controller)filename
      }
 
      ValidateMonths←{
-         wb←⍵
-         sheetCount←13≡wb.Sheets.Count
-         names←'Calendar' 'jan' 'feb' 'mar' 'apr' 'may' 'jun' 'jul' 'aug' 'sep' 'oct' 'nov' 'dec'≡Utility.OLESheets ⍵
-         null←7⍴⎕NULL
-         val1←(⊂'jan'),(6↑null),'sunday' 'monday' 'tuesday' 'wednesday' 'thursday' 'friday' 'saturday',(∊30 31,1+∘⍳¨31 9),null
-         cells←(9 7⍴val1)≡⊃wb.ActiveSheet Utility.OLERange'A1:G9'
-         ∧/names sheetCount cells
+         filename←##.Demos.MonthlyCalendars''
+         test←{
+             wb←⍵
+             sheetCount←13≡wb.Sheets.Count
+             names←'Calendar' 'jan' 'feb' 'mar' 'apr' 'may' 'jun' 'jul' 'aug' 'sep' 'oct' 'nov' 'dec'≡Utility.OLESheets ⍵
+             null←7⍴⎕NULL
+             val1←(⊂'jan'),(6↑null),'sunday' 'monday' 'tuesday' 'wednesday' 'thursday' 'friday' 'saturday',(∊30 31,1+∘⍳¨31 9),null
+             cells←(9 7⍴val1)≡⊃wb.ActiveSheet Utility.OLERange'A1:G9'
+             ∧/names sheetCount cells
+         }
+         (test Utility.Controller)filename
+     }
+     ValidateLarge←{
+         DIDNTRUN←¯1
+         ~⍵:DIDNTRUN ⍝ selected by user
+         size←⊢2 ⎕NQ'.' 'GetEnvironment' 'MAXWS'
+         ~(¯1↑size)∊'GTPE':DIDNTRUN ⍝ WS not large enough
+         n←⍎¯1↓size
+         n<8:DIDNTRUN ⍝ WS not large enough
+         filename←Utility.BasicWS 1000000
+         test←{
+             row1←(1 4⍴0 1 2 'ABC')≡⊃⍵.ActiveSheet Utility.OLERange'B2:E2'
+             row2←(1 4⍴2999997 2999998 2999999 'NOP')≡⊃⍵.ActiveSheet Utility.OLERange'B1000001:E1000001'
+             ∧/row1 row2
+         }
+         (test Utility.Controller)filename
      }
 
-     resultb←(ValidateBasic Utility.Controller)basic
-     resultc←(ValidateChess Utility.Controller)chess
-     resultm←(ValidateMonths Utility.Controller)month
-     resultb resultc resultm
+     t←Utility.TestCase
+     b←(ValidateBasic t)''
+     c←(ValidateChess t)''
+     m←(ValidateMonths t)''
+     L←(ValidateLarge t)⍵
+     b c m L
  }

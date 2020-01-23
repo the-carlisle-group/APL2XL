@@ -1,9 +1,0 @@
- TestSimpleSheet←{
-     xl←##.Main.XL
-     fn←(739⌶0),'/XL2APLSimpleSheet'
-     v←4 3⍴⍳12
-     wb←xl.WB fn 1
-     _←wb xl.WSAdd'SheetA' 'B2' ''v
-     _←##.Main.Build.Main wb
-     0
- }

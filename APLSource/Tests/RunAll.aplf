@@ -1,0 +1,8 @@
+ RunAll←{
+     TestLargeFile←0 ⍝ set this flag to 1 to test 1 million x 4 cells output file
+     TestConfig←TestLargeFile '' '' '' ⍝ this must match arguments to functions in the order of Tests.⎕NL¯3
+     statusCodes←1-⍳4
+     status←'PASS' 'FAIL' 'DIDNTRUN' 'ERROR'
+     Tests←(⊂'Test'){⍵/⍨⍺{⍺≡4↑⍵}¨⍵}⎕NL ¯3
+     Tests,⍪{status[statusCodes⍳⍵]}¨(TestConfig↑⍨≢Tests){(⍎⍵)⍺}¨Tests
+ }

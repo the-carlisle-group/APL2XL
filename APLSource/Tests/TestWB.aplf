@@ -21,5 +21,9 @@
          (1⍴⊂'General')(1 4⍴11 1 'Calibri' 2)(2 3⍴'none' '' '' 'gray125' '' '')(1 5⍴'')(1 4⍴0)≡wb.Styles.(numFmts fonts fills borders cellXfs)
      }
 
-     ∧/(WBShapesCorrect wb)(StyleDefaultsCorrect wb)
+     t←Utility.TestCase
+
+     r1←(WBShapesCorrect t) wb
+     r2←(StyleDefaultsCorrect t) wb
+     r1 r2
  }

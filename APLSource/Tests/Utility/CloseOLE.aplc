@@ -1,0 +1,18 @@
+:Class CloseOLE
+⍝. Sole purpose of this class it the Kill method which implements destructor
+⍝. Occasional circumstances cause OLEClient spawned windows to remain open
+⍝. This class ensures that when this object leaves the stack, the window is forced to close
+:Field private XL
+∇Init xl
+:Implements Constructor
+:Access public
+  XL←xl
+
+∇
+∇Kill 
+:Implements Destructor
+  :If 0 ≢ XL.ActiveWorkbook
+    XL.ActiveWorkbook.Close ⍬
+  :EndIf
+∇
+:EndClass
