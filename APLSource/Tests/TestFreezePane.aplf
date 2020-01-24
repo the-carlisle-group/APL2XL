@@ -1,0 +1,30 @@
+ TestFreezePane←{
+     test←{
+         xl←##.Main.XL
+         fileName←(739⌶0),'/XL2APLSimpleSheet.xlsx'
+         overwrite←1
+         wb←xl.WB fileName overwrite
+
+         clean←{' '~⍨⍵~⎕UCS 13}
+         cond←{∨/(clean ⍺)⍷clean ⍵}
+         (range←⎕NS'').(Value Address)←(20 20⍴⊂'anything at all')'A1'
+         (sheet1←⎕NS'').(Name Ranges)←'testsheetname1'range
+         (sheet2←⎕NS'').(Name Ranges)←'testsheetname2'range
+         sheet1.FreezePane←4 'rows'
+         sheet2.FreezePane←4 'columns'
+         expected1←'<pane ySplit="4" topLeftCell="A5" activePane="bottomLeft" state="frozen"></pane> <selection pane="bottomLeft" activeCell="A5" sqref="A5:XFD5"></selection>'
+         expected2←'<pane xSplit="4" topLeftCell="E1" activePane="topRight" state="frozen"></pane> <selection pane="topRight" activeCell="E1" sqref="E1'
+
+         _←wb xl.WSAdd sheet1.Name range.Address''range.Value
+         _←wb xl.WSViews sheet1
+         (correctText1 outputContains1)←(⊂expected1)cond¨(⊃1⌽wb.SheetViews)(⊃xl.WSXML wb)
+
+         _←wb xl.WSAdd sheet2.Name range.Address''range.Value
+         _←wb xl.WSViews sheet2
+         (correctText2 outputContains2)←(⊂expected2)cond¨(⊃1⊖1⌽wb.SheetViews)(1⊃xl.WSXML wb)
+
+         ∧/correctText1 outputContains1 correctText2 outputContains2
+     }
+     t←Utility.TestCase
+     (test t)''
+ }

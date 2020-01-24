@@ -9,7 +9,7 @@
 
      ⍝. Config settings for future tests should go here
      ⍝...
-     TestConfig←TestLargeFile '' '' '' ⍝ this must match arguments to functions in the order of Tests.⎕NL¯3
+     TestConfig←'' TestLargeFile '' '' '' ⍝ this must match arguments to functions in the order of Tests.⎕NL¯3
 
      statusCodes←1-⍳4
      status←'PASS' 'FAIL' 'DIDNTRUN' 'ERROR'
