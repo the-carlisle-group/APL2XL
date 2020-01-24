@@ -10,7 +10,7 @@
          pane←⊃o⌷'bottomLeft' 'topRight'
          split←⊃o⌷'ySplit' 'xSplit'
          tlcell←itc⊃o⌷(count,0)(0,count)
-         range←⊃o⌷(('XFD',¯1↑tlcell)((⊃tlcell),⍕(1↓cti(⍕tlcell),'1')+1048574))
+         range←⊃o⌷(('XFD',¯1↑tlcell)((⊃tlcell),'1048574'))
 
          pattrs←4 2⍴split c'topLeftCell'tlcell'activePane'pane'state' 'frozen'
          sattrs←3 2⍴'pane'pane'activeCell'tlcell'sqref'(tlcell,':',range)
