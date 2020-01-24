@@ -50,6 +50,9 @@ Place the Ranges into a Worksheet
 s1←⎕NS''
 s1.Name  ←'Sample1'
 s1.Ranges←r1 r2
+⍝ Optional property: sheet.FreezePane examples
+⍝ s1.FreezePane 1 'rows'
+⍝ s1.FreezePane 5 'columns'
 ```
 
 Add the sheet to a workbook with a fully qualified path. Multiple worksheets can be included as a list, `wb.Sheets←s1 s2 s3...` **Note: path cannot be of the form `c:\{filename}` due to writing privileges.** Select a path of the form `c:\myfolder\myfile.xlsx`

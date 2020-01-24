@@ -1,0 +1,14 @@
+ FreezePane←{
+     names←'Harvey Green' 'Julius Maxwell' 'Floyd Curry' 'Maria Huff' 'Leon Baldwin' 'Sharon Butler' 'Ada Carpenter' 'Gilberto Glover' 'Rodney Andrews' 'Garrett Adkins' 'Rochelle Holt' 'Angelo Edwards' 'Jay Quinn' 'Vicki Carr' 'Caroline Hopkins' 'Samantha Cain' 'Kirk Willis' 'Shelley Bowen' 'Theodore Mendez' 'Eduardo Ballard' 'Angel Gardner' 'Kent Russell' 'Edmund Castro' 'Steve Copeland' 'Phil Reynolds' 'Bonnie Chapman' 'Jason Scott' 'Fernando Moreno' 'Brandy Porter' 'Ricardo Gibson' 'Kendra Estrada' 'Eunice Clark' 'Damon Day' 'Santiago Clayton' 'Alfred Ross' 'Amanda Byrd' 'Bethany Leonard' 'Alton Barker' 'Flora George' 'Thelma Holloway' 'Gertrude Freeman' 'Alvin Evans' 'Angela Marshall' 'Raymond Mathis' 'Noah Tran' 'Lorene Jones' 'Marian Hill' 'Jeannie Robertson' 'Misty Norris' 'Allen Foster' 'Stacy Reyes' 'Arlene Hicks' 'Adrienne Greene' 'Traci Hoffman' 'Neil Franklin' 'Kathleen Black' 'Orlando Mcguire' 'Lana Owen' 'Emilio Sharp' 'Darla Knight' 'Georgia Caldwell' 'Hilda Christensen' 'Marsha Saunders' 'Toby Pittman' 'Olivia Hodges' 'Frank Joseph' 'Stephen Nelson' 'Clarence Cunningham' 'George Lyons' 'Sidney Brooks' 'Lula Fowler' 'Kenneth Simpson' 'Nick Watson' 'Angelica Stewart' 'Dallas Wise' 'Sam Taylor' 'Abraham Mullins' 'Gerald Perez' 'Gene Valdez' 'Darlene Johnson' 'Saul Anderson' 'Candace Smith' 'Lila Ramirez' 'Willie Diaz' 'Sherri Vega' 'Janis Webster' 'Rosa Walker' 'Darrin Luna' 'Anna Cannon' 'Lawrence Bradley' 'Willie Ortiz' 'Lorena Abbott' 'Tamara Yates' 'Andrea Ellis' 'Kristin Price' 'Cameron Bush' 'Faye Reid' 'Maureen Mccarthy' 'Alonzo Rose' 'Clyde Moore'
+     ages←20+?100⍴20
+     roles←100⍴'Marketing Specialist' 'Marketing Manager' 'Marketing Director' 'Graphic Designer' 'Marketing Research Analyst' 'Marketing Communications Manager' 'Marketing Consultant' 'Product Manager' 'Public Relations' 'Social Media Assistant' 'Brand Manager' 'SEO Manager' 'Content Marketing Manager' 'Copywriter' 'Media Buyer' 'Digital Marketing Manager' 'eCommerce Marketing Specialist' 'Brand Strategist' 'Vice President of Marketing' 'Media Relations Coordinator'
+     headers←'Name' 'Age' 'Role'
+     (range1←⎕NS'').(Address Value Fill)←'A1'headers (('solid' 'abcdef' 1) ('solid' 'A54398' 1)('solid' '56789A' 1))
+     (range2←⎕NS'').(Address Value)←'A2'(⍉↑names ages roles)
+     (sheet←⎕NS'').(Name Ranges)←'Employees'(range1 range2)
+
+     sheet.FreezePane←1 'rows' ⍝ or 'columns'
+
+     (wb←⎕NS'').(Sheets FileName)←sheet((739⌶0),'/Employees.xlsx')
+     ##.Main.Export wb
+ }
