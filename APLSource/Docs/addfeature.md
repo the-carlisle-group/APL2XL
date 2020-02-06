@@ -107,7 +107,7 @@ This program identified 3 files that are different between the two workbooks. `.
     - Right click `./unchanged/xl/worksheets/sheet1.xml`
     - Click `Compare with Selected`
 
-You will now see the lines that are different between the two files. This is the first step to adding any new feature, identifying the XML that needs to be generated, and which part of the file the generated XML needs to be inserted. The XML for column-wise freeze panes has now been identified. Repeat the process for row oriented freeze panes. 
+You will now see the lines that are different between the two files. This is the first step to adding any new feature, identifying the XML that needs to be generated, and which part of the file the generated XML needs to be inserted. The XML for column-wise freeze panes has now been identified. Repeat the process for row oriented freeze panes (outlined in the next section). 
 ![Diff](./images/diff.png "VS Code Diff Example")
 
 ### Section 1.7
