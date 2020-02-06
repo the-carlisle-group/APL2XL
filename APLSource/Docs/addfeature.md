@@ -75,7 +75,7 @@ Next we need to make a change to the document. [This article](https://support.of
 4. In the dropdown menu, click 'Freeze Panes'
 5. Verify that the columns A-D are static, while from E onwards to the right scroll left and right
 
-Now that we have made modifications, repeat the steps in 1.3 to save the file as. Only this time, instead of naming the file `unchanged.xlsx`, rename the file `freezepanes.xlsx`. Open a command prompt, and change director to your selected directory and use the diff tool to identify what files are different between the two workbooks. 
+Now that we have made modifications, repeat the steps in 1.3 to save the file as. Only this time, instead of naming the file `unchanged.xlsx`, rename the file `freezepanes.xlsx`. Open a command prompt, and change the working directory to your selected directory and use the diff tool to identify what files are different between the two workbooks. 
 
 ### Section 1.5
 First [unzip](#Section-0.1) both workbooks using the method described in Section 0.1, then run the following diff command.
