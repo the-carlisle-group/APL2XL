@@ -14,7 +14,7 @@ Example:
 
 
 ### Section 0.2
-Excel is preffered workbook viewing software. Google Docs may be used hypothetically, but no testing has been done to assure compatibility at this time. 
+Excel is preffered workbook viewing software. Google Docs may be used hypothetically, but no testing has been done to ensure compatibility at this time. 
 
 ### Section 0.3 
 A diff tool helps immensely with identifying changes between two workbooks. In this example we will be using [Visual Studio Code](https://code.visualstudio.com/) with an additional extension installed to aid with the diffing, and automatic formating of xml. `XML Tools` is a Visual Studio Code extension which can automatically format XML documents for viewing. There are [XML Beautifiers](https://xmlbeautifier.com/) available online, but you may find it much easier to have the feature available alongside the editor and diffing tools we will be using. 
@@ -44,9 +44,7 @@ It is expected that you have a minimum level of understanding of OOXML and Excel
 
 
 ## How to add a new feature - Identifying New XML
-This documents how to add a new feature. In this example we will be implementing FreezePanes. Before implementing a feature, it is necessary to understand the basic structure of .xlsx files. 
-
-First, generate test `.xlsx` document from which to work. In this example, we will use the template function from the testing library. 
+This documents how to add a new feature. In this example we will be implementing FreezePanes. Before implementing a feature, it is necessary to understand the basic structure of .xlsx files. First, generate a test `.xlsx` document from which to work. In this example, we will use the template function from the testing library. 
 
 ### Section 1.1
 ```apl
