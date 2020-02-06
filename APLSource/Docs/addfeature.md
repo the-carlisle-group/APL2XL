@@ -99,7 +99,7 @@ This program identified 3 files that are different between the two workbooks. `.
     - Right click within the window
     - Select `Open with Code`
 2. With the directory open in VSCode, expand `./unchanged/xl/worksheetes` and open `sheet1.xml`
-    - Use the XML Tools [section 0.3](#Section-0.3)
+    - Use the XML Tools described in [section 0.3](#Section-0.3)
     - Save the file
 3. Repeat step 2 for `./freezepanes/xl/worksheets/sheet1.xml`
 4. Right click `./freezepanes/xl/worksheetes/sheet1.xml`
