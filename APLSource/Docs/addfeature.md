@@ -10,7 +10,7 @@ To unzip a workbook:
 - Click `Extract to "{Name of workbook}/"`. This will create a named directory, into which the workbook files will be unzipped
 
 Example:
-![To unzip a workbook](./freezepanes/unzip.png)
+![To unzip a workbook](./images/unzip.png)
 
 
 ### Section 0.2
@@ -110,7 +110,7 @@ This program identified 3 files that are different between the two workbooks. `.
     - Click `Compare with Selected`
 
 You will now see the lines that are different between the two files. This is the first step to adding any new feature, identifying the XML that needs to be generated, and which part of the file the generated XML needs to be inserted. The XML for column-wise freeze panes has now been identified. Repeat the process for row oriented freeze panes. 
-![Diff](./freezepanes/diff.png "VS Code Diff Example")
+![Diff](./images/diff.png "VS Code Diff Example")
 
 ### Section 1.7
 
@@ -136,7 +136,7 @@ Common subdirectories: freezepaneRow/xl and freezepanes/xl
 C:\Users\natha\Documents>
 ```
 
-![Diff](./freezepanes/diff2.png "VS Code Diff Example")
+![Diff](./images/diff2.png "VS Code Diff Example")
 
 
 
