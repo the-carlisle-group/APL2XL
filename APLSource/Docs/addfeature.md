@@ -4,10 +4,10 @@ Excel files (files with the .xlsx extension) are zipped folders containing a str
 
 To unzip a workbook:
 
-- find the workbook you're interested in inspecting via the file browser
-- right click the workbook
-- If using 7zip, Hover over `7zip` in the context menu
-- Click `Extract to "{Name of workbook}/"`. This will create a named directory, into which the workbook files will be unzipped
+1. find the workbook you're interested in inspecting via the file browser
+2. right click the workbook
+3. If using 7zip, Hover over `7zip` in the context menu
+4. Click `Extract to "{Name of workbook}/"`. This will create a named directory, into which the workbook files will be unzipped
 
 Example:
 ![To unzip a workbook](./images/unzip.png)
@@ -22,20 +22,20 @@ A diff tool helps immensely with identifying changes between two workbooks. In t
 ### Section 0.3.1
 To Install XML Tools in VSCode:
 
-- With Visual Studio Code open (assuming default hotkeys), press `Ctrl+P`
-- Inside the text bar that appears, type `> Ext install` including the '>' and press return
-- A new side bar will appear on the left side of VSCode
-- In the search bar type `XML Tools`. Search for the extension published by Josh Johnson
-- Click the small blue button labeled `Install`. Once installed it may be necessary to reload your VSCode window. 
-- press `Ctrl+P`
-- Type `> Reload Window`
+1. With Visual Studio Code open (assuming default hotkeys), press `Ctrl+P`
+2. Inside the text bar that appears, type `> Ext install` including the '>' and press return
+3. A new side bar will appear on the left side of VSCode
+4. In the search bar type `XML Tools`. Search for the extension published by Josh Johnson
+5. Click the small blue button labeled `Install`. Once installed it may be necessary to reload your VSCode window. 
+6. press `Ctrl+P`
+7. Type `> Reload Window`
 
 ### Section 0.3.2
 In order to use the XML Tools for formatting
 
-- Inside VSCode, open an XML document
-- press `Ctrl+P`
-- Type `> XML Tools: Format as XML`
+1. Inside VSCode, open an XML document
+2. press `Ctrl+P`
+3. Type `> XML Tools: Format as XML`
 
 If the document is not already formatted, the XML will be normalized. 
 
@@ -61,19 +61,19 @@ This function takes 1 or 2 arguments. One argument generates a shape `⍵ 4` out
 Create a copy of this file by saving the file to a directory of your choice. I will be saving a copy of this file to `c:\Users\{user}\Documents\unchanged.xlsx`. 
 
 ### Section 1.3
-- At the top left of the Excel screen, click 'File'
-- Click 'Save As'
-- Under 'Other Locations', click 'Browse'
-- Navigate to the desired directory and rename the file 
+1. At the top left of the Excel screen, click 'File'
+2. Click 'Save As'
+3. Under 'Other Locations', click 'Browse'
+4. Navigate to the desired directory and rename the file 
 
 Next we need to make a change to the document. [This article](https://support.office.com/en-us/article/freeze-panes-to-lock-rows-and-columns-dab2ffc9-020d-4026-8121-67dd25f2508f) contains a video demonstrating how to enable freeze panes within a document. We will first test column-wise freeze panes. 
 
 ### Section 1.4
-- Select the 'E' column by clicking 'E' at the top of the column 
-- At the top of the navigation bar, click 'View'
-- Click 'Freeze Panes'
-- In the dropdown menu, click 'Freeze Panes'
-- Verify that the columns A-D are static, while from E onwards to the right scroll left and right
+1. Select the 'E' column by clicking 'E' at the top of the column 
+2. At the top of the navigation bar, click 'View'
+3. Click 'Freeze Panes'
+4. In the dropdown menu, click 'Freeze Panes'
+5. Verify that the columns A-D are static, while from E onwards to the right scroll left and right
 
 Now that we have made modifications, repeat the steps in 1.3 to save the file as. Only this time, instead of naming the file `unchanged.xlsx`, rename the file `freezepanes.xlsx`. Open a command prompt, and change director to your selected directory and use the diff tool to identify what files are different between the two workbooks. 
 
@@ -114,16 +114,16 @@ You will now see the lines that are different between the two files. This is the
 
 Reopen our Freezepane workbook, and modify the freezepane settings so that rows are frozen in place, rather than columns.
 
-- Following our convention open your freeze pane workbook at `c:\Users\{username}\freezepanes.xlsx`
-- In the navigation bar click `View`
-- Click `Freeze Panes`
-- Click `Unfreeze Panes`
-- On the lefthand side of the worksheet, click `4` on the row id column
-- Click `Freeze Panes`
-- Click `Freeze Panes`
-- Repeat the process in [Section 1.3](#Section-1.3) for saving a new file. Name this file `freezepaneRow.xlsx`
-- Repeat the process in [Section 1.5](#Section-1.5) for decompressing and comparing 2 files, except now we will compare `freezepaneRow` and `freezepanes`
-- Repeat the process in [Section 1.6](#Section-1.6) for comparing 2 files in VSCode
+1. Following our convention open your freeze pane workbook at `c:\Users\{username}\freezepanes.xlsx`
+2. In the navigation bar click `View`
+3. Click `Freeze Panes`
+4. Click `Unfreeze Panes`
+5. On the lefthand side of the worksheet, click `4` on the row id column
+6. Click `Freeze Panes`
+7. Click `Freeze Panes`
+8. Repeat the process in [Section 1.3](#Section-1.3) for saving a new file. Name this file `freezepaneRow.xlsx`
+9. Repeat the process in [Section 1.5](#Section-1.5) for decompressing and comparing 2 files, except now we will compare `freezepaneRow` and `freezepanes`
+10. Repeat the process in [Section 1.6](#Section-1.6) for comparing 2 files in VSCode
 
 ```Cmd
 C:\Users\nathan\Documents>diff freezepaneRow freezepanes
