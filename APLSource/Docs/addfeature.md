@@ -51,7 +51,7 @@ This documents how to add a new feature. In this example we will be implementing
     Test.Utility.BasicWS 100 100
 ```
 
-This function takes 1 or 2 arguments. One argument generates a shape `⍵ 4` output in Excel, 2 arguments generats a shape `⍵[0] ⍵[1]` ouput in Excel. The result of this function is the name of the output file. Use `]open` to open the file in Excel.
+This function takes 1 or 2 arguments. One argument generates a shape `⍵ 4` output in Excel, 2 arguments generates a shape `⍵[0] ⍵[1]` ouput in Excel. The result of this function is the name of the output file. Use `]open` to open the file in Excel.
 
 ### Section 1.2 
 ```apl
