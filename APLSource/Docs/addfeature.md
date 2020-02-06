@@ -220,15 +220,15 @@ In brief, the `Main/XL` directory contains all code for managing XML data, and g
 
 #### When should the function be called?
 ```APL
-     sheet←⎕NS''
-     sheet.Name←'Employees'
-     sheet.Rangesrange1 range2
-     sheet.FreezePane←1 'rows' ⍝ or 'columns'
+sheet←⎕NS''
+sheet.Name←'Employees'
+sheet.Rangesrange1 range2
+sheet.FreezePane←1 'rows' ⍝ or 'columns'
 
-     wb←⎕NS''
-     wb.Sheets←sheet
-     wb.FileName←(739⌶0),'/Employees.xlsx'
-     Main.Export wb
+wb←⎕NS''
+wb.Sheets←sheet
+wb.FileName←(739⌶0),'/Employees.xlsx'
+Main.Export wb
 ```
 `Main.Export` contains a main loop, and a nested loop. The outer loop is performed `¨WB.Sheets`, while the inner loop is performed `¨∊WB.Sheets.Ranges`. Since the inner loop compiles data relevant to ranges in a given Sheet, it doesn't handle individual sheet meta data. While styles apply to cells which are part of ranges, the freeze panes have no bearing on the ranges, and are conceptually settings for the sheet, rather than anything to do with cellular configuration. That said, the sheet meta data is never passed to functions within the inner loop, and thus is only contained in the outer loop. This is where we will call `Main.XL.WSViews`, because we have the configuration settings available for any given worksheet. 
 
