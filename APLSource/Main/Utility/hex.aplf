@@ -1,0 +1,7 @@
+hex←{⎕CT ⎕IO←0                               ⍝ Hexadecimal from decimal.
+     ⍺←⊢                                 ⍝ no width specification.  
+     1≠≡,⍵:⍺ ∇¨⍵                         ⍝ simple-array-wise:       
+     1∊⍵=1+⍵:'Too big'⎕SIGNAL 11         ⍝ loss of precision.       
+     n←⍬⍴⍺,2*⌈2⍟2⌈16⍟1+⌈/|⍵              ⍝ default width.           
+     ↓[0]'0123456789abcdef'[(n/16)⊤⍵]    ⍝ character hex numbers.   
+ } 
