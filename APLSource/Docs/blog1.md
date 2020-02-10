@@ -13,7 +13,8 @@ It is recommended that you install Git, and the Git toolset to download and mana
 3. Within the context menu, Click "Download Zip".
 4. Locate the downloaded folder, and using a zip library, such as (7zip)[https://www.7-zip.org/], right click the file, and unzip its contents.
 5. Place the output directory containing the unzipped library somewhere that is easy to locate. I placed mine in `C:\Users\{user}\Documents\APL2XL`
-6. With a Dyalog session open, type the following user command `]link.create # 'C:\Users\{user}\Documents\APL2XL\APLSource'` (be sure to replace {user} with the appropriate username)
+6. With a Dyalog session open, type the following user command 
+  - `]link.create # 'C:\Users\{user}\Documents\APL2XL\APLSource'` (be sure to replace {user} with the appropriate username)
 7. Test that the library is working by running a Demo:
 ```APL
   Demos.Chess''
