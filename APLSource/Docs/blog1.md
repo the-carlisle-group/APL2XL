@@ -30,8 +30,10 @@ There are 2 ways you can manage a git repository. One approach is to clone a rep
 #### Clone and install the repository
 1. Open a terminal prompt (linux or windows)
 2. `cd` to a known directory where you would like to clone `APL2XL
-3. Run the following command: `c:\Users\{user}\Documents> git clone https://github.com/the-carlisle-group/APL2XL.git` 
-4. With a Dyalog session open, type the following user command `]link.create # 'C:\Users\{user}\Documents\APL2XL\APLSource'` (be sure to replace {user} with the appropriate username)
+3. Run the following command: 
+  - `c:\Users\{user}\Documents> git clone https://github.com/the-carlisle-group/APL2XL.git` 
+4. With a Dyalog session open, type the following user command 
+  - `]link.create # 'C:\Users\{user}\Documents\APL2XL\APLSource'` (be sure to replace {user} with the appropriate username)
 5. Test that the library is working by running a Demo:
 ```
   Demos.Chess''
