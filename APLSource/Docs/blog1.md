@@ -72,7 +72,7 @@ A Range namespace is a conceptual value within a single Excel Worksheet. Ranges 
 |Fill|Fill style properties for the Range|✗|
 |Font|Font style properties for the Range|✗|
 
-This example is the minimum required values to help you get a sense for exporting 
+This example demonstrates the minimum required variables for a Range namespaces, to help you get a sense for exporting 
 ```APL
     range1←⎕NS''
     range1.Address←'A1'
