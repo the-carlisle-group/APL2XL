@@ -1,0 +1,8 @@
+ r←(test TestCase)args
+ ⍝. Function used to catch errors
+ ⍝. Can be used in future for logging and timing if desired
+ :Trap 0
+     r←test args
+ :Else
+     r←¯2
+ :EndTrap
