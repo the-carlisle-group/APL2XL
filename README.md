@@ -1,9 +1,6 @@
 # APL2XL 
 APL2XL is a Dyalog APL library which exports APL arrays to Excel in the form of a .xlsx file. This library is a work in progress. 
 
-
-APL2XL assumes `⎕IO ⎕ML←0 1` and is not tested for any other settings for `⎕IO` or `⎕ML`.
-
 To use the library, run the following git command from a known location:
 
 ```
