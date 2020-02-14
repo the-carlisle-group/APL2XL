@@ -11,7 +11,7 @@ General Style Rules:
 - `APL2XL` extensions must be `(⎕IO ⎕ML)←0 1` compliant. 
 - `APL2XL` functions must be written as Dfns.
 - `APL2XL` must be importable irrespective of context.
-- All tests executed by `APL2XL/APLSource/Tests/RunAll.aplf' must pass before a merge request or a commit will be accepted into the master branch. 
+- All tests executed by `APL2XL/APLSource/Tests/RunAll.aplf` must pass before a merge request or a commit will be accepted into the master branch. 
 - New features, extensions, modifications, or maintenance must maintain all preexisting functionality. 
 
 
