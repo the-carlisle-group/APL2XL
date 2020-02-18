@@ -131,6 +131,7 @@ There must be at least one Range in a Sheet, at least one Sheet in a Workbook, a
 
 Use `]open` on the ouput of Main.Export to view the output file in Excel. An error you're likely to encounter early on is when attempting to run `Main.Export` several times on the same workbook. If you've already run `Main.Export`, and have opened the workbook file, make sure that the workbook file is closed before attempting to Export the same workbook again. Congratulations, you've just created your very first workbook! 
 
+### Additional Resources
 For more complex examples, please take a look at the Demos folder included with the repository. There are examples for how to accomplish complex borders in `Demos.Chess`, there's an example of several worksheets within `Demos.MonthlyCaldendars`, and you can find an example of using the FreezePane settings in `Demos.FreezePane`. You can also take a look at the [github repository ReadMe](https://github.com/the-carlisle-group/APL2XL/blob/master/README.md#Example-Usage) for complete documentation on styles, and the format of style arguments. Additional documentation can also be found on the [github repository wiki](https://github.com/the-carlisle-group/APL2XL/wiki), as more documentation will be added over the lifespan of the project. As previously stated, if you have any issues using the library, please use the [github repository issues page](https://github.com/the-carlisle-group/APL2XL/issues) to log any issues, feature requests, or questions. 
 
 
