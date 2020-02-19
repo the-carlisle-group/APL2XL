@@ -57,7 +57,7 @@ rmdir /s .git
 
 
 ## Exporting a simple Workbook
-Now that you have tested the library by successfully running one of the included Demos, it's time to understand how to export your own Excel Workbooks. To Export, we first begin by defining a required set of Namespaces, required or optional variables within the Namespaces, and passing the final Namespace the Export function. 
+Now that you have tested the library by successfully running one of the included demos in the `Demos` folder, it's time to understand how to create your own Excel Workbooks. To create your own output files, we first begin by defining a required set of Namespaces, required or optional variables within the Namespaces, and passing the final Namespace to `Main.Export`. 
 
 Required Namespaces:
 - Workbook
@@ -66,7 +66,7 @@ Required Namespaces:
 
 
 ### Creating a simple Range Namespace
-A Range namespace is a conceptual value within a single Excel Worksheet. Ranges consist of a namespace containing the following variables:
+A `Range` namespace defines a rectangular group of cells, along with the cell properties, within a single Excel Worksheets. A `Range` namespace consists of an APL namespace containing the following variables:
 |Name|Description|Required|
 |---|---|---|
 |Address|Cell Address: Ex. `'A1' 'B4' 'CZ88'`|✓|

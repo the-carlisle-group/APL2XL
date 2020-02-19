@@ -7,10 +7,12 @@ This document serves as an introduction to the project architecture. This docume
 
 General Style Rules:
 
+- .NET core's Zip library is the only acceptable dependency. All code which introduces further dependencies must be announced, and approved.
 - `APL2XL` must be compatible with both `link` and `AcreTools`
 - `APL2XL` extensions must be `(⎕IO ⎕ML)←0 1` compliant. 
 - `APL2XL` functions must be written as Dfns.
 - `APL2XL` must be importable irrespective of context.
+- `APL2XL` must maintain a functional style unless not possible to do so. Object-oriented code should be considered undesirable. 
 - All tests executed by `APL2XL/APLSource/Tests/RunAll.aplf` must pass before a merge request or a commit will be accepted into the master branch. 
 - New features, extensions, modifications, or maintenance must maintain all preexisting functionality. 
 
