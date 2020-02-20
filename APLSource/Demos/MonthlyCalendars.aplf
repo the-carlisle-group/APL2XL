@@ -28,7 +28,9 @@
      Export←{
          (cellPos calendar)←⍵
          range←{(r←⎕NS'').(Address Value)←⍵ ⍺ ⋄ r}
+         sheetAnon←{(s←⎕NS'').Ranges←⍵ ⋄ s}
          sheet←{(s←⎕NS'').(Name Ranges)←⍺ ⍵ ⋄ s}
+
          (mlocs dlocs clocs)←{##.Main.XL.itc¨(⊂⍵)+¨cellPos}¨(0 0)(1 0)(2 0)
 
           ⍝. Create a sheet containing month, column days, and a 6x7 calendar for each month along the first column
