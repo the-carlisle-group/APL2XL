@@ -67,25 +67,35 @@
      general←{⍝. Used for generating xml for numFmts and cellXfs
          (parent child)←2↑⍺
          tags←2↓⍺
-         p←(0 parent ''),(⊂1 2⍴'count'(≢⍵))
-         c←(1 child ''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
+         p←(0 parent''),(⊂1 2⍴'count'(≢⍵))
+         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
+         ⎕XML p⍪c
+     }
+
+     general2←{⍝. Used for generating xml for numFmts and cellXfs
+         (parent child)←2↑⍺
+         tags←2↓⍺
+         p←(0 parent''),(⊂1 2⍴'count'(≢⍵))
+         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
+⍝         d←2 'alignment' ''('wrapText' '1')
+⍝         e←↑d{(⍵,(≢⍵)⍴⊂⍺)[{⍋⍵,⍵}⍳≢⍵]}↓c
          ⎕XML p⍪c
      }
 
      font←{⍝. Generates xml for fonts
-        fattr←'val' 'theme' 'val' 'val'
-        fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢⍵
-        fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
-        fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
-        ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪fontCollection
+         fattr←'val' 'theme' 'val' 'val'
+         fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢⍵
+         fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
+         fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
+         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪fontCollection
      }
 
-     numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode' general {(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
-     cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid' general {⍵,⍳≢⍵}s.cellXfs
+     numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'general{(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
+     cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid'general2{⍵,⍳≢⍵}s.cellXfs
      fonts←font s.fonts
 
      ⍝. TODO: refactor the following to use ⎕XML
-     fills←'fills'(fill collection)s.fills 
+     fills←'fills'(fill collection)s.fills
      borders←'borders'(border collection)s.borders
      cellStyleXfs←'cellStyleXfs'(styleXF collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
      cellStyles←'cellStyles'(cellStyle collection)' '   ⍝ TODO: add s.cellStyles in Main.XL.WB
