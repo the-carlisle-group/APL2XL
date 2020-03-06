@@ -73,13 +73,21 @@
      }
 
      general2←{⍝. Used for generating xml for numFmts and cellXfs
+         styles←1⌽(scols←10↑5\1)/⍵
+         alignment←(~scols)/⍵
          (parent child)←2↑⍺
          tags←2↓⍺
          p←(0 parent''),(⊂1 2⍴'count'(≢⍵))
-         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
-⍝         d←2 'alignment' ''('wrapText' '1')
-⍝         e←↑d{(⍵,(≢⍵)⍴⊂⍺)[{⍋⍵,⍵}⍳≢⍵]}↓c
-         ⎕XML p⍪c
+         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢styles
+
+         ⍝⍝⍝ here we need to select nested alignment tags where necessary
+         select←{s←⍺⍺ ⋄ ⍺∘{(⍺,⍪⍵)⌿⍨0 '' '' 0 0≢¨⍵}¨↓⍉↑⍺{(,s⍎⍺)[⍵]}¨↓⍉⍵}
+         aTags←'wrapText' 'horizontal' 'vertical' 'shrinkToFit' 'mergeCells'
+         attrs←aTags(⍺⍺ select)alignment
+         where←⍸0≠≢¨attrs
+         xmlargs←↑2 'alignment' ''∘{⍺,⊂⍵}¨attrs
+         complete←(c⍪xmlargs)[⍋(⍳≢c),where;]
+         ⎕XML p⍪complete
      }
 
      font←{⍝. Generates xml for fonts
@@ -91,7 +99,7 @@
      }
 
      numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'general{(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
-     cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid'general2{⍵,⍳≢⍵}s.cellXfs
+     cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid'(s general2) {⍵,⍨⍳≢⍵}s.cellXfs
      fonts←font s.fonts
 
      ⍝. TODO: refactor the following to use ⎕XML

@@ -17,9 +17,11 @@
          (2 'pane' ''pattrs)(2 'selection' ''sattrs)
      }sheet
 
+     defaultSelection←1 'selection' '' ('sqref' 'A1:XFD1048576')
+
      wbv←'workbookViewId' '0'
      attrs←(('tabSelected' '1')wbv)
-     svs←(⎕XML↑(0 'sheetViews' ''(0 2⍴''))(1 'sheetView' ''(↑attrs)),freezePane)
+     svs←(⎕XML↑(0 'sheetViews' ''(0 2⍴''))defaultSelection(1 'sheetView' ''(↑attrs)),freezePane)
 
      ⍺.SheetViews⍪←⍵.Name svs
      wb
