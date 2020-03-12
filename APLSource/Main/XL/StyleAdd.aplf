@@ -1,19 +1,21 @@
  StyleAdd←{
      ⍝. ⍵          ←→ numFmt font fill border
      ⍝. ⍺          ←→ WB namespace
+     ⍝. ⍺⍺         ←→ isMerge
      ⍝. numFmt     ←→ 'formatcode'                   -- char vec
      ⍝. font       ←→ size color name family         -- int charvec charvec charvec
      ⍝. fill       ←→ pattern foreground background  -- 5⍴(style hexcolor) -- ('charvec' 'charvec')
      ⍝. border     ←→ left right top bottom diagonal -- nested vec
 
-     ⍝. WrapText   ←→
-     ⍝. Horizontal ←→
-     ⍝. Vertical   ←→
-     ⍝. ShrinkToFit←→
-     ⍝. MergeCells ←→
+     ⍝. WrapText   ←→ boolean scalar/vector/matrix
+     ⍝. Horizontal ←→ nested character scalar/vector/matrix
+     ⍝. Vertical   ←→ nested character scalar/vector/matrix
+     ⍝. ShrinkToFit←→ boolean scalar/vector/matrix
+     ⍝. MergeCells ←→ boolean scalar not implemented
+
      0=⍴⍵:0
      s←⍺.Styles
-     columns←'numFmt' 'fonts' 'fills' 'borders' 'wrapText' 'horizontal' 'vertical' 'shrinkToFit' 'mergeCells'
+     columns←'numFmt' 'fonts' 'fills' 'borders' 'wrapText' 'horizontal' 'vertical' 'shrinkToFit'
      max←⊃⌈/⍴¨⍵ ⍝ get the largest shape (if there is 0 styles, no shape, if there is a style: ⍴range.Value)
 
      ⍝. Number formats are handled separately since s.numFmts is a vector, and custom numFmts index starts at 164
@@ -21,15 +23,17 @@
      numid←max⍴(163×0≠nid)+nid←s.numFmts⍳,0⊃⍵
 
      addUnique←{⍵≡'':⍺ ⋄ ⍺⍪∪↑,⍵} ⍝ collect only unique values
-
      id←max∘⍴{⍵≡'':0 ⋄ ⍺⍳↑,⍵} ⍝ find the index of each value, or reshape 0 to match the shape of existing styles
-
      h←1↓(⊂'horizontal')⍷columns ⍝ drop the first because numFmt
-     s.(fonts fills borders wrapText vertical shrinkToFit mergeCells)←s.(fonts fills borders wrapText vertical shrinkToFit mergeCells)addUnique¨(~h)/1↓⍵
-     (fontid fillid bordid wrapTextid horizontalid verticalid shrinkToFitid mergeCellsid)←s.(fonts fills borders wrapText horizontal vertical shrinkToFit mergeCells)id¨1↓⍵
-     s.horizontal←s.horizontal,∪⊆,⊃h/1↓⍵
+     hv←1↓columns∊'horizontal' 'vertical'
 
-     styles←⍉↓⍉↑numid fontid fillid bordid wrapTextid horizontalid verticalid shrinkToFitid mergeCellsid⍝ Join styles by cell and orient cells correctly
+     s.(fonts fills borders wrapText shrinkToFit)←s.(fonts fills borders wrapText shrinkToFit)addUnique¨(~hv)/1↓⍵
+     (fontid fillid bordid wrapTextid horizontalid verticalid shrinkToFitid)←s.(fonts fills borders wrapText horizontal vertical shrinkToFit)id¨1↓⍵
+     s.(horizontal vertical)←s.(horizontal vertical){⍺,∪⊆,⍵}¨hv/1↓⍵
+
+     styles←⍉↓⍉↑numid fontid fillid bordid wrapTextid horizontalid verticalid shrinkToFitid ⍝ Join styles by cell and orient cells correctly
+     ∘∘∘
+     styles← ⍺⍺{⍺:⊆⊃styles⋄⍵}styles
      s.cellXfs←s.cellXfs⍪∪↑,styles         ⍝ Add the unique styles to the xfs id table
      s.cellXfs id styles                   ⍝ Return all of the cell ids
  }

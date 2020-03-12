@@ -5,7 +5,7 @@ WB←{
   ⍝. Returns: workbook namespace
   wb←⎕NS''
   wb.(Name ShouldDelete)←⍵
-  wb.WS    ←0 5⍴⍬ ⍝ 5 column table
+  wb.WS    ←0 6⍴⍬ ⍝ 5 column table
   wb.SS    ←0⍴⍬   ⍝ 2 row table, row 1 is strings, row 2 is occurances
   wb.RW    ←0 3⍴⍬
   wb.SheetViews←0 2⍴⍬ ⍝ 1 2⍴(sheet name) (sheetViews xml)
@@ -21,7 +21,7 @@ WB←{
   ⍝ border  ←→ left right top bottom diagonal
   wb.Styles.borders←1 5⍴''
   ⍝ cellXfs ←→ numFmtId fontId fillId borderId -- ids taken from the other lists
-  wb.Styles.cellXfs←1 9⍴0
+  wb.Styles.cellXfs←1 8⍴0
 
   ⍝ cell alignment
   wb.Styles.wrapText   ←0

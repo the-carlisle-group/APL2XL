@@ -27,19 +27,21 @@
          rangeMap←{1≥≢⍵:⊃,/↓⍺ offset 1,⍵ ⋄ ⍺ offset ⍵} ⍝ generate the range of addresses starting at ⍺
 
      ⍝. Start by finding the shape of each range, and the largest shape in the sheet
-         (sheetName address style value type)←↓⍉⍵
+         (sheetName address style value type isMerged)←↓⍉⍵
          rangeIndices←cti¨address    ⍝ used to generate address ranges
          shapes←{⍴1/⍵}¨value         ⍝ ensure that scalars are at least rank 1
          max←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
+         mergeCellsXML←⊃(∨/isMerged)/⊂isMerged WSMergeCells address(itc¨rangeIndices+shapes-1 1)
 
      ⍝. Generate indices for excel cells
          inds←flatten rangeIndices rangeMap¨shapes  ⍝ indices for each value in value
          order←⍋inds
-
+         im←{⍵∧⍵⍲(⍴⍵)↑1∊⍵}¨(⍴¨value)⍴¨isMerged
+         ∘∘
      ⍝. Sort all of the cell meta data according to its index
-         sInds←inds[order]                                            ⍝ index of each Excel cell
+         sInds←inds[order]
          cells←⊃{⍺,⍪⍵}/(⊂sInds),{(flatten ⍵)[order]}¨value type style ⍝ join the cell meta-data
-
+         filterMergedVals←~{(flatten ⍵)[order]}im
          rowNumbers←⊃¨sInds
          rowNumbers←rowNumbers[g←⍋rowNumbers]
          cells←cells[g;]
@@ -52,11 +54,14 @@
          numrows←≢rowxml
          cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
+⍝         cellsxml←(cxml⍪vxml)[⍋(⍳≢cxml),⍸filterMergedVals;]
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
          xmlinput←(rowxml⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
+         xinput←xmlinput[(⍳≢xmlinput)~(~filterMergedVals)/⍸2∊⍤1⊢xmlinput;]
+         ∘∘∘
 
     ⍝. Generate XML
-         rows←⎕XML xmlinput
+         rows←⎕XML xinput
          sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
@@ -65,7 +70,7 @@
        ⍝ auto←'<cols> <col min="1" max="2" width="18.7265625" bestFit="1" customWidth="1"/> <col min="3" max="3" width="26" bestFit="1" customWidth="1"/> <col min="4" max="4" width="10.36328125" bestFit="1" customWidth="1"/> </cols>'
     ⍝. Complete <sheetdata> body
          y←'<sheetFormatPr defaultRowHeight="14.5" x14ac:dyDescent="0.35"/>'
-         ∊worksheet wattrs tag dimension sheetViews y auto sheetdata
+         ∊worksheet wattrs tag dimension sheetViews y auto sheetdata mergeCellsXML
      }
 
      sheets←wb.WS

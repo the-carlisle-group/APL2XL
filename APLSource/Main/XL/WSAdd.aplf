@@ -7,6 +7,7 @@
      wb←⍺
      mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
      drs←11 80 160 320 83 163 323 645               ⍝ APL types
+     isMerge←4⊃⍵
 
      ⍝. Normalize the range data for ouput as xml
      shape←⍴value←3⊃⍵
@@ -17,7 +18,7 @@
 
      (values types)←shape∘⍴¨v t
      (name address)←⍵[0 1]
-     styles←shape⍴wb StyleAdd(shape∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵)
-     wb.WS⍪←name address styles values types
+     styles←shape⍴wb (isMerge StyleAdd)(shape∘{⍵≢'':⍺⍴⍵ ⋄ ''}¨2⊃⍵)
+     wb.WS⍪←name address styles values types isMerge
      wb
  }
