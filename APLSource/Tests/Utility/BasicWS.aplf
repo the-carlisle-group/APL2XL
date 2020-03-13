@@ -11,7 +11,7 @@
      (range2←⎕NS'').(Address Value)←(Main.NextCol range1)(⍪↓r c⍴⎕A)
      range1.Horizontal←⊂'center'
      range1.Vertical←⊂'center'
-     range1.MergeCells←1
+     range1.MergeCells←0
 
      range2.Horizontal←⊂'center'
      _←{~⍵:⍬ ⍝ Conditional style application

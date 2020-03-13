@@ -27,7 +27,6 @@
      h←1↓(⊂'horizontal')⍷columns ⍝ drop the first because numFmt
      hv←1↓columns∊'horizontal' 'vertical'
 
-     ∘∘∘
      s.(fonts fills borders wrapText shrinkToFit)←s.(fonts fills borders wrapText shrinkToFit)addUnique¨(~hv)/1↓⍵
      s.(horizontal vertical)←s.(horizontal vertical){0≠≢⍵:∪⍺,⊆,⍵ ⋄ ⍺}¨hv/1↓⍵
      (fontid fillid bordid wrapTextid shrinkToFitid)←s.(fonts fills borders wrapText shrinkToFit)id¨(~hv)/1↓⍵
