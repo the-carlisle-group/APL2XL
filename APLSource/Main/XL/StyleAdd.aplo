@@ -30,7 +30,7 @@
      ∘∘∘
      s.(fonts fills borders wrapText shrinkToFit)←s.(fonts fills borders wrapText shrinkToFit)addUnique¨(~hv)/1↓⍵
      s.(horizontal vertical)←s.(horizontal vertical){0≠≢⍵:∪⍺,⊆,⍵ ⋄ ⍺}¨hv/1↓⍵
-     (fontid fillid bordid wrapTextid shrinkToFitid)←s.(fonts fills borders wrapText shrinkToFit)(~hv)/id¨1↓⍵
+     (fontid fillid bordid wrapTextid shrinkToFitid)←s.(fonts fills borders wrapText shrinkToFit)id¨(~hv)/1↓⍵
      (horizontalid verticalid)←s.(horizontal vertical){(⍴⍵)⍴⍺⍳,⍵}¨hv/1↓⍵
      styles←⍉↓⍉↑numid fontid fillid bordid wrapTextid horizontalid verticalid shrinkToFitid ⍝ Join styles by cell and orient cells correctly
      styles←⍺⍺{⍺:⊆⊃styles ⋄ ⍵}styles

@@ -54,11 +54,9 @@
          numrows←≢rowxml
          cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
-⍝         cellsxml←(cxml⍪vxml)[⍋(⍳≢cxml),⍸filterMergedVals;]
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
          xmlinput←(rowxml⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
-         xinput←xmlinput[(⍳≢xmlinput)~(~filterMergedVals)/⍸2∊⍤1⊢xmlinput;]
-         ∘∘∘
+         xinput←xmlinput[(⍳≢xmlinput)~(~filterMergedVals)/⍸2∊⍤1⊢xmlinput;] ⍝ filter out values for merged cells
 
     ⍝. Generate XML
          rows←⎕XML xinput

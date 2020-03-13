@@ -80,13 +80,13 @@
          p←(0 parent''),(⊂1 2⍴'count'(≢⍵))
          c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢styles
 
-∘∘∘
+         ∘∘∘
          ⍝⍝⍝ here we need to select nested alignment tags where necessary
          select←{s←⍺⍺ ⋄ ⍺∘{(⍺,⍪⍵)⌿⍨0 '' '' 0≢¨⍵}¨↓⍉↑⍺{(,s⍎⍺)[⍵]}¨↓⍉⍵}
          aTags←'wrapText' 'horizontal' 'vertical' 'shrinkToFit'
          attrs←aTags(⍺⍺ select)alignment
          where←⍸0≠≢¨attrs
-         xmlargs←↑2 'alignment' ''∘{⍺,⊂⍵}¨attrs
+         xmlargs←1↓↑2 'alignment' ''∘{⍺,⊂⍵}¨attrs
          complete←(c⍪xmlargs)[⍋(⍳≢c),where;]
          ⎕XML p⍪complete
      }
