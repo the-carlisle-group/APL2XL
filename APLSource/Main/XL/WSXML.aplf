@@ -66,7 +66,7 @@
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
 
         ⍝ additional work is needed for making columns work
-        ⍝ auto←''⍝WSCols max
+        ⍝ auto←WSCols max
         ⍝ auto←'<cols> <col min="1" max="2" width="18.7265625" bestFit="1" customWidth="1"/> <col min="3" max="3" width="26" bestFit="1" customWidth="1"/> <col min="4" max="4" width="10.36328125" bestFit="1" customWidth="1"/> </cols>'
         ⍝. Complete <sheetdata> body
         ⍝ y←'<sheetFormatPr defaultRowHeight="14.5" x14ac:dyDescent="0.35"/>'

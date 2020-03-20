@@ -1,4 +1,7 @@
- WSViews←{
+ WSProps←{
+     ⍝. ⍵ ←→ sheet
+     ⍝. ⍺ ←→ internal wb data structure
+     ⍝ Handle all sheet global collections and properties
      wb←⍺
      sheet←⍵
      freezePane←{
@@ -25,6 +28,7 @@
 
      collection←{n w←⍵ ⋄ 1 'col' '',⊂↑('min'(⍕n))('max'(⍕n))('width'(⍕w))('bestFit' '1')('customWidth' '1')}⍤1⊢sheet.ColumnWidth
      columns←⎕XML(0 'cols' '' '')⍪collection
+
      ⍺.SheetViews⍪←⍵.Name(svs,columns)
      wb
  }

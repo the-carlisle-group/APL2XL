@@ -35,14 +35,6 @@
          ⍺ ##.Main.XL.WSAdd sname range.Address styles(range.Value) range.MergeCells               ⍝ Add this range to an intermediate table
      }
 
-⍝     nameSheets←{
-         ⍝ Provide sheets with a default Name if none is provided
-⍝         S      ← ,⍵
-⍝         anon   ← ⍸,0=⊃,/S.⎕NC⊂'Name'
-⍝         0=≢anon: S
-⍝         anon { S[⍺].Name←,/(⍵⍴⊂'Sheet'),⍪' '(≠⊆⊢)⍕1+⍳⍵ ⋄ S }≢anon
-⍝     }
-
      nameSheets←{
          s←,⍵
          n←{6::'' ⋄ ⍵.Name}¨s
