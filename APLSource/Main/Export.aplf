@@ -22,6 +22,7 @@
      sheets←{
          wb←⍺
          sheet←⍵
+         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.RowHeight ⋄ 0 2⍴⍬}sheet
          _←wb ##.Main.XL.WSViews sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
@@ -30,9 +31,10 @@
      ranges←{
          (sname range)←⍵
          range.(Value MergeCells)←{0<⍵.⎕NC'MergeCells':⍵.Value range.MergeCells ⋄ ⍵.Value 0}range
-         range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address               ⍝ Convert indices to cell values: 0 0 → 'A1'
-         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Font' 'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' ⍝ Collect all of the styles in the range
-         ⍺ ##.Main.XL.WSAdd sname range.Address styles(range.Value) range.MergeCells               ⍝ Add this range to an intermediate table
+         range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address ⍝ Convert indices to cell values: 0 0 → 'A1'
+         font←⊂range.Font∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵⋄''}¨'Family' 'Size' 'Italic' 'Bold' 'Underline'
+         styles←font{(⍵,⍺)[⍋(≢⍵),1]}range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵⋄''}¨'NumberFormat'  'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' ⍝ Collect all of the styles in the range
+         ⍺ ##.Main.XL.WSAdd sname range.Address styles(range.Value)range.MergeCells               ⍝ Add this range to an intermediate table
      }
 
      nameSheets←{

@@ -9,6 +9,7 @@ WB←{
   wb.SS    ←0⍴⍬   ⍝ 2 row table, row 1 is strings, row 2 is occurances
   wb.RW    ←0 3⍴⍬
   wb.SheetViews←0 2⍴⍬ ⍝ 1 2⍴(sheet name) (sheetViews xml)
+  wb.SheetRowHeights←0 2⍴⍬
 
   ⍝. Include default values for styles
   wb.Styles←⎕NS''

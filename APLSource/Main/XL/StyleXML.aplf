@@ -98,6 +98,7 @@
          fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
          fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
          ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪fontCollection
+         n/'i' 'b' 'u'
      }
 
      numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'numFmt{(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
