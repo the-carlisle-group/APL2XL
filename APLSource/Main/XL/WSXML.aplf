@@ -51,16 +51,18 @@
      ⍝. Transform the cell meta data into an argument appropriate for ⎕XML
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
          rts←,¨'rts' ⍝ to share values
-         ⍝ rowxml←(0,row,empty),⍤1⍪'r' 'ht'∘{⊂⍉↑⍺ ⍵}⍤1⊢wb.SheetRowHeights
-         ⍝ rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
+         ⍝rowxml←(0,row,empty),⍤1⍪'r' 'ht'∘{⊂⍉↑⍺ ⍵}⍤1⊢wb.SheetRowHeights
          ⍝heights←(↓⍉wb.SheetRowHeights){r h←⍺ ⋄ h[r⍸r{(⍵∊⍺)/⍵}⍵]}∪rowNumbers
-         rowxml←(0,row,empty),⍤1⍪'r' 'ht' 'customHeight'∘{⊂⍉↑⍺ ⍵}⍤1⊢(wb.SheetRowHeights,1)
-         withCells←wb.SheetRowHeights[;0]∊(∪rowNumbers)
-         numrows←≢∪rowNumbers
+         ⍝rowxml←(0,row,empty),⍤1⍪'r' 'ht' 'customHeight'∘{⊂⍉↑⍺ ⍵}⍤1⊢(wb.SheetRowHeights,1)
+         ⍝withCells←wb.SheetRowHeights[;0]∊(∪rowNumbers)
+         ⍝numrows←≢∪rowNumbers
+         ⍝xmlInput←((withCells⌿rowxml)⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
+         rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
+         numrows←≢rowxml
          cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
-         xmlInput←((withCells⌿rowxml)⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
+         xmlInput←(rowxml⍪cellsxml)[⍋(⍳numrows),(2×rowcellcount)/⍳numrows;]
          xmlInputFiltered←{⍵[(⍳≢⍵)~(~filterMergedVals)/⍸2∊⍤1⊢⍵;]}xmlInput ⍝ filter out values for merged cells
 
     ⍝. Generate XML
@@ -69,8 +71,8 @@
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
 
-        y←'<sheetFormatPr defaultRowHeight="14.5" x14ac:dyDescent="0.35"/>'
-         ∊worksheet wattrs tag dimension y sheetViews sheetdata mergeCellsXML 
+         ⍝y←'<sheetFormatPr defaultRowHeight="14.5" x14ac:dyDescent="0.35"/>'
+         ∊worksheet wattrs tag dimension  sheetViews sheetdata mergeCellsXML
      }
 
      sheets←wb.WS

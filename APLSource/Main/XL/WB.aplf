@@ -15,8 +15,8 @@ WB←{
   wb.Styles←⎕NS''
   ⍝ numFmt  ←→ 'formatcode'
   wb.Styles.numFmts←1⍴⊂'General'
-  ⍝ font    ←→ size color name family scheme
-  wb.Styles.fonts  ←1 4⍴11 1 'Calibri' 2       ⍝ defaults
+  ⍝ font    ←→ size color name family 
+  wb.Styles.fonts  ←1 7⍴11 1 'Calibri' 2 0 0 0      ⍝ defaults
   ⍝ fill    ←→ pattern foreground background
   wb.Styles.fills  ←2 3⍴ 'none' '' '' 'gray125' '' '' ⍝ defaults
   ⍝ border  ←→ left right top bottom diagonal

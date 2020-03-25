@@ -18,10 +18,8 @@
         ⍝. 100 returns all numberformats and all fills
          range1.NumberFormat←Main.NumberFormats 100
          range1.Fill←Main.Fills 100
-
          range1.Font←⎕NS''
-         range1.Font.(Family Size Italic Bold Underline)←'Calibri' 20 1 1 1
-         ⍝ range1.Font←(20 1 'Calibri' 2)(11 1 'Calibri' 2)
+         range1.Font.(Name Size Italic Bold Underline)←'Calibri' 20 0 0 0
          ⍬
      }⍺
 

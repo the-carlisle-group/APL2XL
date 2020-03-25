@@ -87,17 +87,20 @@
          where←⍸0≠≢¨attrs
 
          ⍝⍝⍝ drop the first because the default style will never have an alignment body
-         xmlargs←1↓↑2 'alignment' ''∘{⍺,⊂⍵}¨attrs 
+         xmlargs←1↓↑2 'alignment' ''∘{⍺,⊂⍵}¨attrs
          complete←(c⍪xmlargs)[⍋(⍳≢c),where;] ⍝ shuffle sort the xmlargs to their correct nested positions
          ⎕XML p⍪complete
      }
 
      font←{⍝. Generates xml for fonts
+         properTags←7↑4/1
+         ibu←~properTags
          fattr←'val' 'theme' 'val' 'val'
-         fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢⍵
+         fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢properTags/⍵
          fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
          fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
-         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪fontCollection
+         ibus←↑⊃,/{{2 ⍵'' ''}¨⍵/'ibu'}¨↓(~properTags)/⍵
+         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪(fontCollection⍪ibus)[⍋(⍳≢fontCollection),(,ibu/⍵)/3/5×⍳≢⍵;]
          n/'i' 'b' 'u'
      }
 
