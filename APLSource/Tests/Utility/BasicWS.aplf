@@ -23,7 +23,6 @@
          range1.Font.Italic←1↓[1](0 1+⍴range1.Value)⍴0 0 1
          range1.Font.Bold←1↓[1](0 1+⍴range1.Value)⍴0 1 0
          range1.Font.Underline←1↓[1](0 1+⍴range1.Value)⍴1 0 0
-         ∘∘∘
          ⍬
      }⍺
 
