@@ -38,6 +38,7 @@
          order←⍋inds
          im←{⍵∧⍵⍲(⍴⍵)↑1∊⍵}¨(⍴¨value)⍴¨isMerged ⍝ boolean mask of cells that should contain their values, for merged cells only the first cell in a range should contain its value
 
+         ∘∘∘
      ⍝. Sort all of the cell meta data according to its index
          sInds←inds[order]
          cells←⊃{⍺,⍪⍵}/(⊂sInds),{(flatten ⍵)[order]}¨value type style ⍝ join the cell meta-data
@@ -51,7 +52,11 @@
      ⍝. Transform the cell meta data into an argument appropriate for ⎕XML
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
          rts←,¨'rts' ⍝ to share values
-         rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
+         rowHeights←⊃wb.SheetRowHeights[wb.SheetRowHeights[;0]⍳1↑sheetName;1]
+
+         props←(1+∪rowNumbers){'r' 'spans' 'ht' 'customHeight' 'x14ac:dyDescent' ,⍪⍺ '2:5' ⍵ 1 '0.35'}¨rowHeights[rowHeights[;0]⍳(∪rowNumbers);1]
+         rowxml←(0,row,empty),⍤1⍪props
+         ⍝rowxml←(0,row,empty),⍤1⍪↓r,⍪1+∪rowNumbers
          numrows←≢rowxml
          cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
@@ -64,7 +69,7 @@
          sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
-         ∊worksheet wattrs tag dimension  sheetViews sheetdata mergeCellsXML
+         ∊worksheet wattrs tag dimension sheetViews sheetdata mergeCellsXML
      }
 
      sheets←wb.WS

@@ -22,8 +22,9 @@
      sheets←{
          wb←⍺
          sheet←⍵
-         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.RowHeight ⋄ 0 2⍴⍬}sheet
-         _←wb ##.Main.XL.WSViews sheet ⍝ handle global properties like sheets
+         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ 0 2⍴⍬}sheet
+         sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
+         _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
 
@@ -38,7 +39,6 @@
          font←{0<⍵.⎕NC'Font':extract ⍵⍎'Font' ⋄ ⊆''}range
          styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' ⍝ Collect all of the styles in the range
          ⍺ ##.Main.XL.WSAdd sname range.Address(styles[0],font,1↓styles)(range.Value)range.MergeCells               ⍝ Add this range to an intermediate table
-
      }
 
      nameSheets←{
