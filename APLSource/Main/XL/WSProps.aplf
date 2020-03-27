@@ -26,8 +26,11 @@
      attrs←(('tabSelected' '1')wbv)
      svs←(⎕XML↑(0 'sheetViews' ''(0 2⍴''))defaultSelection(1 'sheetView' ''(↑attrs)),freezePane)
 
-     collection←{n w←⍵ ⋄ 1 'col' '',⊂↑('min'(⍕n))('max'(⍕n))('width'(⍕w))('bestFit' '1')('customWidth' '1')}⍤1⊢sheet.ColumnWidth
-     columns←⎕XML(0 'cols' '' '')⍪collection
+     columns←{
+         ⍵≡'':⍵
+         n w←⍵ 
+         ⎕XML(0 'cols' '' '')⍪1 'col' '',⊂↑('min'(⍕n))('max'(⍕n))('width'(⍕w))('bestFit' '1')('customWidth' '1')
+     }⍤1⊢sheet.ColumnWidth
 
      ⍝ WARNING: anyone modifying this code
      ⍝ fmtPR must follow svs directly
