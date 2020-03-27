@@ -29,6 +29,9 @@
      collection←{n w←⍵ ⋄ 1 'col' '',⊂↑('min'(⍕n))('max'(⍕n))('width'(⍕w))('bestFit' '1')('customWidth' '1')}⍤1⊢sheet.ColumnWidth
      columns←⎕XML(0 'cols' '' '')⍪collection
 
-     ⍺.SheetViews⍪←⍵.Name(svs,'<sheetFormatPr defaultRowHeight="14.5" x14ac:dyDescent="0.35"/>',columns)
+     ⍝ WARNING: anyone modifying this code
+     ⍝ fmtPR must follow svs directly
+     fmtPR←'<sheetFormatPr defaultRowHeight="14.5" x14ac:dyDescent="0.35"/>'
+     ⍺.SheetViews⍪←⍵.Name(svs,fmtPR,columns)
      wb
  }

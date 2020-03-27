@@ -11,7 +11,7 @@
      (range2←⎕NS'').(Address Value)←(Main.NextCol range1)(⍪↓r c⍴⎕A)
      range1.Horizontal←⊂'center'
      range1.Vertical←⊂'center'
-     range1.MergeCells←0
+     range1.MergeCells←1
 
      range2.Horizontal←⊂'center'
      _←{~⍵:⍬ ⍝ Conditional style application
@@ -20,15 +20,17 @@
          range1.Fill←Main.Fills 100
          range1.Font←⎕NS''
          range1.Font.(Name Size)←(⊂'Calibri')20
-         range1.Font.Italic←1↓[1](0 1+⍴range1.Value)⍴0 0 1
-         range1.Font.Bold←1↓[1](0 1+⍴range1.Value)⍴0 1 0
-         range1.Font.Underline←1↓[1](0 1+⍴range1.Value)⍴1 0 0
+
+         shape←{1↑[1](0 1+⍴range1.Value)⍴⍵}
+         range1.Font.Italic   ←shape 0 0 1
+         range1.Font.Bold     ←shape 0 1 0
+         range1.Font.Underline←shape 1 0 0
          ⍬
      }⍺
 
      (sheet←⎕NS'').(Name Ranges)←'Data'(range1 range2)
      sheet.ColumnWidth←(1+⍳3),⍪23 50 12
-     sheet.RowHeight←(1+⍳14),⍪20+⍳14
+     sheet.RowHeight←{(⍳⍵),⍪20×⍳⍵}20
      (wb←⎕NS'').(FileName Sheets)←fn sheet
      Main.Export wb
  }
