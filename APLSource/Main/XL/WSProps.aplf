@@ -28,9 +28,9 @@
 
      columns←{
          ⍵≡'':⍵
-         n w←⍵ 
-         ⎕XML(0 'cols' '' '')⍪1 'col' '',⊂↑('min'(⍕n))('max'(⍕n))('width'(⍕w))('bestFit' '1')('customWidth' '1')
-     }⍤1⊢sheet.ColumnWidth
+         cols←{n w←⍵ ⋄ 1 'col' '',⊂↑('min'(⍕n))('max'(⍕n))('width'(⍕w))('bestFit' '1')('customWidth' '1')}⍤1⊢⍵
+         ⎕XML(0 'cols' '' '')⍪cols
+     }sheet.ColumnWidth
 
      ⍝ WARNING: anyone modifying this code
      ⍝ fmtPR must follow svs directly
