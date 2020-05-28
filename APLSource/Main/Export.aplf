@@ -11,9 +11,10 @@
      ⍝. ⍵.Sheets[n].Ranges[n].Address      ←→ address can be either indices i.e. ←→ 0 0 (at cell A1) or cell string i.e. ←→ 'A1' (at index 0 0)
 
      ⍝. Validation
-     777::GetErrorMessage ⎕SIGNAL 11
-     ∨/2<≢∘⍴¨(∊(,⍵.Sheets).Ranges).Value:'RANK ERROR: Range values must be less than rank 3'⎕SIGNAL 11
-     ∨/2<≡¨(∊(,⍵.Sheets).Ranges).Value:'DEPTH ERROR: Range values must be less than depth 3'⎕SIGNAL 11
+     0::⎕SIGNAL⊂⎕DMX.(('EN'EN)('Message'Message))     
+     777::⎕SIGNAL⊂('EN' 11)('Message'GetErrorMessage)
+     ∨/2<≢∘⍴¨(∊(,⍵.Sheets).Ranges).Value:⎕SIGNAL⊂('EN' 4)('Message' 'Range values must be less than rank 3')
+     ∨/2<≡¨(∊(,⍵.Sheets).Ranges).Value:⎕SIGNAL⊂('EN' 11)('Message' 'Range values must be less than depth 3')('EM' 'DEPTH ERROR')
 
      ⍝. Create an empty namespace with containers for the intermediate data representation used for compiling XML
      wb←##.Main.XL.WB ⍵.FileName 1
@@ -22,7 +23,7 @@
      sheets←{
          wb←⍺
          sheet←⍵
-         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name  (0 2⍴⍬)}sheet
+         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name(0 2⍴⍬)}sheet
          sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
          _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
@@ -52,5 +53,6 @@
      }
 
      _←wb sheets¨nameSheets ⍵.Sheets
+     6::⎕SIGNAL⊂('EN' 16)('Message' '.NET unavailable')
      ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory
  }

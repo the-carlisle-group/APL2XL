@@ -1,5 +1,5 @@
- zpath←temp Zip target;⎕USING;delete;name;path
+ zpath←temp Zip target;⎕USING;delete;name;path;dnv;dll
 ⍝. This function zips the temp directory as target,'.xlsx'
-⍝. This is the only file that contains an external dependency of the .NET zip.dll
- ⎕USING←',System.IO.Compression.DLL' ',System.IO.Compression.FileSystem.DLL'
- System.IO.Compression.ZipFile.CreateFromDirectory temp (outputFile,'.xlsx')
+⍝. This, and 'UsingDotNetFileSystem.aplf' are the only files that contains an external dependency of the .NET zip.dll 
+ ⎕USING←UsingDotNetFileSystem ⍬
+ System.IO.Compression.ZipFile.CreateFromDirectory temp(outputFile,'.xlsx')

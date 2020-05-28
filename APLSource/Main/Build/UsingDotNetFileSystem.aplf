@@ -1,0 +1,8 @@
+ UsingDotNetFileSystem←{
+⍝ Return ⎕USING value depending on available .NET version
+     ⎕IO←1
+     ⎕USING←''
+     dnv←System.Environment.Version.Major     
+     dll←⊂'.DLL'/⍨4=dnv
+     ',System.IO.Compression' ',System.IO.Compression.FileSystem',¨dll
+ }
