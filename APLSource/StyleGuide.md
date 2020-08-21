@@ -31,12 +31,12 @@ When creating a workbook, there will be compenent properties such as `wb.WS` or 
 |WB | Workbook|       ./xl/workbook.xml|
 |WS|   Worksheet|      ./xl/worksheet.xml|
 
-***NOTE: All components must minimally implement `ADD`, `XML`, and `PATH` functions, and should include a `REL` function as necessary.***
+***NOTE: All components must minimally implement `Add`, `XML`, and `PATH` functions, and should include a `REL` function as necessary.***
 |Behavior|Description|
 |---|---|
 |Path|Return the string path to the file|
 |XML| Return a single string of XML to be written to file|
-|ADD| Add the necessary data to `wb` for future processing of the component part. Return data varies. Typically returns the `wb` after `wb` has been ammended.  |
+|Add| Add the necessary data to `wb` for future processing of the component part. Return data varies. Typically returns the `wb` after `wb` has been ammended.  |
 |REL| Return the `rel` content for the respective `rel` file|
 
 
@@ -45,7 +45,7 @@ All library functions should be defined as DFNS. All code that communicates outs
 
 
 ## DFN Format
-It is common to require multiple helper and formatting functions within a dfn. The format of a dfn within this project should be adhered to as necessary. See `Main/XL/WSADD.aplf` or `Main/XL/StyleXML.aplf` for examples. 
+It is common to require multiple helper and formatting functions within a dfn. The format of a dfn within this project should be adhered to as necessary. See [Main/XL/WSAdd.aplf](./Main/XL/WSAdd.aplf) or [Main/XL/StyleXML.aplf](./Main/XL/StyleXML.aplf) for examples. 
 
 ```APL
 comments - the leading line of a multi-line dfn must minimally include a definition of the arguments. See Main/Export.aplf for an expample. Additional comments are appreciated.
