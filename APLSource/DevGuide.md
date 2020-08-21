@@ -23,7 +23,7 @@ The purpose of this document is to enable collaborative and open-source contribu
 ### Build.Zip
 
 ## Getting Started
-Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](./README.md) for more information about `APL2XL` usage. 
+Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](../README.md) for more information about `APL2XL` usage. 
 
 ### Data Flow
 
@@ -31,7 +31,7 @@ Before beginning, it is recommended that you become familiar with using `APL2XL`
 
 When using `APL2XL`, the user first creates `Range` namespaces. The `Range` namespaces is then added to a `Sheet` namespace. The `Sheet` namespaces can contain multiple ranges. The `Sheet` namespaces are then added to a `Workbook` namespace. Each of these types of namesapces contain variable names, which follow PascalCase convention of naming. Names should be full length names, with no abbreviations, and clearly correspond to the resulting behavior in some way. Variables can be assigned values for cells, styling for cell ranges, global properties of cells, sheets, or workbooks respectively, and can potentially be used for providing custom functions for customized processing if necessary in the future. 
 
-When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, `Main/XL/WB.aplf` must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. (TODO: as demonstrated [link]())
+When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, [Main/XL/WB.aplf](./Main/XL/WB.aplf) must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. (TODO: as demonstrated [link]())
 
 ### From Entry Point to Excel Workbook
 Once a user has collected their data into their respective workbooks, the user calls `Main.Export myWorkbook` to kick off the data flow. A `wb` is created as an intermediate data representation to collect data into their respective component parts. Functions contained in `Main/XL` of the format `<Component>ADD.aplf` accept data for the respective component, and add data to the `wb` object. The `<Component>XML` files generate the necessary xml text based on the data contained with the `wb` object. 

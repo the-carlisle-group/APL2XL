@@ -3,8 +3,8 @@ In order to aid your learning and developing experience, this checklist is provi
 
 
 To gain the most benefit from this checklist, it is recommended that you follow it as a procedure, in order. Step 5 must be completed before contributions is accepted and merged into the project. 
-1. Read the Style Guide
-2. Read the DevGuide document
+1. Read the [Style Guide](./StyleGuide.md)
+2. Read the [DevGuide](./DevGuide.md)
 3. When adding a new component
     - Add new property name to `Main/XL/WB.aplf` to process user input as an intermediate data representation
     - Add new `Main/XL/<Component><Behavior>.aplf` for all behaviors ADD, PATH, REL (if necessary), and XML
