@@ -1,5 +1,5 @@
 ## Intent
-The purpose of this document is to enable collaborative and open-source contributions to this project. Collaborators should be familiar with the StyleGuide and the DevChecklist before contributing. 
+The purpose of this document is to enable collaborative and open-source contributions to this project. Collaborators should be familiar with using `APL2XL` and OOXML before contributing. See the [README](../README.md) for more information about `APL2XL` usage. See the [DevGuide](./DevGuide.md) and the [StyleGuide](./StyleGuide.md) for more help getting started. 
 
 ## Contents
 
@@ -23,7 +23,7 @@ The purpose of this document is to enable collaborative and open-source contribu
 ### Build.Zip
 
 ## Getting Started
-Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](../README.md) for more information about `APL2XL` usage. See the [DevGuide](./DevGuide.md) and the [StyleGuide](./StyleGuide.md) for more help getting started. 
+This document presumes that you understand OOXML and the concepts of SpreadsheetML. A useful introduction can be found here: http://officeopenxml.com/anatomyofOOXML-xlsx.php . This document will occasionally explain relevant concepts to OOXML, but mostly contains information on developing and extending `APL2XL`.
 
 ### Data Flow
 
