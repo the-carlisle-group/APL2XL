@@ -99,7 +99,7 @@ The reamining functions defined within `Main/XL` use the name of the relating OO
 Every component requires a `PATH`, a `REL`, and `XML`. Other names may be used or defined as necessary. For instance `WSProps` and `WSNames` are useful definitions to prevent unnccessary repetition throughout `Main/XL`. When defining a new component, or extending existing components, the following naming conventions are used. If you want to know where to look to extend existing behavior, begin here. 
 |Description|Behavior|
 |---|---|
-|ADD|Format the data to be processed in the corresponding `<Component>XML.aplf` function and ADD  the data to `wb`|
+|Add|Format the data to be processed in the corresponding `<Component>XML.aplf` function and Add  the data to `wb`|
 |PATH| Return the Component file path|
 |REL| Generate the data for the `rel` XML "part" of the corresponding `rel` file. For workbooks and global rels `_rels/.rels`. For Component parts within a workbook: `xl/_rels/workbook.xml.rels`|
 |XML| Process the `wb` for the Componant, returning the final XML to be exported to file|
@@ -110,7 +110,7 @@ The `Main.Export` function calls the dfn `sheets` for each sheet in the namespac
 Extending Sheet-Global requires extension of the `WSProps` function. Portions of the `<sheetFormatPr>` "part" are order sensitive. Any modification should not break existing features, and should also respect the existing order of output of existing child components. 
 
 ### Extending Cell-Wise Properties
-The dfn `sheets` located inside `Main.Export` calls the dfn `ranges` for each range in each sheet. Any additional feature that requires extending Cell-Wise properties requires extension [Main/XL/WSADD.aplf](./Main/XL/WSADD.aplf) and [Main/XL/WSXML.aplf](./Main/XL/WSXML.aplf). The primary property used for building worksheets is `wb.WS`. Shape is an `n 5` matrix, where each rows columns are defined as follows. `WSADD` expects a vector of these values:
+The dfn `sheets` located inside `Main.Export` calls the dfn `ranges` for each range in each sheet. Any additional feature that requires extending Cell-Wise properties requires extension [Main/XL/WSAdd.aplf](./Main/XL/WSAdd.aplf) and [Main/XL/WSXML.aplf](./Main/XL/WSXML.aplf). The primary property used for building worksheets is `wb.WS`. Shape is an `n 5` matrix, where each rows columns are defined as follows. `WSAdd` expects a vector of these values:
 ```APL
 ⍵[0] ←→ sheetname
 ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
@@ -121,11 +121,11 @@ The dfn `sheets` located inside `Main.Export` calls the dfn `ranges` for each ra
 
 |Function|Description|
 |---|---|
-|`WSAdd`|Add the incoming data from the `Main.Export` `ranges` dfn to `wb.WS`. Modification of [Main/XL/WSADD.aplf](./Main/XL/WSADD.aplf) is only necessary when custom preprocessing is required for the cell properties. Cell data should be normalized before being passed to `WSAdd`. For instance: Data Types must be converted to an Excel recognized data type based on business rules. This is handled within `WSAdd` so as not to clutter the `ranges` function. |
+|`WSAdd`|Add the incoming data from the `Main.Export` `ranges` dfn to `wb.WS`. Modification of [Main/XL/WSAdd.aplf](./Main/XL/WSAdd.aplf) is only necessary when custom preprocessing is required for the cell properties. Cell data should be normalized before being passed to `WSAdd`. For instance: Data Types must be converted to an Excel recognized data type based on business rules. This is handled within `WSAdd` so as not to clutter the `ranges` function. |
 |`WSXML`|`WSXML` groups the data collected in  `wb.WS` by sheetname. `WSXML` performs array operations to format the cell properties for an entire sheet simultaneously. If new properties must be added or modified, the comments found within the function should help to guide you.|
 
 ### Extending Shared Strings
-The shared strings component of a `.xlsx` file contains the count of each unique string found within an entire workbook, shared accross all worksheets. [Main/XL/WSADD.aplf](./Main/XL/WSADD.aplf) calls [Main/XL/SSADD.aplf](./Main/XL/SSADD.aplf) in order to collect all unique strings, and returns the index of unique strings. `SSXML` generates the xml for `xl/sharedStrings.xml`. This behavior is currently very simple, and requires little modification. 
+The shared strings component of a `.xlsx` file contains the count of each unique string found within an entire workbook, shared accross all worksheets. [Main/XL/WSAdd.aplf](./Main/XL/WSAdd.aplf) calls [Main/XL/SSAdd.aplf](./Main/XL/SSAdd.aplf) in order to collect all unique strings, and returns the index of unique strings. `SSXML` generates the xml for `xl/sharedStrings.xml`. This behavior is currently very simple, and requires little modification. 
 
 ### Extending Styles
 For each style part, there exists an id, and for each unique combination of those styles, there exists a record in the `wb.styles.cellXfs` table relating a collection of style ids to that unique combination. Additionally, there is a table/vector for each style type. Number Format, Fill, Border, and other styles all have their own dedicated table/vector which contains the cell map for that style type for each cell.
@@ -134,7 +134,7 @@ If a cell is styled to be Red and Bold, that is one unique combination. If anoth
 
 |Function|Description|
 |---|---|
-|`Main/XL/StyleADD`|This function is called from within `WSADD` and generates the content for the `cellXfs` table. This table collects unique styles for each worksheet. The function returns indices to these styles. |
+|`Main/XL/StyleAdd`|This function is called from within `WSAdd` and generates the content for the `cellXfs` table. This table collects unique styles for each worksheet. The function returns indices to these styles. |
 |`Main/XL/StyleXML`|Several formatter functions are defined for each different part of a single style. A single style is comprised of a sequence of indices for each part of a style. The `cellXfs` table contains a record for each unique combination which is assigned and ID. This function transforms style table into XML, and also generates the required XML for the `cellXfs` table.|
 
 ### Extending Workbook/Root Relationships
@@ -142,7 +142,7 @@ If your new component has a woorkbook or root level relationship, it must be add
 
 Root relationships are not implemented as at present, only default relationships exist. 
 
-It is not anticipated that the `RWADD` should be modified at this time.
+It is not anticipated that the `RWAdd` should be modified at this time.
 
 
 ### Extending Themes/App/Core/ContentType/rel root/Not Implemented
