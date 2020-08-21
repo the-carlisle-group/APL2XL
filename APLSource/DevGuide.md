@@ -4,6 +4,8 @@ The purpose of this document is to enable collaborative and open-source contribu
 ## Contents
 
 1. Getting Started
+    - Data Flow
+    - From Entry Point to Excel Workbook
 2. Entry Point
 3. Main.Export
 4. Main/XL
@@ -16,13 +18,28 @@ The purpose of this document is to enable collaborative and open-source contribu
 
 
 ## Getting Started
-Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](./README.md) for more information about `APL2XL` usage.
+Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](./README.md) for more information about `APL2XL` usage. 
+
+### Data Flow
 
 `APL2XL` is designed as a stateless data flow tool, which accepts data formatted into namespaces, and outputs a `.xlsx` file. This format enables users to collect multiple namespaces intended to be converted to `.xlsx` files simultaneously without dealing with residual state. This meets a requirement of the original specification and must not be altered. `APL2XL` functions must not contain residual state that persists between uses of the tool. 
 
 When using `APL2XL`, the user first creates `Range` namespaces. The `Range` namespaces is then added to a `Sheet` namespace. The `Sheet` namespaces can contain multiple ranges. The `Sheet` namespaces are then added to a `Workbook` namespace. Each of these types of namesapces contain variable names, which follow PascalCase convention of naming. Names should be full length names, with no abbreviations, and clearly correspond to the resulting behavior in some way. Variables can be assigned values for cells, styling for cell ranges, global properties of cells, sheets, or workbooks respectively, and can potentially be used for providing custom functions for customized processing if necessary in the future. 
 
 When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, `Main/XL/WB.aplf` must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. (TODO: as demonstrated [link]())
+
+### From Entry Point to Excel Workbook
+Once a user has collected their data into their respective workbooks, the user calls `Main.Export myWorkbook` to kick off the data flow. A `wb` is created as an intermediate data representation to collect data into their respective component parts. Functions contained in `Main/XL` of the format `<Component>ADD.aplf` accept data for the respective component, and add data to the `wb` object. The `<Component>XML` files generate the necessary xml text based on the data contained with the `wb` object. 
+
+`Main.Export` can be reduced to the following steps: 
+1. Generate an empty `wb` intermediate data representation object
+2. Transform the user data into intermediate data representation
+3. Call `Build.CompileXML`.     
+    - This function calls every `<Component>XML.aplf` function, gathers the file paths, and writes the generated XML to their respective files. 
+    - Once the files are written, the containing temporary fold is zipped, and saved to a default path as a `.xlsx` file.
+
+
+
 
 ## Entry Point
 The only public function available at this time is found in `Main.Export`.
