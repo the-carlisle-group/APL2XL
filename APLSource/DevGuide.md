@@ -23,7 +23,7 @@ The purpose of this document is to enable collaborative and open-source contribu
 ### Build.Zip
 
 ## Getting Started
-Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](../README.md) for more information about `APL2XL` usage. 
+Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](../README.md) for more information about `APL2XL` usage. See the [DevGuide](./DevGuide.md) and the [StyleGuide](./StyleGuide.md) for more help getting started. 
 
 ### Data Flow
 
