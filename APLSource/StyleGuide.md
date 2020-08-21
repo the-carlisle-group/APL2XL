@@ -2,9 +2,9 @@
 This file documents language and naming in the rest of the application
 
 ## General Principles
-All functions outside the `Build` directory must be stateless. Adhere to functional style where possible unless a reasonable justification is provided. 
-
-Comments, and user and developer documentation should be provided for all new behavior. No changes will be accepted unless this requirement is met. Comments should be full and complete, and adhere to existing comment style.
+1. A primary requirement of this project is that there be as few external dependenceies as possible. The `.NET CORE` Zip library is the only admissible external dependency. 
+2. All functions outside the `Build` directory must be stateless. Adhere to functional style where possible unless a reasonable justification is provided. 
+3. Comments, and user and developer documentation should be provided for all new behavior. No changes will be accepted unless this requirement is met. Comments should be full and complete, and adhere to existing comment style.
 
 ## Domain Language:
 |Name|Meaning|
