@@ -47,7 +47,7 @@ Once a user has collected their data into their respective workbooks, the user c
 
 
 ## Entry Point
-The only public function available at this time is found in [Main/Export.aplf](./Main.Export.aplf).
+The only public function available at this time is found in [Main/Export.aplf](./Export.aplf).
 ```APL
      ⍵                                  ←→ namespace containing:
      ⍵.FileName                         ←→ the name to be written to, either relative or fully qualified
