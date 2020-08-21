@@ -34,7 +34,7 @@ When using `APL2XL`, the user first creates `Range` namespaces. The `Range` name
 When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, [Main/XL/WB.aplf](./Main/XL/WB.aplf) must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. 
 
 ### From Entry Point to Excel Workbook
-Once a user has collected their data into their respective workbooks, the user calls `Main.Export myWorkbook` to kick off the data flow. A `wb` is created as an intermediate data representation to collect data into their respective component parts. Functions contained in `Main/XL` of the format `<Component>ADD.aplf` accept data for the respective component, and add data to the `wb` object. The `<Component>XML` files generate the necessary xml text based on the data contained with the `wb` object. 
+Once a user has collected their data into their respective workbooks, the user calls `Main.Export myWorkbook` to kick off the data flow. A `wb` is created as an intermediate data representation to collect data into their respective component parts. Functions contained in `Main/XL` of the format `<Component>Add.aplf` accept data for the respective component, and add data to the `wb` object. The `<Component>XML` files generate the necessary xml text based on the data contained with the `wb` object. 
 
 `Main.Export` can be reduced to the following steps: 
 1. Generate an empty `wb` intermediate data representation object
