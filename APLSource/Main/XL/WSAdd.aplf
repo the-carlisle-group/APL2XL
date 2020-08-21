@@ -3,6 +3,7 @@
      ⍝. ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
      ⍝. ⍵[2] ←→ style (should be a reference to a workbook style)
      ⍝. ⍵[3] ←→ cell values
+     ⍝. ⍵[4] ←→ whether this cell is a member of a merged range
      ⍝. Add a single sheet value
      wb←⍺
      mapt←'b' 's' 's' 's' 'n' 'n' 'n' 'n' 'default' ⍝ Excel types
