@@ -3,12 +3,19 @@ The purpose of this document is to enable collaborative and open-source contribu
 
 ## Contents
 
-1. Dev Checklist
-2. Overview
-3. Deep Dive 
-    - Data Flow
+1. Getting Started
+2. Entry Point
+3. Main.Export
+4. Main/XL
+5. Extending Sheet-Global Properties Of Worksheets
+6. Extending Cell-Wise Properties
+7. Extending Shared Strings
+8. Extending Styles
+9. Extending Workbook/Root Relationships
+10. Extending Themes/App/Core/[ContentType]/_rel (root)/Not Implemented
 
-## Overview
+
+## Getting Started
 Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](./README.md) for more information about `APL2XL` usage.
 
 `APL2XL` is designed as a stateless data flow tool, which accepts data formatted into namespaces, and outputs a `.xlsx` file. This format enables users to collect multiple namespaces intended to be converted to `.xlsx` files simultaneously without dealing with residual state. This meets a requirement of the original specification and must not be altered. `APL2XL` functions must not contain residual state that persists between uses of the tool. 
@@ -17,7 +24,7 @@ When using `APL2XL`, the user first creates `Range` namespaces. The `Range` name
 
 When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, `Main/XL/WB.aplf` must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. (TODO: as demonstrated [link]())
 
-## Data Flow
+## Entry Point
 The only public function available at this time is found in `Main.Export`.
 ```APL
      ⍵                                  ←→ namespace containing:
@@ -105,7 +112,7 @@ If a cell is styled to be Red and Bold, that is one unique combination. If anoth
 |Function|Description|
 |---|---|
 |`Main/XL/StyleADD`|This function is called from within `WSADD` and generates the content for the `cellXfs` table. This table collects unique styles for each worksheet. The function returns indices to these styles. |
-|`Main/XL/StyleXML`|Several formatter functions are defined for each different part of a single style. A single style is comprised of a sequence of indices for each part of a style. The `cellXfs` table contains a record for each unique combination which is assigned and ID. This function transforms style table into XML, and also generates the required XML for the `cellXfs` tale.|
+|`Main/XL/StyleXML`|Several formatter functions are defined for each different part of a single style. A single style is comprised of a sequence of indices for each part of a style. The `cellXfs` table contains a record for each unique combination which is assigned and ID. This function transforms style table into XML, and also generates the required XML for the `cellXfs` table.|
 
 ### Extending Workbook/Root Relationships
 If your new component has a woorkbook or root level relationship, it must be added to the respective relationship file. Add your `<Component>REL.aplf` call inside of `RWRelXML.aplf` to ensure that the XML returned from your function is added to the workbook level rel file to be generated.
