@@ -31,7 +31,7 @@ Before beginning, it is recommended that you become familiar with using `APL2XL`
 
 When using `APL2XL`, the user first creates `Range` namespaces. The `Range` namespaces is then added to a `Sheet` namespace. The `Sheet` namespaces can contain multiple ranges. The `Sheet` namespaces are then added to a `Workbook` namespace. Each of these types of namesapces contain variable names, which follow PascalCase convention of naming. Names should be full length names, with no abbreviations, and clearly correspond to the resulting behavior in some way. Variables can be assigned values for cells, styling for cell ranges, global properties of cells, sheets, or workbooks respectively, and can potentially be used for providing custom functions for customized processing if necessary in the future. 
 
-When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, [Main/XL/WB.aplf](./Main/XL/WB.aplf) must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. (TODO: as demonstrated [link]())
+When extending `APL2XL` it is likely that you will either be using the existing namespace variable definitions, or if additional data is required to add your feature, you can create additional names, and define the format of the data as necessary. When adding new names, [Main/XL/WB.aplf](./Main/XL/WB.aplf) must be updated with an empty representation or default values of the new name.. If the new data a cell-wise relationship in a `Range`, the data should conform to the same shape of the cell data. 
 
 ### From Entry Point to Excel Workbook
 Once a user has collected their data into their respective workbooks, the user calls `Main.Export myWorkbook` to kick off the data flow. A `wb` is created as an intermediate data representation to collect data into their respective component parts. Functions contained in `Main/XL` of the format `<Component>ADD.aplf` accept data for the respective component, and add data to the `wb` object. The `<Component>XML` files generate the necessary xml text based on the data contained with the `wb` object. 
@@ -47,7 +47,7 @@ Once a user has collected their data into their respective workbooks, the user c
 
 
 ## Entry Point
-The only public function available at this time is found in `Main.Export`.
+The only public function available at this time is found in [Main/Export.aplf](./Main.Export.aplf).
 ```APL
      ⍵                                  ←→ namespace containing:
      ⍵.FileName                         ←→ the name to be written to, either relative or fully qualified
@@ -65,7 +65,9 @@ The only public function available at this time is found in `Main.Export`.
 ### Main.Export
 `Main.Export` normalizes the incoming namespaces with a call to `##.Main.WB`. Any time `wb` is referenced from henceforth refers to the resulting data structure from this function. 
 
-`Main.Export` defines 2 primary dfns. `sheets` and `ranges` are used to normalize and preprocess data so that it can be further processed without needing to bother with edge cases later on. Inside of both of the aforementioned dfns are calls to functions located within `Main/XL`. `Main/XL` contains all functions used for processing the provided data into XML text. 
+`Main.Export` defines 2 primary dfns. `sheets` and `ranges` are used to normalize and preprocess data so that it can be further processed without needing to bother with edge cases later on. Inside of both of the aforementioned dfns are calls to functions located within `Main/XL`. 
+
+`Main/XL` contains all functions used for processing the provided data into XML text. 
 
 ### Main/XL
 This folder contains a number of utility functions, which provide some quality of life benefits throughout the application. These functions should be used instead of using custom definitions inside `Main/XL` components. 
@@ -103,12 +105,12 @@ Every component requires a `PATH`, a `REL`, and `XML`. Other names may be used o
 |XML| Process the `wb` for the Componant, returning the final XML to be exported to file|
 
 ### Extending Sheet-Global Properties Of Worksheets
-The `Main.Export` function calls the dfn `sheets` for each sheet in the namespace `⍵`. Any additional feature that requires extending Sheet-Global should normalize the representation of the required data inside this `sheets` function. The worksheet is then passed to the function `##.Main.XL.WSProps`
+The `Main.Export` function calls the dfn `sheets` for each sheet in the namespace `⍵`. Any additional feature that requires extending Sheet-Global should normalize the representation of the required data inside this `sheets` function. The worksheet is then passed to the function [Main/XL/WSProps.aplf](./Main/XL/WSProps.aplf)
 
 Extending Sheet-Global requires extension of the `WSProps` function. Portions of the `<sheetFormatPr>` "part" are order sensitive. Any modification should not break existing features, and should also respect the existing order of output of existing child components. 
 
 ### Extending Cell-Wise Properties
-The dfn `sheets` located inside `Main.Export` calls the dfn `ranges` for each range in each sheet. Any additional feature that requires extending Cell-Wise properties requires extension `WSADD` and `WSXML`. The primary property used for building worksheets is `wb.WS`. Shape is an `n 5` matrix, where each rows columns are defined as follows. `WSADD` expects a vector of these values:
+The dfn `sheets` located inside `Main.Export` calls the dfn `ranges` for each range in each sheet. Any additional feature that requires extending Cell-Wise properties requires extension [Main/XL/WSADD.aplf](./Main/XL/WSADD.aplf) and [Main/XL/WSXML.aplf](./Main/XL/WSXML.aplf). The primary property used for building worksheets is `wb.WS`. Shape is an `n 5` matrix, where each rows columns are defined as follows. `WSADD` expects a vector of these values:
 ```APL
 ⍵[0] ←→ sheetname
 ⍵[1] ←→ addr, can be a range ex. 'A6:C12;D19;f30'
@@ -117,14 +119,13 @@ The dfn `sheets` located inside `Main.Export` calls the dfn `ranges` for each ra
 ⍵[4] ←→ is this cell a member of a merged range
 ```
 
-General principles:
 |Function|Description|
 |---|---|
-|`WSAdd`|Add the incoming data from the `Main.Export` `ranges` dfn to `wb.WS`. Modification of `WSADD` is only necessary when custom preprocessing is required for the cell properties. Cell data should be normalized before being passed to `WSAdd`. For instance: Data Types must be converted to an Excel recognized data type based on business rules. This is handled within `WSAdd` so as not to clutter the `ranges` function. |
+|`WSAdd`|Add the incoming data from the `Main.Export` `ranges` dfn to `wb.WS`. Modification of [Main/XL/WSADD.aplf](./Main/XL/WSADD.aplf) is only necessary when custom preprocessing is required for the cell properties. Cell data should be normalized before being passed to `WSAdd`. For instance: Data Types must be converted to an Excel recognized data type based on business rules. This is handled within `WSAdd` so as not to clutter the `ranges` function. |
 |`WSXML`|`WSXML` groups the data collected in  `wb.WS` by sheetname. `WSXML` performs array operations to format the cell properties for an entire sheet simultaneously. If new properties must be added or modified, the comments found within the function should help to guide you.|
 
 ### Extending Shared Strings
-The shared strings component of a `.xlsx` file contains the count of each unique string found within an entire workbook, shared accross all worksheets. `WSADD` calls `SSADD` in order to collect all unique strings, and returns the index of unique strings. `SSXML` generates the xml for `xl/sharedStrings.xml`. This behavior is currently very simple, and requires little modification. 
+The shared strings component of a `.xlsx` file contains the count of each unique string found within an entire workbook, shared accross all worksheets. [Main/XL/WSADD.aplf](./Main/XL/WSADD.aplf) calls [Main/XL/SSADD.aplf](./Main/XL/SSADD.aplf) in order to collect all unique strings, and returns the index of unique strings. `SSXML` generates the xml for `xl/sharedStrings.xml`. This behavior is currently very simple, and requires little modification. 
 
 ### Extending Styles
 For each style part, there exists an id, and for each unique combination of those styles, there exists a record in the `wb.styles.cellXfs` table relating a collection of style ids to that unique combination. Additionally, there is a table/vector for each style type. Number Format, Fill, Border, and other styles all have their own dedicated table/vector which contains the cell map for that style type for each cell.
@@ -137,7 +138,7 @@ If a cell is styled to be Red and Bold, that is one unique combination. If anoth
 |`Main/XL/StyleXML`|Several formatter functions are defined for each different part of a single style. A single style is comprised of a sequence of indices for each part of a style. The `cellXfs` table contains a record for each unique combination which is assigned and ID. This function transforms style table into XML, and also generates the required XML for the `cellXfs` table.|
 
 ### Extending Workbook/Root Relationships
-If your new component has a woorkbook or root level relationship, it must be added to the respective relationship file. Add your `<Component>REL.aplf` call inside of `RWRelXML.aplf` to ensure that the XML returned from your function is added to the workbook level rel file to be generated.
+If your new component has a woorkbook or root level relationship, it must be added to the respective relationship file. Add your `<Component>REL.aplf` call inside of [./Main/XL/RWRelXML.aplf](./Main/XL/RWRelXML.aplf) to ensure that the XML returned from your function is added to the workbook level rel file to be generated.
 
 Root relationships are not implemented as at present, only default relationships exist. 
 
