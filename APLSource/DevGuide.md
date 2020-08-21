@@ -3,19 +3,24 @@ The purpose of this document is to enable collaborative and open-source contribu
 
 ## Contents
 
-1. Getting Started
-    - Data Flow
-    - From Entry Point to Excel Workbook
-2. Entry Point
-3. Main.Export
-4. Main/XL
-5. Extending Sheet-Global Properties Of Worksheets
-6. Extending Cell-Wise Properties
-7. Extending Shared Strings
-8. Extending Styles
-9. Extending Workbook/Root Relationships
-10. Extending Themes/App/Core/[ContentType]/_rel (root)/Not Implemented
+1. [Getting Started](#Getting-Started)
+    - [Data Flow](#Data-Flow)
+    - [From Entry Point to Excel Workbook](#From-Entry-Point-to-Excel-Workbook)
+2. [Entry Point](#Entry-Point)
+3. [Main.Export](#Main.Export)
+4. [Main/XL](#Main/XL)
+5. [Extending Sheet-Global Properties Of Worksheets](#Extending-Sheet-Global-Properties-Of-Worksheets)
+6. [Extending Cell-Wise Properties](#Extending-Cell-Wise-Properties)
+7. [Extending Shared Strings](#Extending-Shared-Strings)
+8. [Extending Styles](#Extending-Styles)
+9. [Extending Workbook/Root Relationships](#Extending-Workbook/Root-Relationships)
+10. [Extending Themes/App/Core/[ContentType]/_rel (root)/Not Implemented](#Extending-Themes/App/Core/ContentType/rel-root/Not-Implemented)
+11. [Build](#Build)
+    - Build.CompileXML
+    - Build.CreateXLSXDirectory
+    - Build.WriteXML
 
+### Build.Zip
 
 ## Getting Started
 Before beginning, it is recommended that you become familiar with using `APL2XL`. See the [README](./README.md) for more information about `APL2XL` usage. 
@@ -139,6 +144,24 @@ Root relationships are not implemented as at present, only default relationships
 It is not anticipated that the `RWADD` should be modified at this time.
 
 
-### Extending Themes/App/Core/[ContentType]/_rel (root)
-These are not implemented. These components simply return default xml content for each component file because the files are required to compile.
+### Extending Themes/App/Core/ContentType/rel root/Not Implemented
+These components simply return default xml content for each component file because the files are required to compile.
+
+
+## Build
+When adding new components, `Build.CompileXML.aplf` must call the new XML generation function for that component, along with a PATH function which returns the path to that file. 
+
+The remainder of the Build functions are not anticipated to require extension for the life of this project. For the sake of completeness, descriptions of the Build functions are included in this document. 
+
+### Build.CompileXML
+Call each XML and PATH functions for each component. This function generates a temporary directory, calls `Build.WriteXML`, `Build.Zip`, and then removes the temporary directory. 
+
+### Build.CreateXLSXDirectory
+Create the folder hierarchy within the temporary directory in which to place the `.xml` files.
+
+### Build.WriteXML
+Write XML text to a single output file. 
+
+### Build.Zip
+Contains the only external dependency of the project. This function imports the `.NET CORE` compression library, zips the temporary directory once all `.xml` files have been written.
 

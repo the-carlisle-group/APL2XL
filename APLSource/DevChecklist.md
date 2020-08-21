@@ -6,8 +6,10 @@ To gain the most benefit from this checklist, it is recommended that you follow 
 1. Read the Style Guide
 2. Read the DevGuide document
 3. When adding a new component
-    - Add new property name to `Main/XL/WB.aplf`
-    - Add new `Main/XL/<Component><Behavior>.aplf` for all behaviors ADD, PATH, REL, and XML
+    - Add new property name to `Main/XL/WB.aplf` to process user input as an intermediate data representation
+    - Add new `Main/XL/<Component><Behavior>.aplf` for all behaviors ADD, PATH, REL (if necessary), and XML
+    - Transform the data in `ADD`, and compile the data to XML inside `<Component>XML.aplf`
+    - Call your new `<Component>ADD.aplf` where necessary from within the existing data flow
     - Call your new `<Component>XML.aplf` from within `Build/CompileXML.aplf`
     - If your component has a relational part for the workbook .rels file, call your `<Component>REL.aplf` function from within the `RWXML.aplf` function. All `<Component>REL.aplf` files call `RWADD` in order to add the data to the workbook level .rels component XML.
 
@@ -23,5 +25,6 @@ To gain the most benefit from this checklist, it is recommended that you follow 
 5. Before Committing
     - Add comments in the existing style. Comments should leave nothing to interpretation
     - Add a new section to the DevGuide document
-6. When strugging to find adequate information related to this project
+    - Add a Demo demonstrating usage of the new behavior
+6. If all else fails
     - Submit an issue to the github repository 
