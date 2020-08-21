@@ -2,7 +2,7 @@
 In order to aid your learning and developing experience, this checklist is provided to guide you through developing within this project, while providing paths to resources when and as needed. As a contributor, it is expected that you understand OOXML and the concepts of SpreadsheetML. A useful introduction can be found here: http://officeopenxml.com/anatomyofOOXML-xlsx.php . Happy hacking!
 
 
-This checklist should be followed and step 5 completed before contributions will be accepted and merged into the project. 
+To gain the most benefit from this checklist, it is recommended that you follow it as a procedure, in order. Step 5 must be completed before contributions is accepted and merged into the project. 
 1. Read the Style Guide
 2. Read the DevGuide document
 3. When adding a new component
