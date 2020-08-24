@@ -170,5 +170,5 @@ A ranges fill value is a 3 element vector: patternfill foreground background. Fo
 ### Selecting Colors
 Colors can be selected by copying the #FFFFFF color using a color picker [like this one.](https://www.w3schools.com/colors/colors_picker.asp)
 
-
-Additional questions may be directed to nathan@dyalog.com
+## Contributing/Developer Documentation
+If you would like to make a contribution to the project, the developer documentation can be found in the [DevGuide](./APLSource/DevGuide.md). Additional questions or concerns can be addressed by filing an issue at the [APL2XL github repository](https://github.com/the-carlisle-group/APL2XL/issues).
