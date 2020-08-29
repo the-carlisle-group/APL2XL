@@ -31,7 +31,7 @@
          rangeIndices ←cti¨address    ⍝ used to generate address ranges
          shapes       ←{⍴1/⍵}¨value         ⍝ ensure that scalars are at least rank 1
          max          ←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
-         mergeCellsXML←⊃(∨/isMerged)/⊂isMerged WSMergeCells address(itc¨rangeIndices+shapes-1 1)
+         mergeCellsXML←⊃(∨/isMerged)/⊂isMerged WSMergeCells address(itc¨rangeIndices+shapes-1)
 
      ⍝. Generate indices for excel cells
          inds ←flatten rangeIndices rangeMap¨shapes  ⍝ indices for each value in value

@@ -22,7 +22,7 @@
      sheets←{
          wb←⍺
          sheet←⍵
-         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name  (0 2⍴⍬)}sheet
+         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name(0 2⍴⍬)}sheet
          sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
          _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
@@ -35,7 +35,12 @@
          n←⍴range.Value
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address ⍝ Convert indices to cell values: 0 0 → 'A1'
          fontProps←'Size' 'Color' 'Name' 'Family' 'Italic' 'Bold' 'Underline'
-         extract←{⊂,⍉⊂⍤1⍉↑(⊂⍵)∘{0<⍺.⎕NC ⍵:n⍴⍺⍎⍵ ⋄ n⍴12 1 'Calibri' 2 0 0 0[fontProps⍳⊂⍵]}¨fontProps}
+         fontDefaults←12 1 'Calibri' 2 0 0 0
+         extract←{
+             font←⊂⍵
+             ex←font∘{0<⍺.⎕NC ⍵:n⍴⍺⍎⍵ ⋄ n⍴fontDefaults[fontProps⍳⊂⍵]}
+             ⊂,⍉⊂⍤1⍉↑ex¨fontProps
+         }
          font←{0<⍵.⎕NC'Font':extract ⍵⍎'Font' ⋄ ⊆''}range
          styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' ⍝ Collect all of the styles in the range
          ⍺ ##.Main.XL.WSAdd sname range.Address(styles[0],font,1↓styles)(range.Value)range.MergeCells               ⍝ Add this range to an intermediate table

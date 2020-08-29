@@ -27,7 +27,7 @@
          ⍝. Test adding a basic set of styles
          wb←NewWB''
          value←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1'simpleStyle value
+         _←wb xl.WSAdd'TestSheetName' 'A1'simpleStyle value 0
          ((⍴value)⍴164 1 2 1)ConfirmValues wb
      }
 
@@ -38,7 +38,7 @@
          wb←NewWB''
          style←(simpleStyle[0]),(3⍴⊂'')
          value←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
          ((⍴value)⍴164 0 0 0)ConfirmValues wb
      }
 
@@ -48,7 +48,7 @@
          wb←NewWB''
          value←3 3⍴⍳9
          style←(⊂''),(simpleStyle[1]),(2⍴⊂'')
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
          ((⍴value)⍴0 1 0 0)ConfirmValues wb
      }
 
@@ -58,7 +58,7 @@
          wb←NewWB''
          value←3 3⍴⍳9
          style←(2⍴⊂''),(simpleStyle[2]),⊂''
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0 
          ((⍴value)⍴0 0 2 0)ConfirmValues wb
      }
 
@@ -68,7 +68,7 @@
          wb←NewWB''
          value←(3 3⍴⍳9)
          style←(3⍴⊂''),simpleStyle[3]
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0 
          ((⍴value)⍴0 0 0 1)ConfirmValues wb
      }
 
@@ -83,7 +83,7 @@
          value←5 3⍴10000+⍳10
          wb←NewWB''
          style←numFmt fonts fills borders
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
          cellXfs←4 4⍴0 0 0 0 164 1 2 1 165 2 3 2 166 3 4 3
          (cellXfs≡wb.Styles.cellXfs)∧((⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
@@ -98,7 +98,7 @@
          value←3 5⍴10000+⍳10
          wb←NewWB''
          style←{⍉5 3⍴⍵}¨numFmt fonts fills borders ⍝ rearrange styles to be row oriented
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
          cellXfs←4 4⍴0 0 0 0 164 1 2 1 165 2 3 2 166 3 4 3
          (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
