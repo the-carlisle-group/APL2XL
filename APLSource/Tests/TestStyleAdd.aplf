@@ -6,15 +6,19 @@
 
    ⍝. Single values for a given style must be enclosed as seen in the simpleStyle
      nfmt←⊂'#,##0'
-     font←⊂20 1 'Calibri' 2
+     font←⊂20 1 'Calibri' 2 0 0 0
      fill←⊂'solid' 'F12345' '0000cc'
      brdr←⊂5⍴('thin' 1)('thick' '0000cc')
-     simpleStyle←nfmt font fill brdr
+     wrap←0
+     shrnk←0
+     hzntl←⊂''
+     vrtcl←⊂''
+     simpleStyle←nfmt font fill brdr wrap hzntl vrtcl shrnk
 
   ⍝. All function results are of the following form
   ⍝. Check that the worksheet was has the correct style in the correct position
   ⍝. Also check that the cellXfs indices are set correctly
-     ConfirmValues←{((1 4⍴⍺)≡¯1↑⍵.Styles.cellXfs)∧(((⍴3⊃sheet)⍴1)≡2⊃sheet←⊃↓⍵.WS)}
+     ConfirmValues←{((1 8⍴⍺)≡¯1↑⍵.Styles.cellXfs)∧(((⍴3⊃sheet)⍴1)≡2⊃sheet←⊃↓⍵.WS)}
 
   ⍝. Before Each
      NewWB←{ ⍝ Return an empty workbook
@@ -22,54 +26,47 @@
          overwrite←1
          xl.WB fileName overwrite
      }
-
-     BasicStyle←{
+     SimpleStyleTest←{
          ⍝. Test adding a basic set of styles
+         style←⍵
+         expected←⍺
          wb←NewWB''
          value←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1'simpleStyle value 0
-         ((⍴value)⍴164 1 2 1)ConfirmValues wb
+         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
+         expected ConfirmValues wb
+     }
+
+     BasicStyle←{
+         164 1 2 1 0 0 0 0 SimpleStyleTest simpleStyle
      }
 
      OnlyNumFmt←{
          ⍝. Test adding only number formats
          ⍝. Number format indices start at 164, because there are built-in numbers
          ⍝. APL2XL treats all numberformats as not being built-in
-         wb←NewWB''
-         style←(simpleStyle[0]),(3⍴⊂'')
-         value←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
-         ((⍴value)⍴164 0 0 0)ConfirmValues wb
+         style←(simpleStyle[0]),(3⍴⊂''),¯4↑simpleStyle
+         164 0 0 0 0 0 0 0 SimpleStyleTest style
      }
 
      OnlyFont←{
          ⍝. Test adding only a new font and nothing else
          ⍝. wb.Styles.fonts has a default font, and thus the new font is at index 1, and not 0
-         wb←NewWB''
-         value←3 3⍴⍳9
-         style←(⊂''),(simpleStyle[1]),(2⍴⊂'')
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
-         ((⍴value)⍴0 1 0 0)ConfirmValues wb
+         style←(⊂''),(simpleStyle[1]),(2⍴⊂''),¯4↑simpleStyle
+         0 1 0 0 0 0 0 0 SimpleStyleTest style
      }
 
      OnlyFill←{
          ⍝. Test adding only a new fill and nothing else
          ⍝. wb.Styles.fonts has 2 default fills, and thus the new font is at index 2, and not 1
-         wb←NewWB''
-         value←3 3⍴⍳9
-         style←(2⍴⊂''),(simpleStyle[2]),⊂''
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0 
-         ((⍴value)⍴0 0 2 0)ConfirmValues wb
+         style←(2⍴⊂''),(simpleStyle[2]),(⊂''),¯4↑simpleStyle
+         0 0 2 0 0 0 0 0 SimpleStyleTest style 
      }
 
      OnlyBorder←{
          ⍝. Test adding only a new border and nothing else
          ⍝. wb.Styles.borders has a default border, and thus the new font is at index 1, and not 0
-         wb←NewWB''
-         value←(3 3⍴⍳9)
-         style←(3⍴⊂''),simpleStyle[3]
-         _←wb xl.WSAdd'TestSheetName' 'A1'style value 0 
-         ((⍴value)⍴0 0 0 1)ConfirmValues wb
+         style←(3⍴⊂''),(simpleStyle[3]),¯4↑simpleStyle
+         0 0 0 1 0 0 0 0 SimpleStyleTest style
      }
 
      ColumnStyles←{
@@ -77,14 +74,14 @@
          ⍝. Styles can be arranged column wise by making the length of each style the same as there are columns
          ⍝. In this case, 3 styles, 5 3⍴value, 3 columns
          numFmt←'#,##0' '0.00%' 'm/d/yyyy'
-         fonts←(20 1 'Calibri' 2)(40 1 'Calibri' 2)(10 1 'Calibri' 2)
+         fonts←(20 1 'Calibri' 2 0 0 0)(40 1 'Calibri' 2 0 0 0)(10 1 'Calibri' 2 0 0 0)
          fills←('solid' 'F12345' 'ABCDEF')('solid' 'AA1122' '0000cc')('solid' '0cc133' 'FF6699')
          borders←(5⍴⊂'thick' 1)(5⍴⊂'thin' '00FF00')(5⍴⊂'thin' 'FF00FF')
          value←5 3⍴10000+⍳10
          wb←NewWB''
-         style←numFmt fonts fills borders
+         style←(numFmt fonts fills borders),¯4↑simpleStyle
          _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
-         cellXfs←4 4⍴0 0 0 0 164 1 2 1 165 2 3 2 166 3 4 3
+         cellXfs←4 8⍴0 0 0 0 0 0 0 0 164 1 2 1 0 0 0 0 165 2 3 2 0 0 0 0 166 3 4 3 0 0 0 0
          (cellXfs≡wb.Styles.cellXfs)∧((⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
 
@@ -92,14 +89,14 @@
          ⍝. Test that it is possible to arrange styles per row
          ⍝. Row styles must be manually arranged unlike columns
          numFmt←'#,##0' '@' 'm/d/yyyy'
-         fonts←(20 1 'Calibri' 2)(40 1 'Calibri' 2)(10 1 'Calibri' 2)
+         fonts←(20 1 'Calibri' 2 0 0 0)(40 1 'Calibri' 2 0 0 0)(10 1 'Calibri' 2 0 0 0)
          fills←('solid' 'F12345' 'ABCDEF')('solid' 'AA1122' '0000cc')('solid' '0cc133' 'FF6699')
          borders←(5⍴⊂'thick' 1)(5⍴⊂'thin' '00FF00')(5⍴⊂'thin' 'FF00FF')
          value←3 5⍴10000+⍳10
          wb←NewWB''
-         style←{⍉5 3⍴⍵}¨numFmt fonts fills borders ⍝ rearrange styles to be row oriented
+         style←{⍉5 3⍴⍵}¨(numFmt fonts fills borders),¯4↑simpleStyle ⍝ rearrange styles to be row oriented
          _←wb xl.WSAdd'TestSheetName' 'A1'style value 0
-         cellXfs←4 4⍴0 0 0 0 164 1 2 1 165 2 3 2 166 3 4 3
+         cellXfs←4 8⍴0 0 0 0 0 0 0 0 164 1 2 1 0 0 0 0 165 2 3 2 0 0 0 0 166 3 4 3 0 0 0 0
          (cellXfs≡wb.Styles.cellXfs)∧(⍉(⌽⍴value)⍴1 2 3)≡2⊃⊃↓wb.WS
      }
 
