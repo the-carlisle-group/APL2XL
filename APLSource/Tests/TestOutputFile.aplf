@@ -22,7 +22,7 @@
              names←(1⍴⊂'board')≡Utility.OLESheets ⍵
              c1←(,¨2 8⍴bl)≡⊃wb.ActiveSheet Utility.OLERange'B2:I3'
              c2←(⊖,¨2 8⍴wh)≡⊃wb.ActiveSheet Utility.OLERange'B8:I9'
-             ∧/names sheetCount c1 c2
+             ∧/⎕←names sheetCount c1 c2
          }
          (test Utility.OLEController)filename
      }
@@ -40,6 +40,7 @@
          }
          (test Utility.OLEController)filename
      }
+
      ValidateLarge←{
          DIDNTRUN←¯1
          ~⍵:DIDNTRUN ⍝ selected by user
