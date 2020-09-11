@@ -22,7 +22,20 @@
      sheets←{
          wb←⍺
          sheet←⍵
-         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name(0 2⍴⍬)}sheet
+         n←0
+         normalizeRowHeight←{
+             (name heights)←⍺
+             a v←⍵.(Address Value)
+             i←⊃{83=⎕DR ⍵:⍵ ⋄ ##.Main.XL.cti ⍵}a
+             tfs←{0=≢heights:{(to from)←⍵ ⋄ from+⍳to}(⊃⍴v),i⋄⍳⌈/heights[;0]}0
+             x←tfs∊heights[;0]
+             (name)((⍪tfs),{(14.5×~⍵)+(⍵×heights[;1])}x)
+         }
+         wb.SheetRowHeights⍪←{
+             rh←{0<⍵.⎕NC'RowHeight':⍵.RowHeight ⋄ (0 2⍴⍬)}sheet
+             ⊃(⍵.Name rh)∘normalizeRowHeight¨⍵.Ranges
+         }sheet
+
          sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
          _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
@@ -33,7 +46,9 @@
          (sname range)←⍵
          range.(Value MergeCells)←{0<⍵.⎕NC'MergeCells':⍵.Value range.MergeCells ⋄ ⍵.Value 0}range
          n←⍴range.Value
+
          range.Address←{83=⎕DR ⍵:##.Main.XL.itc ⍵ ⋄ ⍵}range.Address ⍝ Convert indices to cell values: 0 0 → 'A1'
+         start←##.Main.XL.cti range.Address
          fontProps←'Size' 'Color' 'Name' 'Family' 'Italic' 'Bold' 'Underline'
          fontDefaults←12 1 'Calibri' 2 0 0 0
          extract←{
