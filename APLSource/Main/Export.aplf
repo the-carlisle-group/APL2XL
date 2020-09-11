@@ -27,7 +27,8 @@
              (name heights)←⍺
              a v←⍵.(Address Value)
              i←⊃{83=⎕DR ⍵:⍵ ⋄ ##.Main.XL.cti ⍵}a
-             tfs←{0=≢heights:{(to from)←⍵ ⋄ from+⍳to}(⊃⍴v),i⋄⍳⌈/heights[;0]}0
+             
+             tfs←{(to from)←⍵ ⋄ from+⍳to}(⊃⍴v),i
              x←tfs∊heights[;0]
              (name)((⍪tfs),{(14.5×~⍵)+(⍵×heights[;1])}x)
          }
