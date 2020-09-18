@@ -57,19 +57,18 @@
 
      ⍝. Transform the cell meta data into an argument appropriate for ⎕XML
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
-         rts←,¨'rts'                             ⍝ to share values
-         rowProps←{'r' 'spans' 'ht' 'customHeight',⍪⍺'2:5'⍵ 1}
-         defaultHeight←14.5
-         rn      ←rhn∪∪rowNumbers ⍝ prefix row height indices to the unique row numbers
-         rcc     ←(((~rhn∊∪rowNumbers)/rhn),rowcellcount)[⍋rn] ⍝ the row cell counts including empty rows which contain height specification
-         hn      ←(h,(|(≢rhn)-≢rn)/defaultHeight)[⍋rn] ⍝ pad the list of heights with default values in the correct order
-         heights ←(1+rn)rowProps¨hn ⍝ populate row properties, the row property for r is 1 indexed, so 1+rn
-         rowxml  ←(0,row,empty),⍤1⍪heights
+         rts←,¨'rts'                                       ⍝ to share values
+         rowProps←{'r' 'spans' 'ht' 'customHeight',⍪(1+⍺)'2:5'⍵ 1} ⍝ 'r' is 1 indexed, so 1+⍺
+         defaultHeight←14.5                                ⍝ excel default row height value is 14.5
+         rn      ←∪rowNumbers,rhn
+         rcc     ←(rowcellcount,0×rhn~rowNumbers)[⍋rn]     ⍝ the row cell counts including empty rows with height specification
+         hn      ←h@(rn⍳rhn)⊢(≢rn)⍴defaultHeight           ⍝ place heights at locations where rhn has value
+         heights ←rn rowProps¨hn                           ⍝ populate row properties
+         rowxml  ←(0,row,empty),⍤1⍪heights                     
          cxml    ←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml    ←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
-         ⍝ multiply the row cell count by 2, this accounts for both cell tags and value tags to be passed to ⎕XML
-         xmlInput←(rowxml⍪cellsxml)[⍋(⍳≢rn),(2×rcc)/⍳≢rn;]
+         xmlInput←(rowxml⍪cellsxml)[⍋(⍳≢rn),(2×rcc)/⍳≢rn;] ⍝ multiply the row cell count by 2, this accounts for both cell tags and value tags to be passed to ⎕XML
 
     ⍝. Generate XML
          rows←⎕XML xmlInput

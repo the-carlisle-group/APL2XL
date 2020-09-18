@@ -23,7 +23,7 @@
          range.Border←↑1 6 1\{('none' 0)('thick' 1)[border∊⍵]}¨¨top body bottom
 
          (sheet←⎕NS'').(Name Ranges)←'board'range
-         sheet.RowHeight←(⍳3),⍪3/50
+         sheet.RowHeight←(1+⍳3),⍪3/50
          (wb←⎕NS'').(FileName Sheets)←((739⌶0),'/chess.xlsx')sheet
          ##.Main.Export wb
      }
