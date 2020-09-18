@@ -59,21 +59,17 @@
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
          rts←,¨'rts'                             ⍝ to share values
          rowProps←{'r' 'spans' 'ht' 'customHeight',⍪⍺'2:5'⍵ 1}
-             heights   ←{(h,drh){(1+⍵)rowProps¨⍺[⍵⍳rhn]}rhn∪rowNumbers}
-         rowxml    ←(0,row,empty),⍤1⍪heights 0
-         cxml      ←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
-         vxml      ←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
-         cellsxml  ←((2×≢cxml),4)⍴cxml,vxml
-         xmlInput  ←{(rowxml⍪cellsxml)[⍋(⍳≢⍵),(2×(rhn∊∪rowNumbers)\rowcellcount)/⍳≢⍵;]}rhn∪rowNumbers
-        ⍝  ⍝⍝⍝ need a better way to map from the specific row the data is in to the height of the row
-        ⍝  ⍝⍝⍝ start from scratch
-        ⍝  ⍝⍝⍝ {(h,drh)[rhn⍳⍵]}¨(⊃⌽max)/¨rhn
-        ⍝  heights←{{(1+⍵)rowProps¨(h[⍵⍳rhn],(drh/⍨-/≢¨⍵ rhn))}rhn∪rowNumbers}
-        ⍝  rowxml←(0,row,empty),⍤1⍪heights 0
-        ⍝  cxml←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
-        ⍝  vxml←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
-        ⍝  cellsxml←((2×≢cxml),4)⍴cxml,vxml
-        ⍝  xmlInput←{(rowxml⍪cellsxml)[⍋x,(2×(1/⍨≢⍵)\rowcellcount)/(x←⍳≢⍵);]}∪rowNumbers
+         defaultHeight←14.5
+         rn      ←rhn∪∪rowNumbers ⍝ prefix row height indices to the unique row numbers
+         rcc     ←(((~rhn∊∪rowNumbers)/rhn),rowcellcount)[⍋rn] ⍝ the row cell counts including empty rows which contain height specification
+         hn      ←(h,(|(≢rhn)-≢rn)/defaultHeight)[⍋rn] ⍝ pad the list of heights with default values in the correct order
+         heights ←(1+rn)rowProps¨hn ⍝ populate row properties, the row property for r is 1 indexed, so 1+rn
+         rowxml  ←(0,row,empty),⍤1⍪heights
+         cxml    ←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
+         vxml    ←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
+         cellsxml←((2×≢cxml),4)⍴cxml,vxml
+         ⍝ multiply the row cell count by 2, this accounts for both cell tags and value tags to be passed to ⎕XML
+         xmlInput←(rowxml⍪cellsxml)[⍋(⍳≢rn),(2×rcc)/⍳≢rn;]
 
     ⍝. Generate XML
          rows←⎕XML xmlInput

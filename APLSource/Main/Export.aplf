@@ -22,21 +22,7 @@
      sheets←{
          wb←⍺
          sheet←⍵
-         n←0
-         normalizeRowHeight←{
-             (name heights)←⍺
-             a v←⍵.(Address Value)
-             i←⊃{83=⎕DR ⍵:⍵ ⋄ ##.Main.XL.cti ⍵}a
-             
-             tfs←{(to from)←⍵ ⋄ from+⍳to}(⊃⍴v),i
-             x←tfs∊heights[;0]
-             (name)((⍪tfs),{(14.5×~⍵)+(⍵×heights[;1])}x)
-         }
-         wb.SheetRowHeights⍪←{
-             rh←{0<⍵.⎕NC'RowHeight':⍵.RowHeight ⋄ (0 2⍴⍬)}sheet
-             ⊃(⍵.Name rh)∘normalizeRowHeight¨⍵.Ranges
-         }sheet
-
+         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name  (0 2⍴⍬)}sheet
          sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
          _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
