@@ -28,9 +28,9 @@
 
      ⍝. Start by finding the shape of each range, and the largest shape in the sheet
          (sheetName address style value type isMerged)←↓⍉⍵
-         rangeIndices←cti¨address    ⍝ used to generate address ranges
-         shapes←{⍴1/⍵}¨value         ⍝ ensure that scalars are at least rank 1
-         max←⊃⌈/rangeIndices+shapes  ⍝ find the maximum cell location in the sheet
+         rangeIndices ←cti¨address            ⍝ used to generate address ranges
+         shapes       ←{⍴1/⍵}¨value           ⍝ ensure that scalars are at least rank 1
+         max          ←⊃⌈/rangeIndices+shapes ⍝ find the maximum cell location in the sheet
          mergeCellsXML←⊃(∨/isMerged)/⊂isMerged WSMergeCells address(itc¨rangeIndices+shapes-1)
 
      ⍝. Generate indices for excel cells
@@ -51,35 +51,35 @@
 
      ⍝. Populate default row heights if none exist
          drh←14.5                                ⍝ default row height
-         pop←{0=≢⍵:{↑⍵,⍪drh\⍨≢⍵}∪rowNumbers ⋄ ⍵} ⍝populate with default height values
-         rh←{⊃⍵[⍵[;0]⍳1↑sheetName;1]}wb.SheetRowHeights
+         pop←{0=≢⍵:{↑⍵,⍪drh\⍨≢⍵}∪rowNumbers ⋄ ⍵} ⍝ populate with default height values
+         rh ←{⊃⍵[⍵[;0]⍳1↑sheetName;1]}wb.SheetRowHeights
          rhn h←↓⍉pop rh
 
      ⍝. Transform the cell meta data into an argument appropriate for ⎕XML
          (row r v c empty)←⊂∘,¨'row' 'r' 'v' 'c' ''
-         rts←,¨'rts'                                       ⍝ to share values
+         rts←,¨'rts'                                               ⍝ to share values
          rowProps←{'r' 'spans' 'ht' 'customHeight',⍪(1+⍺)'2:5'⍵ 1} ⍝ 'r' is 1 indexed, so 1+⍺
-         defaultHeight←14.5                                ⍝ excel default row height value is 14.5
+         defaultHeight←14.5                                        ⍝ excel default row height value is 14.5
          rn      ←∪rowNumbers,rhn
-         rcc     ←(rowcellcount,0×rhn~rowNumbers)[⍋rn]     ⍝ the row cell counts including empty rows with height specification
-         hn      ←h@(rn⍳rhn)⊢(≢rn)⍴defaultHeight           ⍝ place heights at locations where rhn has value
-         heights ←rn rowProps¨hn                           ⍝ populate row properties
-         rowxml  ←(0,row,empty),⍤1⍪heights                     
+         rcc     ←(rowcellcount,0×rhn~rowNumbers)[⍋rn]             ⍝ the row cell counts including empty rows with height specification
+         hn      ←h@(rn⍳rhn)⊢(≢rn)⍴defaultHeight                   ⍝ place heights at locations where rhn has value
+         heights ←rn rowProps¨hn                                   ⍝ populate row properties
+         rowxml  ←(0,row,empty),⍤1⍪heights 
          cxml    ←(1,c,empty),⍤1 0⊂⍤2⍉⍤2⊢((≢cells),2 3)⍴rts,⍤1⊢(itc↑cells[;0]),cells[;2 3]
          vxml    ←(2,v),⍤1⊢(⍪cells[;1]),⊂⍬
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
-         xmlInput←(rowxml⍪cellsxml)[⍋(⍳≢rn),(2×rcc)/⍳≢rn;] ⍝ multiply the row cell count by 2, this accounts for both cell tags and value tags to be passed to ⎕XML
+         xmlInput←(rowxml⍪cellsxml)[⍋(⍳≢rn),(2×rcc)/⍳≢rn;]         ⍝ multiply the row cell count by 2, this accounts for both cell tags and value tags to be passed to ⎕XML
 
-    ⍝. Generate XML
-         rows←⎕XML xmlInput
-         sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
-         dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
+     ⍝. Generate XML
+         rows      ←⎕XML xmlInput
+         sheetdata ←'sheetData'tag rows                            ⍝ part of <worksheet> body
+         dimension ←'dimension'(⊂'ref'('A1:',itc max))tag''        ⍝ part of <worksheet> body
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
-         condFmt←∊wb.CFXML[wb.SheetViews[;0]⍳1↑sheetName]
+         condFmt   ←∊wb.CFXML[wb.SheetViews[;0]⍳1↑sheetName]
          ∊worksheet wattrs tag dimension sheetViews sheetdata condFmt mergeCellsXML
      }
 
      sheets←wb.WS
-     tables←↑¨sheets[;WSColumnNames⍳⊂'Sheet Name']{⊂⍵}⌸↓sheets ⍝ group rows in table by sheetname
-     (⍳≢tables)sheet¨tables                                    ⍝ build sheet xml per table
+     tables←↑¨sheets[;WSColumnNames⍳⊂'Sheet Name']{⊂⍵}⌸↓sheets     ⍝ group rows in table by sheetname
+     (⍳≢tables)sheet¨tables                                        ⍝ build sheet xml per table
  }

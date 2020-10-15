@@ -24,24 +24,24 @@ NumberWS←{
 
 
     (cf1←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
-    cf1.NumberFormat←conditionalFormat.NumberFormat
+    cf1.NumberFormat←'H:mm'
 
     (cf2←⎕NS'').(CellRange Formula)←'B1:J20' 'ISODD(B1)'
-    cf2.NumberFormat←conditionalFormat.NumberFormat
+    cf2.NumberFormat←'mmss.0'
 
     (cf3←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
-    cf3.NumberFormat←conditionalFormat.NumberFormat
+    cf3.NumberFormat←⊂'0.00'
     cf3.Font←⎕NS''
     cf3.Font.Italic   ←1
     cf3.Font.Bold     ←1
     cf3.Font.Underline←1
 
     (cf4←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
-    cf4.NumberFormat←conditionalFormat.NumberFormat
+    cf4.NumberFormat←⊂'@'
 
     (cf5←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
-    cf5.NumberFormat←conditionalFormat.NumberFormat
-    cf5.Fill       ←⊂'solid' 0 'd4b790' 
+    cf5.NumberFormat←⊂'d/m/yyyy'
+    cf5.Fill        ←⊂'solid' 0 'd4b790' 
 
     (sheet←⎕NS'').(Name Ranges ConditionalFormats)←'Data'(,range1)  (conditionalFormat cf1 cf2)
     (sheet2←⎕NS'').(Name Ranges ConditionalFormats)←'Data2'(,range2)  (cf3 cf4 cf5)
