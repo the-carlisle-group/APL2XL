@@ -22,13 +22,19 @@ WB←{
   ⍝ border  ←→ left right top bottom diagonal
   wb.Styles.borders←1 5⍴''
   ⍝ cellXfs ←→ numFmtId fontId fillId borderId -- ids taken from the other lists
-  wb.Styles.cellXfs←1 8⍴0
-
+  wb.Styles.cellXfs←1 9⍴0
   ⍝ cell alignment
   wb.Styles.wrapText   ←0
   wb.Styles.horizontal ← '' 'ignore'  ⍝ 'ignore' is ignored
   wb.Styles.vertical   ← '' 'ignore' 
   wb.Styles.shrinkToFit←0
   wb.Styles.mergeCells ←0
+  wb.Styles.indent     ←0
+
+
+  wb.CFXML←0⍴⊂''
+  wb.CFStyles←⍬
+
+
   wb
 }

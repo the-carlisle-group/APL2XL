@@ -4,6 +4,8 @@
     ⍝⍝⍝. TODO: Refactor all styles to use ⎕XML
      wb←⍵
      s←wb.Styles
+     cf←{↓(((s.⎕NL-2)~⊂'cellXfs')⍳⊂⍺)⊃⍤1⊢⍵}
+
     ⍝. Styles within spreadsheetML are implemented to minimize repetition, and this is done with collections.
     ⍝. Within the styles part there are the collections shown below.
     ⍝. Most of the collections (except for <dxfs> and <tableStyles>) relate to cells.
@@ -68,12 +70,12 @@
          (parent child)←2↑⍺
          tags←2↓⍺
          p←(0 parent''),(⊂1 2⍴'count'(≢⍵))
-         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍵
+         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢⍪⍵
          ⎕XML p⍪c
      }
 
      cellXf←{⍝. Used for generating xml for numFmts and cellXfs
-         styles←1⌽(scols←9↑5\1)/⍵
+         styles←1⌽(scols←10↑5\1)/⍵
          alignment←(~scols)/⍵
          (parent child)←2↑⍺
          tags←2↓⍺
@@ -81,8 +83,8 @@
          c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢styles
 
          ⍝⍝⍝ here we need to select nested alignment tags where necessary
-         select←{s←⍺⍺ ⋄ ⍺∘{(⍺,⍪⍵)⌿⍨0 '' '' 0≢¨⍵}¨↓⍉↑⍺{(,s⍎⍺)[⍵]}¨↓⍉⍵}
-         aTags←'wrapText' 'horizontal' 'vertical' 'shrinkToFit'
+         select←{s←⍺⍺ ⋄ ⍺∘{(⍺,⍪⍵)⌿⍨0 '' '' 0 0≢¨⍵}¨↓⍉↑⍺{(,s⍎⍺)[⍵]}¨↓⍉⍵}
+         aTags←'wrapText' 'horizontal' 'vertical' 'shrinkToFit' 'indent'
          attrs←aTags(⍺⍺ select)alignment
          where←⍸0≠≢¨attrs
 
@@ -92,36 +94,65 @@
          ⎕XML p⍪complete
      }
 
-     font←{⍝. Generates xml for fonts
+     innerFonts←{
+         isCF←⍺
          properTags←7↑4/1
          ibu←~properTags
          fattr←'val' 'theme' 'val' 'val'
          fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢properTags/⍵
-         fontCells←{(⍉3 4⍴2 2 2 2 'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
-         fontCollection←,[⍳2](1 'font' '' '')⍪⍤2⊢fontCells
-         ibus←↑⊃,/{{2 ⍵'' ''}¨⍵/'ibu'}¨↓(~properTags)/⍵
-         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪(fontCollection⍪ibus)[⍋(⍳≢fontCollection),(,ibu/⍵)/3/5×⍳≢⍵;]
-         n/'i' 'b' 'u'
+         fontCells←{(⍉3 4⍴(2 2 2 2-isCF),'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
+         fontCollection←,[⍳2]((1-isCF),'font' '' '')⍪⍤2⊢fontCells
+         ibus←↑⊃,/{{(2-isCF)⍵'' ''}¨⍵/'ibu'}¨↓(~properTags)/⍵
+         (fontCollection⍪ibus)[⍋(⍳≢fontCollection),(,ibu/⍵)/3/5×⍳≢⍵;]
+     }
+
+     styleFont←{⍝. Generates xml for fonts
+         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪0 innerFonts ⍵
      }
 
      numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'numFmt{(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
      cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid'(s cellXf){⍵,⍨⍳≢⍵}s.cellXfs
-     fonts←font s.fonts
+     fonts←styleFont s.fonts
 
      ⍝. TODO: refactor the following to use ⎕XML
      fills←'fills'(fill collection)s.fills
      borders←'borders'(border collection)s.borders
      cellStyleXfs←'cellStyleXfs'(styleXF collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
-     cellStyles←'cellStyles'(cellStyle collection)' '   ⍝ TODO: add s.cellStyles in Main.XL.WB
-     tableStyles←table''                                ⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
-     dxfs←'<dxfs count="0"/>'                           ⍝TODO: implement
+     cellStyles←'cellStyles'(cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
+     tableStyles←table''                               ⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
+
+     ⍝. dxfs constains one of each property, font fill border
+     ⍝dxfs←'<dxfs count="0"/>'                           ⍝TODO: implement
 
      ⍝ TODO: implement
-     extLst←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'
 
-     ⍝. Header is (currently) static, only the body is generated
-     xmlHeader←'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac x16r2 xr" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" xmlns:x16r2="http://schemas.microsoft.com/office/spreadsheetml/2015/02/main" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision">'
+     ⍝. do dxf/conditional formatting things
+     (dxnumFmt dxfills dxborders dxwrapText dxhorizontal dxvertical dxshrinkToFit dxindent dxfont)←↓⍉↑wb.CFStyles
+     has←{0=≢wb.CFStyles:⊂'' ⋄ ⍺ ⍺⍺ ⍵}
+
+     cfNumFmts←{'numFmt'(('numFmtId'⍺)('formatCode'(⊃⍵)))tag''}
+     cfBorder ←{⍵≡⍬:''⋄border⊃⍵}
+     cfFill   ←{ ⍵≡⍬:''⋄ fill⊃⍵ }
+     cfFont   ←{ 
+         ⍵≡⍬:''
+         bius←{'<'⍵'/>'}¨(4↑⍵)/'biu',⊂'strike'
+         color←{⍵≢0:'<color rgb="',⍵,'"/>'⋄''}⊃⌽⍵
+         ∊'<font>'bius,color'</font>'
+     }
+
+     cfnumXML   ←((≢dxnumFmt)⍴34)(cfNumFmts has)¨dxnumFmt
+     cfBorderXML←0∘(cfBorder has)¨dxborders
+     cfFillXML  ←0∘(cfFill has)¨dxfills
+     cfFontXML  ←0∘(cfFont has)¨dxfont
+
+
+        ∘∘∘
+     dxfs←∊{'<dxfs count="'(⍕≢⍵)'">'(∊⍕⍵)'</dxfs>'}{'<dxf>',(∊⍵),'</dxf>'}¨↓⍉↑cfFontXML cfnumXML  cfFillXML cfBorderXML
+
+    ⍝ combine all output XML
+     extLst←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'
      body←numFmts fonts fills borders cellStyleXfs cellXfs cellStyles dxfs tableStyles extLst
+     xmlHeader←'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac x16r2 xr" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" xmlns:x16r2="http://schemas.microsoft.com/office/spreadsheetml/2015/02/main" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision">'
      xmlClose←'</styleSheet>'
 
      ∊xmlHeader body xmlClose

@@ -1,10 +1,10 @@
  Export←{
-     ⍝. ⍵          ←→ namespace containing:
-     ⍝. ⍵.FileName ←→ the name to be written to, either relative or fully qualified
-     ⍝. ⍵.Sheets   ←→ array of "worksheet" namespaces
-     ⍝. ⍵.Sheets[n]           ←→ namespace containing:
-     ⍝. ⍵.Sheets[n].Name      ←→ name of a worksheet found in a workbook
-     ⍝. ⍵.Sheets[n].Ranges    ←→ array of value ranges and formatting information
+     ⍝. ⍵                                  ←→ namespace containing:
+     ⍝. ⍵.FileName                         ←→ the name to be written to, either relative or fully qualified
+     ⍝. ⍵.Sheets                           ←→ array of "worksheet" namespaces
+     ⍝. ⍵.Sheets[n]                        ←→ namespace containing:
+     ⍝. ⍵.Sheets[n].Name                   ←→ name of a worksheet found in a workbook
+     ⍝. ⍵.Sheets[n].Ranges                 ←→ array of value ranges and formatting information
      ⍝. ⍵.Sheets[n].Ranges[n]              ←→ namespace containing:
      ⍝. ⍵.Sheets[n].Ranges[n].NumberFormat ←→ apply numberformat to range
      ⍝. ⍵.Sheets[n].Ranges[n].Value        ←→ values in the range
@@ -22,7 +22,8 @@
      sheets←{
          wb←⍺
          sheet←⍵
-         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name  (0 2⍴⍬)}sheet
+         wb.CFXML,←{0<⍵.⎕NC'ConditionalFormats':wb ##.Main.XL.CFSheetsXML ⍵.ConditionalFormats ⋄ ⊂''}sheet
+         wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name(0 2⍴⍬)}sheet
          sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
          _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
@@ -44,7 +45,7 @@
              ⊂,⍉⊂⍤1⍉↑ex¨fontProps
          }
          font←{0<⍵.⎕NC'Font':extract ⍵⍎'Font' ⋄ ⊆''}range
-         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' ⍝ Collect all of the styles in the range
+         styles←range∘{0<⍺.⎕NC ⍵:⊆⍺⍎⍵ ⋄ ''}¨'NumberFormat' 'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' 'Indent'⍝ Collect all of the styles in the range
          ⍺ ##.Main.XL.WSAdd sname range.Address(styles[0],font,1↓styles)(range.Value)range.MergeCells               ⍝ Add this range to an intermediate table
      }
 
@@ -58,6 +59,34 @@
          ⍵
      }
 
-     _←wb sheets¨nameSheets ⍵.Sheets
+     sheetsNormalize←{⍝ normalize data structure of necessary properties within a sheet
+         sheet←⍵
+         sheet.ConditionalFormats←{0<⍵.⎕NC'ConditionalFormats':⍵.ConditionalFormats ⋄ ⊂''}sheet
+         sheet
+     }
+
+     sheetsPopulate←{ ⍝ populate necessary items within the worksheets to normalize before processing
+         scfs←⍵.ConditionalFormats
+         cfFonts←{
+             0<⍵.⎕NC'Font':{
+                ⍵.Font←⍵.Font{0<⍺.⎕NC ⍵: ⍺⍎⍵ ⋄ 0}¨'Bold' 'Italic' 'Underline' 'Strikethrough' 'Color'
+                ⍵
+             }⍵
+             ⍵.Font←⍬
+             ⍵
+         }¨∊scfs
+         condFmtPriority←{
+            scfs≡⊂'':⍵
+            priorities←(≢scfs)↑(∊1,{⎕←⍵=⌈/⍵}¨⍳∘≢¨scfs)⊂⍳1+≢∊scfs
+            _←priorities{⍺{⍵.(DXFID Priority)←2⍴⍺}¨⍵}¨scfs
+            ⍵
+         }''
+         ⍵
+     }
+
+     ss←sheetsPopulate sheetsNormalize¨⍵.Sheets
+
+
+     _←wb sheets¨nameSheets ss
      ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory
  }

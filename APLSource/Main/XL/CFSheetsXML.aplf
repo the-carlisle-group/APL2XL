@@ -1,0 +1,19 @@
+CFSheetsXML←{
+    ⍝ ⍵ ←→ vector ⎕NS
+    ⍝ ⍵.CellRange ←→ 'A1:J100'
+    ⍝ ⍵.Formula   ←→ 'ISODD(A1)'
+    ⍵≡⊂'':⍵
+    formats←⍵
+    priorities←⍵.Priority
+    _←⍺ CFAdd formats
+    group←{⍺,⊂formats[⍵]}⌸formats.CellRange
+
+    xml←{
+        (sqref cfs)←⍵
+        p←0 'conditionalFormatting' '',⊂1 2⍴'sqref' sqref    ⍝ parent
+        c←↑{1 'cfRule' ''('type' 'dxfId' 'priority',⍪'expression' ⍵.DXFID ⍵.Priority)}¨cfs ⍝ child
+        f←↑{2 'formula' ⍵ (0 2⍴⊂'')}¨cfs.Formula             ⍝ formula
+        ⎕XML{⍵[⍋0,,⍨⍳≢ cfs;]}⊃⍪/p c f
+    }
+    ⊂∊xml⍤1⊢group
+}

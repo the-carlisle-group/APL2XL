@@ -18,10 +18,12 @@
         ⍝. 100 returns all numberformats and all fills
          range1.NumberFormat←Main.NumberFormats 100
          range1.Fill←Main.Fills 100
+         range1.Horizontal←⊂'center'
+         range1.Vertical←⊂'center'
+         shape←{1↑[1](0 1+⍴range1.Value)⍴⍵}
+         range1.Border←shape ⊂('none' 1)('thick' 1)('thick' 1)('thick' 1)('thick' 1)
          range1.Font←⎕NS''
          range1.Font.(Name Size)←(⊂'Calibri')20
-
-         shape←{1↑[1](0 1+⍴range1.Value)⍴⍵}
          range1.Font.Italic   ←shape 0 0 1
          range1.Font.Bold     ←shape 0 1 0
          range1.Font.Underline←shape 1 0 0
@@ -30,7 +32,7 @@
 
      (sheet←⎕NS'').(Name Ranges)←'Data'(range1 range2)
      sheet.ColumnWidth←(1+⍳3),⍪23 50 12
-     sheet.RowHeight←{(⍳⍵),⍪20×⍳⍵}r+1
+     sheet.RowHeight←1+{(⍳⍵),⍪20×⍳⍵}r+1
      (wb←⎕NS'').(FileName Sheets)←fn sheet
      Main.Export wb
  }

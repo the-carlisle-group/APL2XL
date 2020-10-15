@@ -75,7 +75,8 @@
          sheetdata←'sheetData'tag rows                          ⍝ part of <worksheet> body
          dimension←'dimension'(⊂'ref'('A1:',itc max))tag''      ⍝ part of <worksheet> body
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
-         ∊worksheet wattrs tag dimension sheetViews sheetdata mergeCellsXML
+         condFmt←∊wb.CFXML[wb.SheetViews[;0]⍳1↑sheetName]
+         ∊worksheet wattrs tag dimension sheetViews sheetdata condFmt mergeCellsXML
      }
 
      sheets←wb.WS
