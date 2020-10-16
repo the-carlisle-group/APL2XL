@@ -24,7 +24,6 @@
          sheet←⍵
          wb.CFXML,←{0<⍵.⎕NC'ConditionalFormats':wb ##.Main.XL.CFSheetsXML ⍵.ConditionalFormats ⋄ ⊂''}sheet
          wb.SheetRowHeights⍪←{0<⍵.⎕NC'RowHeight':⍵.(Name RowHeight) ⋄ ⍵.Name(0 2⍴⍬)}sheet
-         sheet.ColumnWidth←{0<⍵.⎕NC'ColumnWidth':⍵.ColumnWidth ⋄ ''}sheet
          _←wb ##.Main.XL.WSProps sheet ⍝ handle global properties like sheets
          {wb ranges(sheet.Name)⍵}¨⍵.Ranges
      }
@@ -62,22 +61,25 @@
      sheetsNormalize←{⍝ normalize data structure of necessary properties within a sheet
          sheet←⍵
          sheet.ConditionalFormats←{0<⍵.⎕NC'ConditionalFormats':⍵.ConditionalFormats ⋄ ⊂''}sheet
+         sheet.ColumnWidth       ←{0<⍵.⎕NC'ColumnWidth'       :⍵.ColumnWidth        ⋄  ''}sheet
          sheet
      }
 
      sheetsPopulate←{ ⍝ populate necessary items within the worksheets to normalize before processing
          scfs←⍵.ConditionalFormats
          cfFonts←{
-             0<⍵.⎕NC'Font':{
+             nmt←{
                 ⍵.Font←⍵.Font{0<⍺.⎕NC ⍵: ⍺⍎⍵ ⋄ 0}¨'Bold' 'Italic' 'Underline' 'Strikethrough' 'Color'
                 ⍵
-             }⍵
-             ⍵.Font←⍬
+             }
+             ' '≡⍵: ⍵
+             (0<⍵.⎕NC'Font'):nmt ⍵
              ⍵
          }¨∊scfs
+         scfs≡13⍴⊂⊂'':⍵
          condFmtPriority←{
             scfs≡⊂'':⍵
-            priorities←(≢scfs)↑(∊1,{⎕←⍵=⌈/⍵}¨⍳∘≢¨scfs)⊂⍳1+≢∊scfs
+            priorities←(≢scfs)↑(∊1,{⍵=⌈/⍵}¨⍳∘≢¨scfs)⊂⍳1+≢∊scfs
             _←priorities{⍺{⍵.(DXFID Priority)←2⍴⍺}¨⍵}¨scfs
             ⍵
          }''
@@ -85,8 +87,6 @@
      }
 
      ss←sheetsPopulate sheetsNormalize¨⍵.Sheets
-
-
      _←wb sheets¨nameSheets ss
      ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory
  }

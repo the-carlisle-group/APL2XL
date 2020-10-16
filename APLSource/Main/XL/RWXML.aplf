@@ -6,8 +6,8 @@ RWXML←{
   attrs←⊂'xmlns' 'http://schemas.openxmlformats.org/package/2006/relationships'
 
   ⍝. Generate the RelsTable
-  wsr←WSREL wb
-  ssr←SSREL wb
+  wsr   ←WSREL wb
+  ssr   ←SSREL wb
   styler←StyleREL wb
   themer←ThemeREL wb
   (rs attrs) tag (RWRelXML⍤1⊢wb.RW)

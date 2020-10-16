@@ -5,9 +5,9 @@
      ⍝. Returns: cell or numerical index of the result of index ⍺⍺ shape
      ⍝. This function is used by Main.NextCol Main.NextRow for finding the next available empty cells
      return←{⍺:⍵ ⋄ itc ⍵}
-     range←⍵
-     index←cti range.Address
-     shape←⍴range.Value
-     cell←index ⍺⍺ shape
+     range ←⍵
+     index ←cti range.Address
+     shape ←⍴range.Value
+     cell  ←index ⍺⍺ shape
      ⍺ return cell
  }

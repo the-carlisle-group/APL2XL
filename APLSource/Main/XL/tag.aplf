@@ -1,7 +1,8 @@
  tag←{
+     ⍝. Tag is used for special cases where & might be included as part of the body of XML
+     ⍝. Which ⎕XML automatically parses
+      
      ⍝. ⍵ ←→ body: simple char vec (empty vec if no body)
-     ⍝⍝⍝ TODO: This function should be deprecated in lieu of ⎕XML
-
      ⍝. ⍺[0] ←→ tag name: simple char vec
      ⍝. ⍺[1] ←→ attributes: (optional) nested vector, ((k v) (k v)...)
      ⍝. This function generates xml tags
@@ -20,7 +21,5 @@
      some←{0=≢⍵}
      attrs←{t v←⍵ ⋄ ' 't'="'(⍕¨v)'"'}¨(1<|≡ps)/ps
      tt←(some attrs)⌷t ⍺
-⍝     ⎕XML 0(∊tt)(⍕¨⍵)(↑(~some attrs)/ps)
-
      ∊'<'tt attrs,(some ⍵)⌷('>'(⍕⍵)'</'tt'>')'/>'
  }

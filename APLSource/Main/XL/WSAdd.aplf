@@ -11,7 +11,7 @@
      isMerge←4⊃⍵
 
      ⍝. Normalize the range data for ouput as xml
-     shape←⍴value←3⊃⍵
+     shape←⍴value←3⊃⍵ ⍝ value is cell values
      t←,mapt[drs⍳{wt←⎕DR ⍵ ⋄ wt=326:⎕DR¨⍵ ⋄ (⍴⍵)⍴wt}value] ⍝ get the apl data types
      v←,value
      ⍝b←⍸t='b' ⋄ v[b]←('False' 'True')[v[b]]    ⍝ Convert bools

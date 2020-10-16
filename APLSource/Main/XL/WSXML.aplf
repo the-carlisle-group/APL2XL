@@ -70,12 +70,12 @@
          cellsxml←((2×≢cxml),4)⍴cxml,vxml
          xmlInput←(rowxml⍪cellsxml)[⍋(⍳≢rn),(2×rcc)/⍳≢rn;]         ⍝ multiply the row cell count by 2, this accounts for both cell tags and value tags to be passed to ⎕XML
 
-     ⍝. Generate XML
+     ⍝. Generate and Format XML output for a single sheet
          rows      ←⎕XML xmlInput
          sheetdata ←'sheetData'tag rows                            ⍝ part of <worksheet> body
          dimension ←'dimension'(⊂'ref'('A1:',itc max))tag''        ⍝ part of <worksheet> body
          sheetViews←⊃wb.SheetViews[wb.SheetViews[;0]⍳1↑sheetName;1]
-         condFmt   ←∊wb.CFXML[wb.SheetViews[;0]⍳1↑sheetName]
+         condFmt   ←{⍵≡0⍴⊂'':''⋄∊⍵[wb.SheetViews[;0]⍳1↑sheetName]}wb.CFXML
          ∊worksheet wattrs tag dimension sheetViews sheetdata condFmt mergeCellsXML
      }
 

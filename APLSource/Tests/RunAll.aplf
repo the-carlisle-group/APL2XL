@@ -5,7 +5,7 @@
      ⍝. Set arguments to TestConfig
      ⎕←'Testing large output file requires WS>8G.'
      ⎕←'Setting this flag to 1 will test 1 million x 4 cells output.'
-     TestLargeFile←0
+     TestLargeFile←1
 
      ⍝. Config settings for future tests should go here
      ⍝...

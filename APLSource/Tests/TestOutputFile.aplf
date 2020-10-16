@@ -1,6 +1,6 @@
  TestOutputFile←{
      ValidateBasic←{
-         filename←Utility.BasicWS(size←100)
+         filename←##.Demos.BasicWS(size←100)
          test←{
              wb←⍵
              sheetCount←1≡wb.Sheets.Count
@@ -22,7 +22,7 @@
              names←(1⍴⊂'board')≡Utility.OLESheets ⍵
              c1←(,¨2 8⍴bl)≡⊃wb.ActiveSheet Utility.OLERange'B2:I3'
              c2←(⊖,¨2 8⍴wh)≡⊃wb.ActiveSheet Utility.OLERange'B8:I9'
-             ∧/⎕←names sheetCount c1 c2
+             ∧/names sheetCount c1 c2
          }
          (test Utility.OLEController)filename
      }
@@ -48,7 +48,7 @@
          ~(¯1↑size)∊'GTPE':DIDNTRUN ⍝ WS not large enough
          n←⍎¯1↓size
          n<8:DIDNTRUN ⍝ WS not large enough
-         filename←Utility.BasicWS 1000000
+         filename←##.Demos.BasicWS 1000000
          test←{
              row1←(1 4⍴0 1 2 'ABC')≡⊃⍵.ActiveSheet Utility.OLERange'B2:E2'
              row2←(1 4⍴2999997 2999998 2999999 'NOP')≡⊃⍵.ActiveSheet Utility.OLERange'B1000001:E1000001'

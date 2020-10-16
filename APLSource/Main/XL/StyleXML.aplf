@@ -1,10 +1,7 @@
  StyleXML←{
     ⍝. ⍵ ←→ workbook, instance of #.WB
-    ⍝⍝⍝. TODO: This function is under construction
-    ⍝⍝⍝. TODO: Refactor all styles to use ⎕XML
-
      wb←⍵
-     s ←wb.Styles
+     s←wb.Styles
      cf←{↓(((s.⎕NL-2)~⊂'cellXfs')⍳⊂⍺)⊃⍤1⊢⍵}
 
     ⍝. Styles within spreadsheetML are implemented to minimize repetition, and this is done with collections.
@@ -15,16 +12,12 @@
     ⍝. The formatting for a cell can be specified with a list or collection of indices into these four collections.
     ⍝. And in fact, that is what the <cellXfs> is.
     ⍝. It contains a collection of groups of indices, one group for every combination of cell formatting characteristics found in the workbook.
+    ⍝. Define functions for a single element in each of the collections.
+    ⍝. Collections such as numFmts fills fonts and borders all have unique tags
+    ⍝. The following functions define each single tag of the collections
 
-     ⍝. collection generates the tag for each collection within the style document
-     ⍝. Complete descriptions of the collections can be found in the comments below
-     collection←{⍺(⊂'count'(≢⍵))tag(⍺⍺¨↓⍵)}
-
-     ⍝. Define functions for a single element in each of the collections.
-     ⍝. Collections such as numFmts fills fonts and borders all have unique tags
-     ⍝. The following functions define each single tag of the collections
-
-     ⍝. TODO: use ⎕XML
+        
+    ⍝. --- FUNCTION DECLS ---
      fill←{
          ⍝. ⍵[0] ←→ patternFill type
          ⍝. ⍵[1] ←→ foreground fill info (TODO: not complete)
@@ -57,9 +50,9 @@
          'border'tag body ⍵
      }
 
-     styleXF  ←{ '<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>' }
-     cellStyle←{ '<cellStyle name="Normal" xfId="0" builtinId="0"/>' }
-     table    ←{ '<tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleLight16"/>' }
+     styleXF  ←{'<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>'}
+     cellStyle←{'<cellStyle name="Normal" xfId="0" builtinId="0"/>'}
+     table    ←{'<tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleLight16"/>'}
 
      numFmt←{⍝. Used for generating xml for numFmts and cellXfs
          (parent child)←2↑⍺
@@ -70,18 +63,18 @@
      }
 
      cellXf←{⍝. Used for generating xml for numFmts and cellXfs
-         styles        ←1⌽(scols                                              ←10↑5\1)/⍵
-         alignment     ←(~scols)/⍵
+         styles←1⌽(scols←10↑5\1)/⍵
+         alignment←(~scols)/⍵
          (parent child)←2↑⍺
-         tags          ←2↓⍺
-         p             ←(0 parent''),(⊂1 2⍴'count'(≢⍵))
-         c             ←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢styles
+         tags←2↓⍺
+         p←(0 parent''),(⊂1 2⍴'count'(≢⍵))
+         c←(1 child''),⍤1 0⊂⍤2⍉⍤2⊢((≢⍵),2,(≢tags))⍴tags,⍤1⊢styles
 
          ⍝⍝⍝ here we need to select nested alignment tags where necessary
          select←{s←⍺⍺ ⋄ ⍺∘{(⍺,⍪⍵)⌿⍨0 '' '' 0 0≢¨⍵}¨↓⍉↑⍺{(,s⍎⍺)[⍵]}¨↓⍉⍵}
-         aTags ←'wrapText' 'horizontal' 'vertical' 'shrinkToFit' 'indent'
-         attrs ←aTags(⍺⍺ select)alignment
-         where ←⍸0≠≢¨attrs
+         aTags←'wrapText' 'horizontal' 'vertical' 'shrinkToFit' 'indent'
+         attrs←aTags(⍺⍺ select)alignment
+         where←⍸0≠≢¨attrs
 
          ⍝⍝⍝ drop the first because the default style will never have an alignment body
          xmlargs←1↓↑2 'alignment' ''∘{⍺,⊂⍵}¨attrs
@@ -89,51 +82,45 @@
          ⎕XML p⍪complete
      }
 
-     innerFonts←{
-         isCF          ←⍺
-         properTags    ←7↑4/1
-         ibu           ←~properTags
-         fattr         ←'val' 'theme' 'val' 'val'
-         fontprops     ←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢properTags/⍵
-         fontCells     ←{(⍉3 4⍴(2 2 2 2-isCF),'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
-         fontCollection←,[⍳2]((1-isCF),'font' '' '')⍪⍤2⊢fontCells
-         ibus          ←↑⊃,/{{(2-isCF)⍵'' ''}¨⍵/'ibu'}¨↓(~properTags)/⍵
-         (fontCollection⍪ibus)[⍋(⍳≢fontCollection),(,ibu/⍵)/3/5×⍳≢⍵;]
-     }
-
      styleFont←{⍝. Generates xml for fonts
-         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪0 innerFonts ⍵
+         properTags←7↑4/1
+         ibu←~properTags
+         fattr←'val' 'theme' 'val' 'val'
+         fontprops←⍉⍤2⊢((≢⍵),2,(≢fattr))⍴fattr,⍤1⊢properTags/⍵
+         fontCells←{(⍉3 4⍴(2 2 2 2),'sz' 'color' 'name' 'family' '' '' '' ''),⊂⍤1⊢⍵}⍤2⊢fontprops
+         fontCollection←,[⍳2]((1),'font' '' '')⍪⍤2⊢fontCells
+         ibus←↑⊃,/{{(2)⍵'' ''}¨⍵/'ibu'}¨↓(~properTags)/⍵
+         innerFonts←(fontCollection⍪ibus)[⍋(⍳≢fontCollection),(,ibu/⍵)/3/5×⍳≢⍵;]
+         ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪innerFonts
      }
 
-     numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'numFmt{(⍪r+163×0≠r                            ←⍳≢⍵),⍵}s.numFmts
+
+
+    ⍝. --- GENERATE STYLE XML ---
+     numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'numFmt{(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
      cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid'(s cellXf){⍵,⍨⍳≢⍵}s.cellXfs
-     fonts  ←styleFont s.fonts
+     fonts←styleFont s.fonts
 
-     ⍝. TODO: refactor the following to use ⎕XML
-     fills       ←'fills'(fill collection)s.fills
-     borders     ←'borders'(border collection)s.borders
-     cellStyleXfs←'cellStyleXfs'(styleXF collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
-     cellStyles  ←'cellStyles'(cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
-     tableStyles ←table''                               ⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
+     collection  ←{⍺(⊂'count'(≢⍵))tag(⍺⍺¨↓⍵)}
+     fills       ←'fills'       (fill      collection)s.fills
+     borders     ←'borders'     (border    collection)s.borders
+     cellStyleXfs←'cellStyleXfs'(styleXF   collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
+     cellStyles  ←'cellStyles'  (cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
+     tableStyles ←table''                                 ⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
 
-     ⍝. dxfs constains one of each property, font fill border
-     ⍝dxfs←'<dxfs count="0"/>'                           ⍝TODO: implement
-
-     ⍝ TODO: implement
-
-     ⍝. do dxf/conditional formatting things
+     ⍝. --- CONDITIONAL FORMATTING XML ---
      (dxnumFmt dxfills dxborders dxwrapText dxhorizontal dxvertical dxshrinkToFit dxindent dxfont)←↓⍉↑wb.CFStyles
      has←{⍵≡⍬:'' ⋄ ⍺⍺ ⍵}
 
-     (nfids nfmts)←↓⍉28 2⍴0'General'1'0'2'0.00'3'#,##0'4'#,##0.00'9'0%'10'0.00%'11'0.00E+00'12'# ?/?'13'# ??/??'14'd/m/yyyy'15'd-mmm-yy'16'd-mmm'17'mmm-yy'18'h:mm tt'19'h:mm:ss tt'20'H:mm'21'H:mm:ss'22'm/d/yyyy H:mm'37'#,##0 ;(#,##0)'38'#,##0 ;[Red](#,##0)'39'#,##0.00;(#,##0.00)'40'#,##0.00;[Red](#,##0.00)'45'mm:ss'46'[h]:mm:ss'47'mmss.0'48'##0.0E+0'49'@'
+     (nfids nfmts)←↓⍉28 2⍴0 'General' 1 '0' 2 '0.00' 3 '#,##0' 4 '#,##0.00' 9 '0%' 10 '0.00%' 11 '0.00E+00' 12 '# ?/?' 13 '# ??/??' 14 'd/m/yyyy' 15 'd-mmm-yy' 16 'd-mmm' 17 'mmm-yy' 18 'h:mm tt' 19 'h:mm:ss tt' 20 'H:mm' 21 'H:mm:ss' 22 'm/d/yyyy H:mm' 37 '#,##0 ;(#,##0)' 38 '#,##0 ;[Red](#,##0)' 39 '#,##0.00;(#,##0.00)' 40 '#,##0.00;[Red](#,##0.00)' 45 'mm:ss' 46 '[h]:mm:ss' 47 'mmss.0' 48 '##0.0E+0' 49 '@'
      cfNFID   ←{(nfmts,50)[nfids⍳⍵]}
-     cfNumFmts←{'numFmt'(('numFmtId'(cfNFID ⊆⍵))('formatCode'(⊃⍵)))tag''}
-     cfBorder ←{ border⊃⍵ }
-     cfFill   ←{ fill  ⊃⍵ }
-     cfFont   ←{ 
+     cfNumFmts←{'numFmt'(('numFmtId'(cfNFID⊆⍵))('formatCode'(⊃⍵)))tag''}
+     cfBorder ←{border⊃⍵}
+     cfFill   ←{fill⊃⍵}
+     cfFont   ←{
          ⍵≡⍬:''
-         bius ←{'<'⍵'/>'}¨(4↑⍵)/'biu',⊂'strike'
-         color←{⍵≢0:'<color rgb="',⍵,'"/>'⋄''}⊃⌽⍵
+         bius←{'<'⍵'/>'}¨(4↑⍵)/'biu',⊂'strike'
+         color←{⍵≢0:'<color rgb="',⍵,'"/>' ⋄ ''}⊃⌽⍵
          ∊'<font>'bius,color'</font>'
      }
 
@@ -141,15 +128,13 @@
      cfBorderXML←(cfBorder  has)¨dxborders
      cfFillXML  ←(cfFill    has)¨dxfills
      cfFontXML  ←(cfFont    has)¨dxfont
-
-
-     dxfs←∊{'<dxfs count="'(⍕≢⍵)'">'(∊⍕⍵)'</dxfs>'}{'<dxf>',(∊⍵),'</dxf>'}¨↓⍉↑cfFontXML cfnumXML  cfFillXML cfBorderXML
+     dxfs       ←∊{'<dxfs count="'(⍕≢⍵)'">'(∊⍕⍵)'</dxfs>'}{'<dxf>',(∊⍵),'</dxf>'}¨↓⍉↑cfFontXML cfnumXML cfFillXML cfBorderXML
 
     ⍝ combine all output XML
-     extLst   ←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'
-     body     ←numFmts fonts fills borders cellStyleXfs cellXfs cellStyles dxfs tableStyles extLst
+     extLst←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'
+     body←numFmts fonts fills borders cellStyleXfs cellXfs cellStyles dxfs tableStyles extLst
      xmlHeader←'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac x16r2 xr" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" xmlns:x16r2="http://schemas.microsoft.com/office/spreadsheetml/2015/02/main" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision">'
-     xmlClose ←'</styleSheet>'
+     xmlClose←'</styleSheet>'
 
      ∊xmlHeader body xmlClose
  }

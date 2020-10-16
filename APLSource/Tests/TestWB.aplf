@@ -11,19 +11,20 @@
          wb←⍵
          wbNamesExist←⊃∧/{0<wb.⎕NC ⍵}¨'WS' 'SS' 'RW' 'Styles'
          ~wbNamesExist:0 ⍝ If one doesn't exist, the following code will error
-         (0 5⍴⍬)(0⍴⍬)(0 3⍴⍬)≡wb.(WS SS RW)
+         (0 6⍴⍬)(0⍴⍬)(0 3⍴⍬)≡wb.(WS SS RW)
      }
 
      StyleDefaultsCorrect←{
          wb←⍵
          styleNamesExist←⊃∧/{0<wb.Styles.⎕NC ⍵}¨'numFmts' 'fonts' 'borders' 'cellXfs'
          ~styleNamesExist:0 ⍝ If one doesn't exist, the following code will error
-         (1⍴⊂'General')(1 4⍴11 1 'Calibri' 2)(2 3⍴'none' '' '' 'gray125' '' '')(1 5⍴'')(1 4⍴0)≡wb.Styles.(numFmts fonts fills borders cellXfs)
+         (1⍴⊂'General')(1 7⍴11 1 'Calibri' 2 0 0 0)(2 3⍴'none' '' '' 'gray125' '' '')(1 5⍴'')(1 9⍴0)≡wb.Styles.(numFmts fonts fills borders cellXfs)
+
      }
 
      t←Utility.TestCase
 
-     r1←(WBShapesCorrect t) wb
-     r2←(StyleDefaultsCorrect t) wb
+     r1←(WBShapesCorrect t)wb
+     r2←(StyleDefaultsCorrect t)wb
      r1 r2
  }

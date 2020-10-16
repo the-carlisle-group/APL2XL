@@ -1,15 +1,8 @@
  WSMergeCells←{
-  ⍝ mergeCells is another collection that is found within the WS
-  ⍝ <mergeCells count="1">
-  ⍝   <mergeCell ref="B4:D8"/>
-  ⍝   <mergeCell ref="B4:D8"/>
-  ⍝   <mergeCell ref="B4:D8"/>
-  ⍝   <mergeCell ref="B4:D8"/>
-  ⍝   <mergeCell ref="B4:D8"/>
-  ⍝   ... etc
-  ⍝ </mergeCells>
+     ⍝. Create the XML tag for merged ranges
+     ⍝. ⍵ ←→ vector of tuples (from cell) (to cell) in Excel character form
+     ⍝. ⍺ ←→ boolean vector of ranges that are merge cells
      merged←⍺⌿⍉↑⍵
      count←⍕+/⍺
      ⎕XML 0 'mergeCells' ''(1 2⍴'count'count)⍪↑{1 'mergeCell' ''(1 2⍴'ref'⍵)}¨{∊⍺':'⍵}/merged
-
  }

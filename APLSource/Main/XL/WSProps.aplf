@@ -1,7 +1,7 @@
  WSProps←{
+     ⍝ Handle all sheet global collections and properties
      ⍝. ⍵ ←→ sheet
      ⍝. ⍺ ←→ internal wb data structure
-     ⍝ Handle all sheet global collections and properties
      wb←⍺
      sheet←⍵
      freezePane←{

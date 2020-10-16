@@ -1,5 +1,6 @@
  TestWSAdd←{
      xl←##.Main.XL
+     shape←1 6
 
      NewWB←{
          fileName←(739⌶0),'/XL2APLSimpleSheet.xlsx'
@@ -11,8 +12,8 @@
      NumTest←{
          wb←NewWB''
          nums←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums
-         (1 5⍴'TestSheetName' 'A1'((⍴nums)⍴0)nums((⍴nums)⍴'n'))≡1↑wb.WS
+         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums 0
+         (shape⍴'TestSheetName' 'A1'((⍴nums)⍴0)nums((⍴nums)⍴'n')0)≡1↑wb.WS
      }
 
      ⍝ Test adding a second value to the same cell
@@ -21,11 +22,11 @@
      TestDuplicateCells←{
          wb←NewWB''
          nums←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums
+         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums 0
 
          nums2←4 4⍴10×⍳16
-         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums2
-         (1 5⍴'TestSheetName' 'A1'((⍴nums2)⍴0)nums2((⍴nums2)⍴'n'))≡¯1↑wb.WS
+         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums2 0
+         (shape⍴'TestSheetName' 'A1'((⍴nums2)⍴0)nums2((⍴nums2)⍴'n')0)≡¯1↑wb.WS
      }
 
      ⍝ Test incrementing ids
@@ -36,11 +37,11 @@
      StrTest←{
          wb←NewWB''
          nums←3 3⍴⍳9
-         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums
+         _←wb xl.WSAdd'TestSheetName' 'A1' ''nums 0
 
          strings←3 3⍴'zero' 'one' 'two'
-         _←wb xl.WSAdd'TestSheetName2' 'A1' ''strings
-         (1 5⍴'TestSheetName2' 'A1'(3 3⍴0)(3 3⍴⍳3)(3 3⍴'s'))≡¯1↑wb.WS
+         _←wb xl.WSAdd'TestSheetName2' 'A1' ''strings 0
+         (shape⍴'TestSheetName2' 'A1'(3 3⍴0)(3 3⍴⍳3)(3 3⍴'s')0)≡¯1↑wb.WS
      }
 
      StrTest2←{
@@ -48,26 +49,22 @@
         ⍝ The value index should be different for unique strings. Note: 'one' appears twice
          wb←NewWB''
          strings←3 3⍴'zero' 'one' 'two'
-         _←wb xl.WSAdd'TestSheetName' 'A1' ''strings
-         firstValueIsCorrect←(1 5⍴'TestSheetName' 'A1'(3 3⍴0)(3 3⍴⍳3)(3 3⍴'s'))≡¯1↑wb.WS
+         _←wb xl.WSAdd'TestSheetName' 'A1' ''strings 0
+         firstValueIsCorrect←(shape⍴'TestSheetName' 'A1'(3 3⍴0)(3 3⍴⍳3)(3 3⍴'s')0)≡¯1↑wb.WS
 
          strings2←3 3⍴'three' 'four' 'one'
-         _←wb xl.WSAdd'TestSheetName' 'D1' ''strings2
-         firstValueIsCorrect∧(1 5⍴'TestSheetName' 'D1'(3 3⍴0)(3 3⍴3 4 1)(3 3⍴'s'))≡¯1↑wb.WS
+         _←wb xl.WSAdd'TestSheetName' 'D1' ''strings2 0
+         firstValueIsCorrect∧(shape⍴'TestSheetName' 'D1'(3 3⍴0)(3 3⍴3 4 1)(3 3⍴'s')0)≡¯1↑wb.WS
      }
 
      ValueWithStyle←{
         ⍝ Test adding basic styles along with a value
+         simpleStyle←##.Tests.Utility.SimpleStyle''
          wb←NewWB''
-         nfmt←⊂'#,##0'
-         font←⊂20 1 'Calibri' 2
-         fill←⊂'solid' 'F12345' '0000cc'
-         brdr←⊂5⍴('thin' 1)('thick' '0000cc')
-         style←nfmt font fill brdr
          strings←3 3⍴'three' 'four' 'one'
 
-         _←wb xl.WSAdd'TestSheetName' 'A1'style strings
-         (1 5⍴'TestSheetName' 'A1'(3 3⍴1)(3 3⍴0 1 2)(3 3⍴'s'))≡¯1↑wb.WS
+         _←wb xl.WSAdd'TestSheetName' 'A1'simpleStyle strings 0
+         (shape⍴'TestSheetName' 'A1'(3 3⍴1)(3 3⍴0 1 2)(3 3⍴'s')0)≡¯1↑wb.WS
      }
 
      t←Utility.TestCase

@@ -31,10 +31,8 @@ WB←{
   wb.Styles.mergeCells ←0
   wb.Styles.indent     ←0
 
-
   wb.CFXML←0⍴⊂''
   wb.CFStyles←⍬
-
 
   wb
 }
