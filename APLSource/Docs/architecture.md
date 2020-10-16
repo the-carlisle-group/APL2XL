@@ -87,7 +87,7 @@ The files contained within main that are not compartmented into other directorie
 
 `Main.Export` defines a `⎕Signal` which in the event of any file read/write error will `⎕Trap` in `Main.Build.CompileXML`. 
 
-### Main.Fills
+### Main.PatternFills
 Simple function which returns some example fill styles.
 
 ### Main.GetErrorMessage

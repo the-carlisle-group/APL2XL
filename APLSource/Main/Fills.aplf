@@ -1,5 +1,0 @@
-Fills←{
-  ⍝. ⍵ ←→ how many fills to return, or all of them 
-  fills←'none' 'solid' 'gray125' 'darkGray' 'mediumGray' 'lightGray' 'gray125' 'gray0625' 'darkHorizontal' 'darkHorizontal' 'darkVertical' 'darkDown' 'darkUp' 'darkGrid' 'darkTrellis' 'lightHorizontal' 'lightVertical' 'lightDown' 'lightUp' 'lightGrid' 'lightTrellis'
-  (⌊/⍵ (≢fills))↑{⍵ '' ''}¨fills
-}
