@@ -94,8 +94,6 @@
          ⎕XML((0 'fonts' ''),(⊂1 2⍴'count'(≢⍵)))⍪innerFonts
      }
 
-
-
     ⍝. --- GENERATE STYLE XML ---
      numFmts←'numFmts' 'numFmt' 'numFmtId' 'formatCode'numFmt{(⍪r+163×0≠r←⍳≢⍵),⍵}s.numFmts
      cellXfs←'cellXfs' 'xf' 'numFmtId' 'fontId' 'fillId' 'borderId' 'xfid'(s cellXf){⍵,⍨⍳≢⍵}s.cellXfs
@@ -107,28 +105,7 @@
      cellStyleXfs←'cellStyleXfs'(styleXF   collection)' ' ⍝ TODO: add s.cellStyleXfs in Main.XL.WB
      cellStyles  ←'cellStyles'  (cellStyle collection)' ' ⍝ TODO: add s.cellStyles in Main.XL.WB
      tableStyles ←table''                                 ⍝'tableStyles'(table     collection)''  ⍝ TODO: add s.tableStyles in Main.XL.WB
-
-     ⍝. --- CONDITIONAL FORMATTING XML ---
-     (dxnumFmt dxfills dxborders dxwrapText dxhorizontal dxvertical dxshrinkToFit dxindent dxfont)←↓⍉↑wb.CFStyles
-     has←{⍵≡⍬:'' ⋄ ⍺⍺ ⍵}
-
-     (nfids nfmts)←↓⍉28 2⍴0 'General' 1 '0' 2 '0.00' 3 '#,##0' 4 '#,##0.00' 9 '0%' 10 '0.00%' 11 '0.00E+00' 12 '# ?/?' 13 '# ??/??' 14 'd/m/yyyy' 15 'd-mmm-yy' 16 'd-mmm' 17 'mmm-yy' 18 'h:mm tt' 19 'h:mm:ss tt' 20 'H:mm' 21 'H:mm:ss' 22 'm/d/yyyy H:mm' 37 '#,##0 ;(#,##0)' 38 '#,##0 ;[Red](#,##0)' 39 '#,##0.00;(#,##0.00)' 40 '#,##0.00;[Red](#,##0.00)' 45 'mm:ss' 46 '[h]:mm:ss' 47 'mmss.0' 48 '##0.0E+0' 49 '@'
-     cfNFID   ←{(nfmts,50)[nfids⍳⍵]}
-     cfNumFmts←{'numFmt'(('numFmtId'(cfNFID⊆⍵))('formatCode'(⊃⍵)))tag''}
-     cfBorder ←{border⊃⍵}
-     cfFill   ←{fill⊃⍵}
-     cfFont   ←{
-         ⍵≡⍬:''
-         bius←{'<'⍵'/>'}¨(4↑⍵)/'biu',⊂'strike'
-         color←{⍵≢0:'<color rgb="',⍵,'"/>' ⋄ ''}⊃⌽⍵
-         ∊'<font>'bius,color'</font>'
-     }
-
-     cfnumXML   ←(cfNumFmts has)¨dxnumFmt
-     cfBorderXML←(cfBorder  has)¨dxborders
-     cfFillXML  ←(cfFill    has)¨dxfills
-     cfFontXML  ←(cfFont    has)¨dxfont
-     dxfs       ←∊{'<dxfs count="'(⍕≢⍵)'">'(∊⍕⍵)'</dxfs>'}{'<dxf>',(∊⍵),'</dxf>'}¨↓⍉↑cfFontXML cfnumXML cfFillXML cfBorderXML
+     dxfs        ←(border CFXML fill) wb ⍝ depends on border and fill dfns
 
     ⍝ combine all output XML
      extLst←'<extLst> <ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"> <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/> </ext> <ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"> <x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/> </ext> </extLst>'

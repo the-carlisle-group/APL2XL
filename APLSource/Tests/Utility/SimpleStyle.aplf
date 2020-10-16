@@ -1,0 +1,12 @@
+SimpleStyle←{
+    nfmt←⊂'#,##0'
+    font←⊂20 1 'Calibri' 2 0 0 0
+    fill←⊂'solid' 'F12345' '0000cc'
+    brdr←⊂5⍴('thin' 1)('thick' '0000cc')
+    wrap←0
+    shrnk←0
+    hzntl←⊂''
+    vrtcl←⊂''
+    indnt←0
+    nfmt font fill brdr wrap hzntl vrtcl shrnk indnt
+}

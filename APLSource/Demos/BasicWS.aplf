@@ -1,0 +1,38 @@
+ BasicWS←{
+     ⍝. ⍵ ←→ number of rows to output
+     ⍝. Creates ⍵x4 number of cells
+     ⍝. This function creates a simple workbook
+     ⍝. This should be useful for most testing purposes
+     (r c)←{1=≢⍵:⍵,3 ⋄ ⍵}⍵
+     Main←##.##.Main
+     ⍺←1 ⍝ use styles
+     fn←(739⌶0),'/XL2APLSimpleSheet.xlsx'
+     (range1←⎕NS'').(Address Value)←'B2'(r c⍴⍳r×c)
+     (range2←⎕NS'').(Address Value)←(Main.NextCol range1)(⍪↓r c⍴⎕A)
+     range1.MergeCells←0
+
+     range2.Horizontal←⊂'center'
+     _←{~⍵:⍬ ⍝ Conditional style application
+        ⍝. 100 returns all numberformats and all fills
+         range1.NumberFormat←Main.NumberFormats 100
+         range1.Fill←Main.PatternFills 100
+         range1.Horizontal←⊂'center'
+         range1.Vertical←⊂'center'
+         shape←{1↑[1](0 1+⍴range1.Value)⍴⍵}
+         range1.Border←shape ⊂('none' 1)('thick' 1)('thick' 1)('thick' 1)('thick' 1)
+         range1.Font←⎕NS''
+         range1.Font.(Name Size)←(⊂'Calibri')20
+         range1.Font.Italic   ←shape 0 0 1
+         range1.Font.Bold     ←shape 0 1 0
+         range1.Font.Underline←shape 1 0 0
+         range1.Horizontal←⊂'center'
+         range1.Vertical←⊂'center'
+         ⍬
+     }⍺
+
+     (sheet←⎕NS'').(Name Ranges)←'Data'(range1 range2)
+     sheet.ColumnWidth←(1+⍳3),⍪23 50 12
+     sheet.RowHeight←1+{(⍳⍵),⍪2×⍳⍵}r+1
+     (wb←⎕NS'').(FileName Sheets)←fn sheet
+     Main.Export wb
+ }

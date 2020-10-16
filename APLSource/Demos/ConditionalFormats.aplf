@@ -1,0 +1,52 @@
+ConditionalFormats←{
+
+    Main←##.##.Main
+    fn←(739⌶0),'/XL2APLSimpleSheet.xlsx'
+    (range1←⎕NS'').(Address Value)←'A1'(100 10⍴?1000⍴1000)
+    (range2←⎕NS'').(Address Value)←'A1'(100 10⍴?1000⍴1000)
+
+    (conditionalFormat←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
+    addCF←{
+        ⍵.NumberFormat←⊂'_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)'
+        ⍵.Fill        ←⊂'solid' 0 'd4b790'
+        ⍵.Horizontal  ←⊂'center'
+        ⍵.Vertical    ←⊂'center'
+        ⍵.Border      ←⊂('none' 1)('thick' 1)('thick' 1)('thick' 1)('thick' 1)
+        ⍵.Font←⎕NS''
+        ⍵.Font.Italic   ←1
+        ⍵.Font.Bold     ←1
+        ⍵.Font.Underline←1
+        ⍵.Font.Strikethrough←1
+        ⍵.Font.Color←'F73005'
+        ⍵.StopIfTrue←1
+        ⍵
+    }
+    _←addCF conditionalFormat
+
+
+    (cf1←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
+    cf1.NumberFormat←'H:mm'
+
+    (cf2←⎕NS'').(CellRange Formula)←'B1:J20' 'ISODD(B1)'
+    cf2.NumberFormat←'mmss.0'
+
+    (cf3←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
+    cf3.NumberFormat←⊂'0.00'
+    cf3.Font←⎕NS''
+    cf3.Font.Italic   ←1
+    cf3.Font.Bold     ←1
+    cf3.Font.Underline←1
+
+    (cf4←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
+    cf4.NumberFormat←⊂'@'
+
+    (cf5←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
+    cf5.NumberFormat←⊂'d/m/yyyy'
+    cf5.Fill        ←⊂'solid' 0 'd4b790' 
+
+    (sheet←⎕NS'').(Name Ranges ConditionalFormats)←'Data'(,range1)  (conditionalFormat cf1 cf2)
+    (sheet2←⎕NS'').(Name Ranges ConditionalFormats)←'Data2'(,range2)  (cf3 cf4 cf5)
+
+    (wb←⎕NS'').(FileName Sheets)←fn (sheet sheet2)
+    Main.Export wb
+}
