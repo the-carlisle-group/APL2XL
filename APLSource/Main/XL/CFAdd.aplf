@@ -1,7 +1,7 @@
 CFAdd←{
     cfs←⍵ ⍝ all conditional format namespaces for a workbook
     wb←⍺
-    names←'NumberFormat'  'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' 'Indent' 'Font'
+    names←'NumberFormat'  'Fill' 'Border' 'WrapText' 'Horizontal' 'Vertical' 'ShrinkToFit' 'Indent' 'Font' 
     defaults←9⍴⊂⍬
     expand←{(⍵,defaults[⍸~⍺])[⍋⍒⍺]} ⍝ expand such that unpopulated fields have default values
     vals←{⍵{⍵ expand ⍺⍎¨names/⍨⍵}0≠⍵.⎕NC names}¨cfs ⍝ select non-empty, and expand each CF

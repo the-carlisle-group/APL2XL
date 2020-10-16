@@ -11,7 +11,7 @@ CFSheetsXML←{
     xml←{
         (sqref cfs)←⍵
         p←0 'conditionalFormatting' '',⊂1 2⍴'sqref' sqref    ⍝ parent
-        c←↑{1 'cfRule' ''('type' 'dxfId' 'priority',⍪'expression' ⍵.DXFID ⍵.Priority)}¨cfs ⍝ child
+        c←↑{1 'cfRule' ''('type' 'dxfId' 'priority' 'stopIfTrue',⍪'expression' ⍵.DXFID ⍵.Priority ⍵.StopIfTrue)}¨cfs ⍝ child
         f←↑{2 'formula' ⍵ (0 2⍴⊂'')}¨cfs.Formula             ⍝ formula
         ⎕XML{⍵[⍋0,,⍨⍳≢ cfs;]}⊃⍪/p c f
     }

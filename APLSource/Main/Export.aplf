@@ -73,6 +73,7 @@
                 ⍵
              }
              ' '≡⍵: ⍵
+             _←{0<⍵.⎕NC 'StopIfTrue':''⋄⍵.StopIfTrue←-1}⍵
              (0<⍵.⎕NC'Font'):nmt ⍵
              ⍵
          }¨∊scfs
