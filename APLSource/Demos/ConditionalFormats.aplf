@@ -1,11 +1,16 @@
 ConditionalFormats←{
-
+    ⍝ ⍵ ←→ '' ⍬ or integer index for example formula
     Main←##.##.Main
     fn←(739⌶0),'/XL2APLSimpleSheet.xlsx'
-    (range1←⎕NS'').(Address Value)←'A1'(100 10⍴?1000⍴1000)
-    (range2←⎕NS'').(Address Value)←'A1'(100 10⍴?1000⍴1000)
+    (range1←⎕NS'').(Address Value)←'A1'(100 10⍴1000?1000)
+    (range2←⎕NS'').(Address Value)←'A1'(100 10⍴1000?1000)
+    
+    descriptions   ←'above average'           'greater than' 'top 10'
+    exampleFormulas←'A1>Average($A$1:$J$100)' 'A1>950'       'A1>=LARGE($A$1:$J$100,10)'
+    formInd←{83=⎕DR⍵ : {⍵ ≤ ≢ exampleFormulas:⍵⋄0}⍵⋄ 0}⍵
+    ⎕←'Formula Description for Sheet 1: "',(descriptions[formInd]),'"'
+    (conditionalFormat←⎕NS'').(CellRange Formula)←'A1:J100' (formInd⊃exampleFormulas)
 
-    (conditionalFormat←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
     addCF←{
         ⍵.NumberFormat←⊂'_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)'
         ⍵.Fill        ←⊂'solid' 0 'd4b790'
