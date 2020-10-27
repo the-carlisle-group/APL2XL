@@ -2,6 +2,25 @@ CFSheetsXML←{
     ⍝ ⍵ ←→ vector ⎕NS
     ⍝ ⍵.CellRange ←→ 'A1:J100'
     ⍝ ⍵.Formula   ←→ 'ISODD(A1)'
+    testType←'3Arrows'
+    testColors← 'FFF8696B' 'FFFFEB84' 'FF63BE7B' 
+
+    iconSet←{
+        ∘∘∘ Get the type from ⍵
+        type←testType
+        parent←0 'iconset' '' (1 2⍴'iconSet' type)
+        cfvo←{(1 'cvfo' ''),∘⊂⍤2⊢2 2⍴⍤1⊢('type' 'percent' 'val'),⍤1⊢⍪⌊(100÷⍵)×⍳⍵}⍎⊃type
+        ⎕XML parent⍪cfvo
+    }
+    colorScale←{
+        ∘∘∘ Get the hex colors from ⍵
+        hexColors←testColors
+        parent←0  'colorscale' '' ''
+        cvfo←{1 'cvfo' '' (((⎕←1+1≠≢⍵),2)⍴(⊂'type'),⍵)}¨(⊂'min')('percentile' 'val' 50)(⊂'max')
+        colors←(1 'color' ''),⍤1⊢⍪{⊂1 2⍴⍵}⍤1⊢(⊂'rgb'),⍪hexColors
+
+    }
+
     ⍵≡⊂'':⍵
     formats←⍵
     priorities←⍵.Priority
