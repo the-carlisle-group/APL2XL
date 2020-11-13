@@ -1,37 +1,56 @@
-CFSheetsXML←{
+ CFSheetsXML←{
     ⍝ ⍵ ←→ vector ⎕NS
     ⍝ ⍵.CellRange ←→ 'A1:J100'
     ⍝ ⍵.Formula   ←→ 'ISODD(A1)'
-    testType  ←'3Arrows'
-    testColors← 'FFF8696B' 'FFFFEB84' 'FF63BE7B' 
+     cf←{
+         props←'type' 'dxfId' 'priority' 'stopIfTrue'
+         vals←(⊂⍺),⍵.(DXFID Priority StopIfTrue)
+         1 'cfRule' ''(props,⍪vals)
+     }
 
-    iconSet←{
-        ∘∘∘ Get the type from ⍵
-        type←testType
-        parent←0 'iconset' '' (1 2⍴'iconSet' type)
-        cfvo←{(1 'cvfo' ''),∘⊂⍤2⊢2 2⍴⍤1⊢('type' 'percent' 'val'),⍤1⊢⍪⌊(100÷⍵)×⍳⍵}⍎⊃type
-        ⎕XML parent⍪cfvo
-    }
-    colorScale←{
-        ∘∘∘ Get the hex colors from ⍵
-        hexColors←testColors
-        parent←0  'colorscale' '' ''
-        cvfo←{1 'cvfo' '' (((1+1≠≢⍵),2)⍴(⊂'type'),⍵)}¨(⊂'min')('percentile' 'val' 50)(⊂'max')
-        colors←(1 'color' ''),⍤1⊢⍪{⊂1 2⍴⍵}⍤1⊢(⊂'rgb'),⍪hexColors
-    }
+     iconSet←{
+         name  ←'iconSet'
+         cfRule←name cf ⍵
+         parent←2 name ''(1 2⍴name ⍵.IconSet)
+         cfvo  ←{(3 'cfvo' ''),∘⊂⍤2⊢2 2⍴⍤1⊢('type' 'percent' 'val'),⍤1⊢⍪⌊(100÷⍵)×⍳⍵}⍎⊃⍵.IconSet
+         cfRule⍪parent⍪cfvo
+     }
 
-    ⍵≡⊂'':⍵
-    formats←⍵
-    priorities←⍵.Priority
-    _←⍺ CFAdd formats
-    group←{⍺,⊂formats[⍵]}⌸formats.CellRange
+     colorScale←{
+         name  ←'colorScale'
+         cfRule←name cf ⍵
+         parent←2 name '' ''
+         cvfo  ←↑{3 'cfvo' ''(((1+1≠≢⍵),2)⍴(⊂'type'),⍵)}¨(⊂'min')('percentile' 'val' 50)(⊂'max')
+         colors←(3 'color' ''),⍤1⊢⍪{⊂1 2⍴⍵}⍤1⊢(⊂'rgb'),⍪⍵.ColorScale
+         cfRule⍪parent⍪cvfo⍪colors
+     }
 
-    xml←{
-        (sqref cfs)←⍵
-        p←0 'conditionalFormatting' '',⊂1 2⍴'sqref' sqref    ⍝ parent
-        c←↑{1 'cfRule' ''('type' 'dxfId' 'priority' 'stopIfTrue',⍪'expression' ⍵.DXFID ⍵.Priority ⍵.StopIfTrue)}¨cfs ⍝ child
-        f←↑{2 'formula' ⍵ (0 2⍴⊂'')}¨cfs.Formula             ⍝ formula
-        ⎕XML{⍵[⍋0,,⍨⍳≢ cfs;]}⊃⍪/p c f
-    }
-    ⊂∊xml⍤1⊢group
-}
+     default←{
+         props←'type' 'dxfId' 'priority' 'stopIfTrue'
+         vars←(⊂'expression'),⍵.(DXFID Priority StopIfTrue)
+         c←1 'cfRule' ''(props,⍪vars)
+         f←1 4⍴2 'formula'⍵.Formula(0 2⍴⊂'')
+         c⍪f
+     }
+
+
+     ⍵≡⊂'':⍵
+     formats←⍵
+     priorities←⍵.Priority
+     _←⍺ CFAdd formats
+     group←{⍺,⊂formats[⍵]}⌸formats.CellRange
+
+     xml←{
+         (sqref cfs)←⍵
+         results←{
+             0≠⍵.⎕NC'ColorScale':colorScale ⍵
+             0≠⍵.⎕NC'IconSet':iconSet ⍵
+
+             default ⍵
+         }¨cfs
+         p←0 'conditionalFormatting' '',⊂1 2⍴'sqref'sqref    ⍝ parent
+         ⎕XML p⍪⊃⍪/results
+     }
+     ⊂∊xml⍤1⊢group
+
+ }

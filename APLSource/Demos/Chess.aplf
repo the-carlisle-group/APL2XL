@@ -9,18 +9,18 @@
 
      Export←{
          range←⎕NS''
-         range.Value←⍵
+         range.Value  ←⍵
          range.Address←'B2'
-         range.Indent←,3
-         range.Fill←¯1↓⍤1⊢8 9⍴('solid' 'd4b790' 1)('solid' '87673b' 1)
+         range.Indent ←,3
+         range.Fill   ←¯1↓⍤1⊢8 9⍴('solid' 'd4b790' 1)('solid' '87673b' 1)
 
          ⍝. Border ←→ left right top bottom diagonal
          border←'lrtbd'
 
          ⍝. Map each index of the board to a bitmask related to border indices to toggle the border for that cell
-         top←(⊂'tl'),(6⍴'t'),⊂'tr'
-         body←(⊂'l'),(6⍴''),(⊂'r')
-         bottom←(⊂'bl'),(6⍴'b'),(⊂'br')
+         top         ←(⊂'tl'),(6⍴'t'),⊂'tr'
+         body        ←(⊂'l') ,(6⍴'') ,⊂'r'
+         bottom      ←(⊂'bl'),(6⍴'b'),⊂'br'
          range.Border←↑1 6 1\{('none' 0)('thick' 1)[border∊⍵]}¨¨top body bottom
 
          (sheet←⎕NS'').(Name Ranges)←'board'range

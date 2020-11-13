@@ -7,7 +7,7 @@ ConditionalFormats←{
     
     descriptions   ←'above average'           'greater than' 'top 10'
     exampleFormulas←'A1>Average($A$1:$J$100)' 'A1>950'       'A1>=LARGE($A$1:$J$100,10)'
-    formInd←{83=⎕DR⍵ : {⍵ ≤ ≢ exampleFormulas:⍵⋄0}⍵⋄ 0}⍵
+    formInd←{(⍬≢⍵)∧83=⎕DR⍵ : {⍵ ≤ ≢ exampleFormulas:⍵⋄0}⍵⋄ 0}⍵
     ⎕←'Formula Description for Sheet 1: "',(descriptions[formInd]),'"'
     (conditionalFormat←⎕NS'').(CellRange Formula)←'A1:J100' (formInd⊃exampleFormulas)
 
@@ -24,6 +24,7 @@ ConditionalFormats←{
         ⍵.Font.Strikethrough←1
         ⍵.Font.Color←'F73005'
         ⍵.StopIfTrue←1
+        ⍵.IconSet←'5Quarters'
         ⍵
     }
     _←addCF conditionalFormat
@@ -41,6 +42,7 @@ ConditionalFormats←{
     cf3.Font.Italic   ←1
     cf3.Font.Bold     ←1
     cf3.Font.Underline←1
+    cf3.ColorScale←'FFF8696B' 'FFFFEB84' 'FF63BE7B'
 
     (cf4←⎕NS'').(CellRange Formula)←'A1:J100' 'ISODD(A1)'
     cf4.NumberFormat←⊂'@'
