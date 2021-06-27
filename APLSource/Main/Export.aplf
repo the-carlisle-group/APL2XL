@@ -87,7 +87,7 @@
          ⍵
      }
 
-     ss←sheetsPopulate sheetsNormalize¨⍵.Sheets
+     ss←sheetsPopulate¨sheetsNormalize¨⍵.Sheets
      _←wb sheets¨nameSheets ss
      ##.Main.Build.CompileXML wb ⍝. Compile the workbook file as a .xlsx zipped directory
  }
